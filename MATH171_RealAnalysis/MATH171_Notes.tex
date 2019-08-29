@@ -1,0 +1,883 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{todonotes}
+\usepackage{amsthm}
+\usepackage{amsopn}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{libertine}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{sol}{Solution}
+
+\usepackage{latexsym}
+\usepackage{bbm}
+\usepackage[small,bf]{caption2}
+\usepackage{graphics}
+\usepackage{epsfig}
+\usepackage{amsopn}
+\usepackage{url}
+
+\usepackage[parfill]{parskip}
+\usepackage[margin=1in]{geometry}
+
+\newcommand{\bc}{\binom}
+\newcommand{\bx}{\boxed}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\Ra}{\mathcal{R}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ol}{\overline}
+
+% From stackexchange
+\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
+
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Syl}{Syl}
+%\newcommand{\mat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
+\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+
+\usepackage[parfill]{parskips
+\usepackage[margin=1in]{geometry}
+
+\pagestyle{fancy}
+
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\T}{\text}
+
+\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
+
+\def\Ber{\text{Ber}}
+\def\ub{\underbrace}
+\def\UU{\mathcal{U}}
+\def\WW{\mathcal{W}}
+\def\XX{\mathcal{X}}
+\def\VV{\mathcal{V}}
+\def\Unif{\text{Unif}}
+\def\Xh{\hat{X}}
+\def\P{\text{P}}
+\def\PP{\mathbb{P}}
+\def\CC{\mathbb{C}}
+\def\KK{\mathbb{K}}
+\def\ZZ{\mathbb{Z}}
+\def\lb{\lambda}
+\def\rot{\text{rot}}
+
+\title{MATH 171 - Real Analysis}
+\author{Instructor: George Schaeffer; Notes: Adithya Ganesh}
+
+\lhead{MATH 171}
+
+\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{9-24-18: Everything is a set}
+
+Administrivia:
+\begin{itemize}
+    \item Book: Johnsonbaugh and Pfaffenberger
+    \item (Supplement) Rudin's Principles of Mathematical Analysis
+    \item Exam: likely week 5.
+\end{itemize}
+
+\subsection{On sets}
+One motivation for analysis is a problem identified in 1901: Russell's Paradox.  Consider
+\[
+  R = \left\{ x : x \not \in X \right\} = \text{ the set of all sets that do not contain themselves }
+\]
+
+Problem: does the set contain itself?  Either $R \in R$ or $R \not \in R$, but neither is possible.
+
+Rules for what is isn't a set: Zermelo-Frankel axioms.
+
+In particular, under ZF: Can't build $\{x : x \text{ has property } P \}$.  You must say
+\[
+  \left\{ x \in S: x \text{ has property } P \text{ where } S \text{ is already a set. } \right\}
+\]
+
+But going further: the collection of all sets is itself not a set.
+
+Axioms of choice (the Cartesian product of a collection of non-empty sets is non-empty).
+
+We can define the natural numbers in the framework of sets.  If $x$ is a set we can define its successor as $S(x) = x \cup \left\{ x \right\}$.
+
+\begin{itemize}
+  \item 0 = $\emptyset$
+  \item 1 = $\left\{ \emptyset \right\}$
+  \item 2 = $\{ \left\{ \emptyset \right\}, \emptyset \}$.
+  \item 3 = $\{ \left\{ \emptyset \right\}, \emptyset, \left\{ \left\{ \left\{ \emptyset \right\}, \emptyset \right\} \right\}. = \left\{ 0, 1, 2 \right\}$.
+\end{itemize}
+
+\subsection{On functions (and cartesian products)}
+
+{\it Cartesian Product.} Let $X$ and $Y$ be sets.  Then we can write
+\[
+  X \times Y = \left\{ (x, y) : x \in X, y \in Y \right\}.
+\]
+
+How do we define ordered pairs?  $(x, y) \neq \left\{ x, y \right\} = \left\{ y, x \right\}$ doesn't work, since order matters.
+
+Instead, we want to say
+
+\[
+  (x, y) = \left\{ x, \left\{ x, y \right\} \right\}.
+\]
+
+What is a function?  We can write $f: X \to Y$, where $X$ is the domain(f) and $Y$ is the codomain(f).  A function $f: X \to Y$ is a subset of $X \times Y$ satisfying the following:
+
+\begin{itemize}
+  \item $\forall x \in X, \exists y \in Y: (x, y) \in f$.
+  \item  $\forall x \in X, \forall y, y' \in Y: (x, y) \wedge (x, y') \in f \implies y = y'$.
+\end{itemize}
+
+As a set, for example, $\sin \subseteq \R \times \R$.
+
+\subsection{On natural numbers}
+
+The set $\NN$ is equipped with a sucessor function $S: \NN \to \NN: x \mapsto S(x)$.  There are a few rules attached to this, namely the Peano axioms:
+
+\begin{itemize}
+  \item $\forall x \in \NN: S(x) \neq 0$
+  \item $S$ is ``injective'': If $S(x) = S(y) \implies x = y$.
+  \item Axiom of induction: If $K \subseteq \NN$ satisfying
+    \begin{itemize}
+        \item $0 \in K$
+        \item $\forall x \in K, S(x) \in K$.
+    \end{itemize}
+\end{itemize}
+
+$\NN$ has two binary operations, $+, \cdot$, addition and multiplication.
+
+A binary operation on $X$ is a function $X \times X \to X$.
+
+\begin{itemize}
+  \item + (a, b) = a+b
+  \item \cdot (a, b) = ab
+  \end{itemize}
+
+
+  $\forall a, a + 0 = a$. $\forall a, b; a + S(b) = S(a+b)$.
+
+
+  \section{10-1-18: Suprema and infima}
+
+
+  {\it Theorems of \RR.} 
+
+  \begin{itemize}
+    \item $\RR$ is an ordered field.
+    \item Tere are lots of ordered fields: $\QQ$.
+    \item Least upper bound axiom: If $S \subseteq \RR$ is nonempty and bounded above, then $S$ has a least bound $\in \RR$.
+  \end{itemize}
+
+  \begin{definition}
+    Let $S \subseteq \RR, M \in \RR$.  We say that M is an upper bound on $S$ is $\forall x \in S: x \leq M$.  $M$ is the least upper bound (or the supremeum) of $S$ is $\forall M' < M$, $M'$ is not an upper bound on $S$.
+  \end{definition}
+
+  Furthermore: $M = \sup(S)$ if
+
+  \begin{itemize}
+    \item $M$ is an upper bound on $S$:
+    \item $\forall M' < M:$ $M'$ is not an upper bound on $S$.
+      \begin{align*}
+        & \neg [ \forall x \in S : x \leq M'] \\
+        & \exists x \in S: \neg [x \leq M' ] \\
+        & \exists x : S: x > M' \\
+        & \boxed{\forall \epsilon > 0, \exists x \in S: x > M - \epsilon}
+      \end{align*}
+  \end{itemize}
+
+  Easy two step process for proving $M = \sup(S)$.
+
+  The ``greatest lower bound'' axiom is equivalent to the ``least upper bound'' axiom.  Note that for convenience $\sup (\text{unbounded above } S) = + \infty$ and $\sup(\emptyset) = - \infty$.
+
+  Consequences of the axioms in $\RR$.
+
+     {\it Archimedean Property.} $\forall a, b \in \RR, a, b > 0$, then $\exists n \in \NN$ such that $na > b$.
+
+     \begin{proof}
+       Let $S = \left\{ n \in \NN : na \leq b \right\}$; which implies $n \leq \frac{b}{a}$.  $S$ is nonempty because $0 \in S$.  $S$ is bounded above by $\frac{b}{a}$.  By LUBA: $S$ has a supremum $m = \sup(S)$.  $m + 1 \not \in S$ and $m+1 \in \NN$ (left as an easy exercise).  
+       
+       Why is $m+1 \not \in S$?  Otherwise $m+1 \leq m$.  So $\neg [(m+1)a \leq b]$, i.e. $(m+1) a > b$.
+     \end{proof}
+
+     Note that the Archimedean principle is true in $\QQ$ as well.  It inherits AP from R.  There is also an independent proof just using the construction of $\QQ$ as fractions.\footnote{On HW2: An example of an ordered field, for which the AP fails.}
+
+     \begin{theorem}
+       The rational numbers form a dense subset of $\RR$.
+     \end{theorem}
+
+     We start by explaining the definition: $\forall a, b \in \RR: a < b \implies [ \exists r \in \QQ: a < r < b]$.  We now mention a lemma that will help us prove the theorem. 
+
+     \begin{lemma}
+       If $a < b \in \RR$ and $b - a > 1$, then $\exists n \in \ZZ: a < n < b$.
+     \end{lemma}
+
+     \begin{proof}
+       Let $S = \left\{ n \in \ZZ : n \leq a \right\}$.
+
+     By LUBA, we let $m = \sup(S)$.  Note that $m \in \ZZ$.  $m+1 \not \in S$.  We can easily verify that $a < m+1 < b$.  The first inequality follows from $m+1 \not \in S$, and for the second, note that:
+
+     \begin{align*}
+       m+1 &< m+(b-a) \\
+       & \leq a + (b-a) = b.
+     \end{align*}
+
+
+    Here, we have used the fact that $m \in S$, so $m \leq a$.
+     \end{proof}
+
+     \begin{proof}(Main Theorem.)
+       We know $a < b$.  By the Archimedean Principle, since $b-a > 0$ and $1 > 0$, there must exist $n \in \NN$ such that $n(b-a) > 1$.  This implies that $nb - na > 1$.  Also $na < nb$.
+
+       By the lemma, there exists an integer $k \in \NN$ with $na < k < nb$.  Dividing by $n$, we obtain the fraction $\frac{k}{n}$ which satisfies $a < \frac{k}{n} < b$.
+     \end{proof}
+
+     The irrationals are also dense in the reals - just take the rationals and add $\sqrt{2}$, and follow a similar argument.
+
+
+     \section{Continuity - 10-19}
+
+     If $(X, \tau)$ is a topological space and $S \subseteq X$, we can give $S$ a topology
+     \begin{align*}
+       \tau_S = \left\{ U \cap S : \text{ where } U \in \tau_X \right \}. 
+     \end{align*}
+
+     This is a subspace / induced / inherited / relative topology on $S$.
+
+     Note: $[0, 1]$ w/ the subspace topology from $\RR$.
+
+
+     If $(X, d_X)$ is  ametric space, $S \subseteq X$, then $S$ is also a metric space, where $d_S = d_X | _{S \times S}$ (restricted for $S \times S)$.
+
+
+     If $X$ is a metric space and $S \subseteq X$, then the topoloy from $d_$ is the subspace topology.
+
+
+     If $U$ is open / closed in $S$, it need not be closed in $X$.
+
+
+     However, if $K$ is compact in $S$, then $K$ is compact in $X$.
+
+     {\it Self explanatory (?)}  We say that a topological space $X$ is compact if it is a compact set in its own topology.
+
+     {\it Continuous functions.} Let $(X, d_X)$ and $(Y, d_Y)$ be metric spaces, let $f: X \to Y$, let $p \in X$.  We say that $f$ is continuous at $p$
+     \begin{enumerate}
+       \item In the analytic sense if 
+         \begin{align*}
+           \forall \eps > 0, \exists \dl > 0, \forall x \in X: d_{X}(x, p) < \dl \implies d_Y (f(x), f(p)) < \eps.
+         \end{align*}
+       \item In the sequential sense if $\forall$ sequences $(x_n)_n \to p \in X$, the sequence
+         \begin{align*}
+           (f(x_n))_n \to f(p).
+         \end{align*}
+       \item In the topological sense if $\forall $ open $V \subseteq Y$, if $f(p) \in V$, then there exists an open $U \subseteq X$ such that $p \in U$ and $f(U) \subseteq V$.
+     \end{enumerate}
+
+     We will show that all of these are equivalent.
+
+     {\bf Notes on these definitions.}
+
+     \begin{itemize}
+       \item For the topological sense: can switch ``open'' for ``closed.''  
+       \item Also, (iii) is the definition of ``continuous' at p'' for general topological spaces.  It doesn't require a metric on $X$ or $Y$.
+        \item In (i), $\delta$ can depend on both $p$ an $\eps$.
+     \end{itemize}
+
+    {\bf Outline of proof of equivalence.}
+
+    \begin{itemize}
+      \item $1 \implies 2$ (easy; definition pushing).
+      \item $2 \implies 1$ is slightly harder.  We will prove this by contrapositive.  We'll show: if $f$ is not analytically continuous at $p$, then it's not sequentially cts.
+        \begin{align*}
+          \forall \varepsilon > 0, \forall \delta > 0; \exists x \in X: d_X(x, p) < p \text{ and } d_Y (f(x), f(p)) \geq \varepsilon.
+        \end{align*}
+
+        In particular, we can define $(x_n)_{n=1}^{\infty}$ so that
+        \begin{align*}
+          d_X(x_n, p) < \frac{1}{n} \text{ and } d_Y (f(x_n), f(p)) \geq \varepsilon.
+        \end{align*}
+
+        This means that $x_n \to p$, but $f(x_n) \not \to f(p)$.
+      \item $3 \implies 1$. Let $\varepsilon > 0$. We know $f$ is topologically continuous, so let $V = B_{\varepsilon}(f(p))$ is open.  Then there exists an open $U \ni p$ such that $f(U) \subseteq V$.  Because $U$ is open, $p$ is interior to $U$, so $\exists \delta$ such that $B_{\delta}(p) \subseteq U$.
+
+        So, $x \in B_{\delta}(p) \implies x \in U \implies f(x) \in V \implies f(x) \in B_{\varepsilon} (f(p))$.
+
+      \item $1 \implies 3$ is similar to the previous, just reverse all the statements.
+    \end{itemize}
+
+    \begin{definition}
+      The function $f: X \to Y$ is continuous if it is continuous at all $p \in X$.
+    \end{definition}
+
+    Translated definitions to ``everywhere continuous.''
+    \begin{itemize}
+      \item Analytic continuity is easy.
+      \item Sequential continuity: $\forall$ convergent sequences $(x_n)_n, (f(x_n))_n$ is convergent and $\lim f(x_n) = f(\lim x_n)$.
+      \item Topological continuity: $f$ is continuous if for all open $V \subseteq Y$, $f^{-1}(V)$ is open in $U$.
+    \end{itemize}
+
+For example, consider $f(x) = x^2$.  Note that $f\left( -1, 1))  \right) = [0, 1)$.  If $f$ is continuous and $U$ is open $f(U)$ may not be open.
+
+Also, look at $g(x) = \frac{1}{x}$ on $(0, \infty)$.  Consider $C = \mathbb{Z}_{> 0}$, and then look at the set $g(C) = \left\{ \frac{1}{n} : n \geq 1 \right\}$ is not closed.
+
+Continuous functions don't preserve openness and they don't preserve closedness, but they preserve compactness.
+
+\begin{theorem}
+  If $f: X \to Y$ is continuous, (for $(X, Y)$ topological spaces) and $K \subseteq X$ is compact in $X$, then $f(K)$ is compact in $Y$.
+\end{theorem}
+
+\begin{proof}
+  Need to show that every open cover of $A$ has a finite subcover.  Let $H$ be an open cover of $f(K)$.  Let $G = \left\{ f^{-1}(V) : V \in H  \right\}$.  Now, $G$ covers $K$.  Since $f$ is continuous, it is an open cover\footnote{Recall that a topological space $X$ is called compact if each of its open covers has a finite subcover.  That is, $X$ is compact if for every collection $C$ of open subsets of $X$ such that 
+ \[
+   X = \bigcup_{x \in C} x,
+   \]
+  there is a finite subset $F$ of $C$ such that
+  \[
+    X = \bigcup_{x \in F} x.
+    \]
+}
+\end{proof}
+
+{\it Corollary.} (Extreme value theorem).  If $f: X \to \RR$ ($X$ is a compact topological space, $f$ is continuous).  Then $f$ achieves a maximum and minimum on $X$.  Meaning, there exists $p, q \in X$ such that $\forall x \in X, f(p) \leq f(x) \leq f(q)$.
+
+\begin{proof}
+  $f(X)$ is a compact $\subseteq \RR$, so $f(X)$ is closed and bounded (Heine-Borel). Provided $X \neq \emptyset, f(X) \neq \emptyset$. Now, 
+  \begin{itemize}
+    \item $m = \inf (f(X) ) \in f(X)$ and $M = \sup (f(X) ) \in f(X)$
+    \item By definition, since $m, M \in f(X)$, $\exists p, q \in X: f(p) = m$ and $f(q) = M$.
+  \end{itemize}.
+\end{proof}
+
+The topological proof is surprisingly fast.  Indeed, you can prove this using the sequential definition of continuity using the Bolzano-Weierstrass; but it is tricky.
+
+
+Some remarmks on Heine-Borel:\footnote{$f(X)$ is compact $\subseteq \RR$, so $f(X)$ is closed and bounded (true in any metric space).  The other direction requires being a subset of $\RR^n$, which requires Heine-Borel}.
+
+Next week: we'll discuss the notion of ``connectedness.''
+
+Take home exam: goes out after class on Wed, have until Friday to finish.
+
+\section{10-22: Connectedness}
+
+Exam: released on Wednesday after class.  You'll have 3 hours + extra time to submit.  Can start at any time until midnight - $\eps$.  Open textbooks (J\&P, Rudin), + notes.
+
+\begin{definition}
+  Let $X$ be a topological space.  $X$ is called disconneted if there are nonempty, disjoint open sets $U$ and $U'$ of $X$ such that $X = U \cup U'$.  If $X$ is not disconnected, it's called connected. \\
+\end{definition}
+
+\begin{definition}
+  If $X$ is a topological space and $S \subseteq X$, then $S$ is ``connected'' if $S$ is connected as a topological space (with respect to the subspace topology). \\
+\end{definition}
+
+\begin{definition}[Alternative]
+  A topological space is connected if the only clopen sets are $X$ and $\emptyset$. \\
+\end{definition}
+
+We now ask: what are the connected subsets of $\RR$? \\
+
+\begin{lemma}
+  $S \subseteq \RR$ is connected iff $S$ is an interval.  $\forall x, y \in S, \forall z \in \RR, x < z < y \implies z \in S$. \\
+\end{lemma}
+
+\begin{proof}
+  We start with the forward direction.  Assume $S$ is not an interval.  Then there exists some $z \in \RR$ so that $x < z < y$ but $z \not \in S$.  Let $U = (- \infty, z)$ and let $U' = (z, \infty)$.  Then it is easy to check that $(S \cap U) \cup (S \cap U')$ is a disconnection of $S$.
+
+  Need to check:
+  \begin{itemize}
+    \item $S \cap U$ is open in $S$, because $U$ and $U'$ are open in $\RR$.
+    \item The sets $S \cap U$, $S \cap U'$ are disjointed, because $U, U'$ are disjoint.
+    \item $S = (S \cap U) \cup (S \cap U')$.
+  \end{itemize}
+
+  If $(X, \tau)$ is a topological space and $S \subseteq X$, the subspace topology on $S$ is 
+  \begin{align*}
+    \tau_{S} = \left\{ S \cap U: U \in \tau \right\}.
+  \end{align*}
+
+  Also, $\tau_S$ is the coarsest topology such that $S \to X$ inclusion is continuous.
+
+  Now, we move on to the reverse direction.  Let $S$ be an interval, so that
+  \begin{align*}
+    S = (S \cap U) \cup (S \cap U'),
+  \end{align*}
+  where $U$ and $U'$ are open in $\RR$, $S \cap U$ and $S \cap U'$ are nonempty.  Want to show that they are not disjoint.  Let $V = S \cap U, V' = S \cap U'$.
+
+  Let $x \in V$ and $y \in V'$.  Without loss of generality, assume $x < y$.  Also, $\frac{x+y}{2} \in S$, since $S$ is an interval.
+
+  We will construct sequences $(x_n)_n$ and $(y_n)_n$ as follows.
+
+  \begin{itemize}
+    \item $x_0 = x$ and $y_0 = y$.
+    \item Let $\alpha_{n+1} = \frac{x_n + y_n}{2}.$  If $\alpha_{n+1} \in V$, then $x_{n+1} = \alpha_{n+1}$ and $y_{n+1} = y_n$.  Otherwise $\alpha_{n+1} \in V'$ and $x_{n+1} = x_n$ and $y_{n+1} = \alpha_{n+1}$.
+    \item $(x_n)_n$ is an increasing sequence in $V$, and $(y_n)_n$ is a decreasing sequence in $V$.  They are also bounded, since they are termwise bounded by each other.
+    \item $(x_n)_n$ and $(y_n)_n$ both convergence, and since
+      \begin{align*}
+        |x_n - y_n| \leq 2^{-n} |x - y|,
+      \end{align*}
+      both sequences convergence to the same limit $L$; $x < L < y \implies L \in S$.  Therefore, $L \in V$ or $L \in V'$.
+
+    \item Suppose $L \in V$.  Then $L \in U$.  $L$ is an interior to $U$ (since $U$ is open).  In particular, $\exists \eps > 0$ such that $B_{\eps}(L) \subseteq U$.  By the convergence of $(y_n)_n \to L$, $\exists N$ such that
+      \begin{align*}
+        |y_n - L| < \eps; \forall n \geq N
+      \end{align*}
+
+      In particular, $y_N \in B_{\eps}(L) \subseteq U \implies y_n \in V$.  So since $y_N \in V'$, $V \cap V' \neq \emptyset$.
+  \end{itemize}
+\end{proof}
+
+\begin{example}
+  A disconnected set in $\RR$: $\mathbb{Q}$ is disconnected.
+\end{example}
+
+Consider a dramatic example: the Cantor set.
+
+\begin{itemize}
+  \item In homework, proved that every open ball is closed in an ultrametric space.
+  \item The Cantor set is ``totally disconnected\footnote{a lot of open sets are closed}''  Turns out that every ultrametric space is topologically equivalent to the Cantor set.
+\end{itemize}
+
+Last time: Let $f: X \to Y$ be a continuous function of topological spaces.  If $X$ is compact, then $f(X)$ is compact.  This implies the Extreme Value Theorem.
+
+This time: Let $f: X \to Y$ be a continuous function of topological spaces.  If $X$ is connected, then $f(X)$ is connected.
+
+\begin{proof}
+  Suppose $f(X)$ is disconnected.  then
+  \begin{align*}
+    f(X) = (f(X) \cap V) \cup (f(X) \cap V').
+  \end{align*}
+  Let $W = f(X) \cap V$, $W' = f(X) \cap V'$.  Let $U = f^{-1}(W)$ and $U' = f^{-1}(W')$.
+
+  \begin{itemize}
+    \item $U \cap U' = X$ (by definition of preimage).
+    \item $U$ and $U'$ are open, because $f^{-1}(W) = f^{-1}(f(X) \cap V) = f^{-1}(V)$.  Further, $f^{-1}(V)$ is open because $f$ is continuous and $V$ is open.
+    \item They're nonempty because $W, W'$ are nonempty $\subseteq f(X)$.
+    \item They're disjoint because if $x \in U \cap U'$, then $f(x) \in W \cap W'$; but $W$ and $W'$ are disjoint.
+  \end{itemize}
+\end{proof}
+
+{\it Corollary.} (Intermediate value theorem.)  Let $X$ be a connected topological space, and let $f: X \to \RR$ be a continuous real-valed function.  If there are $p, q \in X$ and $c \in \RR$ such that $f(p) < c  < f(q)$, $\exists \xi \in X$ such that $f(\xi) = c$.
+
+\begin{proof}
+  $f(X)$ is an interval.
+\end{proof}
+
+\begin{example}[Incomplete topologist's sine curve] 
+  Consider the graph of $\sin \left( \frac{1}{x} \right)$ for $x \in \left( 0, 1 \right)$.  Note that $\sin \left( \frac{1}{x} \right)$ is continuous on this interval.  This is connected.
+\end{example}
+
+\begin{example}[Midcomplete TSC] 
+  Consider $\left\{ \text{Incomplete TSC} \right\} \cup \left\{ (0, 0) \right\}$.  This will be connected, still.  But, it is not path connected.  Consider a point $(x, y)$; there is no path between $(x, y)$ and $(0, 0)$.
+
+  Interestingly, this is a converse to the Intermediate Value Theorem.  Has the intermediate value property, but it is not continuous at $0$.
+\end{example}
+
+
+\section{10-24: Uniform continuity}
+
+Exam will be ready at 12:30pm.  Have 3 hours + 30 extra minutes to scan + upload.
+
+Today: just one proof, and then Q\&A time / review.
+
+\begin{theorem}
+  Let $f: X \to Y$ be a continuous function with $X$ and $Y$ metric spaces.  If $X$ is compact then $f$ is uniformly continuous.
+\end{theorem}
+
+\begin{enumerate}
+  \item Recall that $f:X \to Y$ is continuous if $\forall p \in X, [\forall \varepsilon > 0, \exists \delta > 0, \forall x \in X$
+  \begin{align*}
+    d_X(x, p) < \delta \implies d_Y (f(x), f(p)) < \varepsilon.
+  \end{align*}
+\item $\forall p \in X$, $\forall (x_n)_n \to p$ if $f(x_n)_n$ converges $\to f(p)$.
+\item $\forall$ open $U \subseteq V f^{-1}(V)$ is open in $X$. ``preimage of an open set is open.''
+\end{enumerate}
+
+Importantly, 1, 2, 3, work in metric spaces, and 3 works in topological space.
+
+{\bf Continuity.}
+
+In general, when we talk about continuity, we are discussing conditions of the form $\forall p \in X, \forall \varepsilon > 0, \exists \dl > 0$ such that $\forall x \in X [\dots]$.
+
+We say that $f: X \to Y$ (metric spaces) is uniformly continuous if
+\begin{align*}
+  \forall \varepsilon > 0, \exists \dl > 0, \forall x, p \in X: d_X(x, p) < \delta \implies d_{Y}(f(x), f(p)) < \eps.
+\end{align*}
+
+The salient difference here is that $\delta$ only depends on $\varepsilon$, and no longer depends on $p$.
+
+{\bf Obvious implication.} If $f$ is uniformly continuous, it is continuous.  The converse, however is false.
+
+{\bf Example.} Let $f(x) = \frac{1}{x}$ on $(0, + \infty)$. This is a continuous function (on the interval).  It is not uniformly continuous.
+
+Consider some point $(p, f(p))$.  Suppose we have a range $(f(p) - \eps, f(p) + \eps)$.  Need a delta such that whenever $x \in (p - \delta, p + \delta)$, $f(x) \in (f(p) - \eps, f(p) + \eps)$.  As $p \to 0$, $\delta$ stops working (since it will contain the asymptote at $0$).
+
+{\bf Example.} Let $f(x) = \sin \left( \frac{1}{x} \right)$ on $(0, + \infty)$.  This function is continuous, but not uniformly so.  No matter how small we make $\delta$, there is some point $p$ close to 0 so that $f((p - \delta, p + \delta)) = [-1, 1]$.
+
+Aside: the difference between Lipschitz continuity and uniform continuity. \footnote{You can show that $\sqrt{x}$ is uniformly continuous, but not Lipschitz continuous.}
+
+{\bf Proof of theorem.} Suppose that $f: X \to Y$ is continuous but not uniformly continuous (where $X$ is compact).  Then $\exists \varepsilon > 0$, $\forall \dl > 0$, $\exists x, p \in X$ such that $d_{X}(x, p) < \dl$ and $d_{Y} (f(x), f(p)) \geq \eps$.  We want to use the above to build two sequences $(x_n)_n$ and $(p_n)_n$ such that $\forall n \geq 1$,
+
+\begin{align*}
+  d_X(x_n, p_n) < \frac{1}{n}; \qquad d_Y(f(x_n), f(p_n)) \geq \varepsilon
+\end{align*}
+
+We have not used compactness yet.  By sequential compactness: some subsequence of $(x_n)$ converges.  Some subsequence of $(x_n)_n$ converges to $L \in X$, so that $(x_{n_i})_i \to L$.  Now, consider $(p_{n_i})$; we also have $(p_{n_i})_i \to L$.
+
+Therefore
+\begin{align*}
+  \lim_{i \to \infty} f(x_{n_i}) = f(\lim (x_{n_i})_i) = f(L) = f(\lim_{i \to \infty} (p_{n_i})_i) = \lim_{i \to \infty} f(p_{n_i}).
+\end{align*}
+(for the first equality we have used continuity).  But this is a contradiction, since our sequences are actually far apart.
+
+Recall the theorem that states that if $f: [a, b] \to \RR$ is continuous, then it is integrable.  The proof of this theorem relies on the notion of uniform continuity.
+
+\subsection{Review}
+
+We now discuss the sequential version of uniform continuity. \\
+
+\begin{theorem}
+  Let $f: X \to Y$ be continuous metric spaces.  Then the following are equivalent:
+
+  \begin{itemize}
+    \item Let $f$ is uniformly continuous.
+    \item If $(x_n)_n$ is a Cauchy sequence, then $f(x_n)_n$ is also Cauchy.
+  \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+  If $X$ is a metric space and $K \subseteq X$ is compact and $(x_n)_n$ is a sequence in $K$, it has a convergent subsequence whose limit is in $K$.
+\end{theorem}
+
+{\bf Dense sets.} Suppose $X$ is a metric space $S \subseteq X$, $S$ is dense if 
+
+\begin{itemize}
+  \item $\ol{S} = X$
+  \item Every nonempty open $U$ overlaps with $S$. 
+  \item For all $x \in X$ and $\forall \eps > 0$, $\exists y \in S$ such that $d_{X}(x, y) < \eps$.
+\end{itemize}
+
+For example, $\QQ$ is dense in $\RR$ (that is, all real numbers can be arbitrarily well approximated by rational numbers).
+
+If $X$ is a metric space with a countable dense set, then we call $X$ separable.  This is good because this means that computers can deal with such sets quite well (e.g. floating point).
+
+{\bf Theorem.} In the space of continuous functions $[0, 1] \to \RR$, the rational coefficient polynomials are dense.
+
+
+\section{11-05-18: Integrability and FTCs}
+
+Recall the Riemann-Darboux integral.  Suppose $f:[a, b] \to \R$ is bounded with $a < b$.  Then we can write
+
+\[
+  \int_{\ol{a}}^{b} = \sup \left\{  \int_{a}^{b} \varphi: \varphi \text{ a step fn }; \varphi \leq f \right\}
+\]
+or
+\[
+  \int_{a}^{\ol{b}} = \inf \left\{ \int_{a}^{b} \psi: \psi \text{ a step fn and } \psi \geq f \text{ on } [a, b] \right\}.
+\]
+
+And if they match, $f$ is integrable and $\int_{f} = \int_{\ol{a}}^{b} f = \int_{a}^{\ol{b}} f$.
+
+\begin{prop}[Sequential criterion for integrability] Suppose $f: [a, b] \to \R$ is bounded, $L \in \R$.  
+  
+  Subtext: Wts 
+  \[
+    \int_{a}^{b} = L.
+  \]
+
+  Then $\int_{a}^{b} f = L$ if and only if $\exists (\psi_n)_n, (\spi_n)_n \in \text{Step}([a, b])$ for all $k$,  $\psi_k \leq f \leq \varphi_k$; and
+  \[
+    \int_{a}^{b} \psi_n \to L; \qquad \int_{a}^{b} \varphi_n \to L.
+  \]
+\end{prop}
+
+{\bf Sufficient conditions for integrability.}
+  \begin{itemize}
+    \item If $f: [a, b] \to \R$ is continuous, it is integrable.  
+    \item Piecewise continuous.
+    \item Monotonic functions.
+    \item ``Piecewise monotone and/or continuous\dots''
+    \item Thomae's function shows that the converse is not true.
+  \end{itemize}
+
+  \begin{prop}[Cauchy criterion for integrability.]
+    If $f: [a, b] \to \R$ is bounded, it is integrable iff $\forall \varepsilon > 0$, there exists $\psi, \varphi \in \text{Step}([a, b])$ such that $\varphi \leq f \psi$ and $\int_{a}^{b} (\varphi - \psi) = \int_{a}^{b} \varphi - \int_{a}^{b} \psi < \varepsilon$.
+
+    (Proof follows from the definition of integrability.)
+  \end{prop}
+
+  \begin{theorem}
+    If $f: [a, b] \to \R$ is continuous, then it is integrable.
+  \end{theorem}
+
+  \begin{proof}
+    Strategy: for any interval $I$ we want $\varphi(I) - \psi(I)$ to be small.
+
+    Let $\varepsilon > 0$.  Pick $\delta > 0$ such that $\forall x, y \in [a, b]$, we have
+    \begin{align*}
+      |x - y| < \delta \implies |f(x) - f(y)| < \frac{\varepsilon}{b-a}.
+    \end{align*}
+
+    Pick a partition of $[a, b]$ into disjoint intervals $\left\{ I_k \right\}_{k=1}^{n}$ with $|I_k| < \delta$.  For each $I_k$, $f: \ol{I_k} \to \R$ achieves its min and max at $p_k, q_k \in \ol{I}_k$ respectively with
+    \begin{align*}
+      f(p_k) \leq f(x) \leq f(q_k)
+    \end{align*}
+    for all $x \in I_k$.
+
+    Now, let
+    \[
+      \varphi = \sum_{k=1}^{n} f(p_k) \mathbf{1}_{I_k}; \qquad \psi = \sum_{k=1}^{n} f(q_k) \mathbf{1}_{I_k}.
+    \]
+
+    \todo{Fill in details from notes.}
+
+
+  \end{proof}
+
+  \begin{theorem}[Lebesgue's Riemann integrability condition]
+    A function $f$ is integrable if and only if
+    \[
+      \lambda \left( \left\{ p \in [a, b]: f \text{ is discontinuous at p } \right\} \right) = 0,
+      \]
+      that is the set of discontinuities has Lebesgue measure 0 (alternatively, $f$ is almost everywhere continuous).
+  \end{theorem}
+
+  \footnote{Cannot use this on homework unless you prove it.} This theorem implies:
+  \begin{itemize}
+    \item $f$ is continuous implies it is integrable.
+    \item Monotone functions are continuous.
+  \end{itemize}
+
+  Let $f: [a, b] \to \R$ be bounded, we call $F:[a, b] \to \R$ a [continuous] antiderivative of $f$ if it is continuous on $[a, b]$, differentiable on $(a, b)$, and $\forall p \in (a, b): F'(p) = f(p)$.
+
+  \begin{theorem}[The fundamental theorem of calculus]
+    Let $f:[a, b] \to \R$ be an integrable function $F:[a, b] \to \R : x \mapsto \int_{a}^{x} f$.  Then:
+    \begin{enumerate}
+      \item $F$ is Lipschitz continuous.
+      \item If $f$ is continuous at $p \in (a, b)$, then $F$ is differentiable at $p$ and $F'(p) = f(p)$.
+      \item If $f$ is continuous on all of $[a, b]$, then $F$ is an antiderivative of $f$.
+    \end{enumerate}
+  \end{theorem}
+
+  \begin{proof}
+    The first statement is proven by the corresponding theorem for the upper / lower integrals.  Statement (3) follows from statement (2).
+
+    Hence, it suffices to prove (2).  
+
+    If $f$ is continuous at $p$, then
+    \begin{align*}
+      \lim_{x \to p^{+}} \frac{F(x) - F(p)}{x-p} = f(p).
+    \end{align*}
+
+    In these notes we will prove half of it (since the case $x \to p^{-}$ is similar.)  Make the change of variables $x = p+h$.  Then the limit above is equivalent to
+    \begin{align*}
+      \lim_{h \to 0^{+}} \frac{F(p+h) - F(p)}{h} &= \lim_{h \to 0^{+}} \left[ \frac{1}{h} \int_{p}^{p+h} f \right],
+      \intertext{where}
+      F(x) = \int_{a}^{x} f.
+    \end{align*}
+
+    Let $\delta > 0$ such that $\forall x \in [a, b]: \left|x-p\right| < \delta \implies \left|f(x) - f(p)\right| < \varepsilon$.  If $|x - p| < \delta$ then
+    \begin{align*}
+      f(p) - \varepsilon < f(x) < f(p) + \varepsilon.
+    \end{align*}
+
+    So, for $h < \delta$, we have
+    \begin{align*}
+      \int_{p}^{p+h} \left[ f(p) - \varepsilon \right] & \leq \int_{p}^{p+h} f(x) \\
+      & \leq \int_{p}^{p+h}  \left[ f(p) + \varepsilon \right].
+    \end{align*}
+
+    This implies that for $h < \delta$,
+     \begin{align*}
+      h(f(p) - \varepsilon) \leq \int_{p}^{p+h} f \leq h (f(p) + \varepsilon);
+    \end{align*}
+    that is
+    \begin{align*}
+      f(p) - \varepsilon \leq \frac{1}{h} \int_{p}^{p+h} f \leq f(p) + \varepsilon.
+    \end{align*}
+
+    The punch line is that
+
+    \begin{align*}
+      \left|\lim_{h \to 0^{+}} \left[ \frac{1}{h} \int_{p}^{p+h} f \right] - f(p)\right| < \varepsilon.
+    \end{align*}
+
+    In particular, the limit above is equal to $f(p)$.  This proves the FTC for the derivative of the integral; Wednesday we will do the integral of the derivative.
+  \end{proof}
+
+
+  \section{Sequences and series of functions}
+
+  \subsection{Pointwise vs. uniform convergence}
+
+\newpage
+
+\section{Key ideas}
+
+{\bf Definition of a metric space.}
+
+A metric space is a set $X$ together with a distance $d: X \times X \to \RR_{\geq 0}$ that satisfies
+
+\begin{itemize}
+  \item $d(x, x) = 0$.
+  \item $d(x, y) = d(y,x)$.
+  \item $d(x, y) + d(y, z) = d(x, z)$.
+\end{itemize}
+
+These three results together imply $d(x, y) \geq 0$.
+
+
+{\bf Theorem: Cauchy-Schwarz.}
+
+Let $a_1, \cdots, a_n, b_1, \dots, b_n \in \RR$.  Then
+\begin{align*}
+  \left[ \sum_{k=1}^{n} a_k b_k \right]^2 \leq \left[ \sum_{k=1}^{n}a_k^2 \right] \left[ \sum_{k=1}^{n} b_k^2 \right].
+\end{align*}
+
+To recall inequality, just recall that $||u|| ||v|| \cos \theta = u \cdot v$.
+
+{\bf Convergence in a metric space.} 
+
+A sequence $(x_n)_n$ is convergent to $L$ if $\forall \varepsilon > 0$, $\exists N$ such that $n > N \implies |x_n - L| < \varepsilon$.
+
+{\bf Cauchy-ness in a metric space.}
+
+$\forall \varepsilon > 0, \exists N$ s.t. $\forall m, n \geq N$, $d(x_n, x_m) < \varepsilon$.
+
+{\bf Complete metric space, and an example.}
+
+A metric space is called complete if Cauchy $\implies $ convergent.  $\RR$ is a complete metric space.
+
+{\bf Convergence in $\RR^n$}.  
+
+$\ol{a}^{k} \to \ol{a}$ iff $\ol{a}_j^{k} \to a_j$ for all $j$.
+
+Similar proof for Cauchy in $\RR^n$.
+
+{\bf Topological space.}  
+
+A topological space is a $(X, \tau)$ where $X$ is a set and $\tau \subseteq P(x)$ satisfies
+
+\begin{itemize}
+  \item $\emptyset, X \in \tau$
+  \item If $\mathcal{F} \subseteq \tau$, then $\bigcup_{S \in \mathcal{F}} S \in \tau$ (an arbitrary union of sets in $\tau$ is in $\tau$).
+  \item If $U_1, U_2 \in \tau$, then $U_1 \cap U_2 \in \tau$ (the intersection of any sets in $\tau$ are in $\tau$).
+\end{itemize}
+
+Intuition \url{https://math.stackexchange.com/a/523794.}  Broadly: a topology defines a notion of nearness on a set.
+
+{\bf Interior / adherent sets.}
+
+Let $(X, d)$ be a metric space, $x \in X, S \in X$.  Then $X$ is interior to $S$ if $\exists \varepsilon > 0, B_{\varepsilon} \subseteq S$.
+
+$X$ is adherent to $S$ if $\forall \varepsilon > 0, B_{\varepsilon}(x) \cap S \neq \emptyset$.
+
+{\bf Limit point / isolated point.}
+
+$x$ is a limit point of $S$ if $\forall \eps > 0$, $\exists y \neq x$ such that $y \in B_{\varepsilon}(x) \cap S$.
+
+$x$ is an isolated point of $S$ if $\exists \varepsilon > 0$, s.t. $B_{\varepsilon} (x) \cap S= \left\{ x \right\}$.
+
+{\bf Open / closed sets.}
+
+$S$ is open if every $x \in S$ is interior to $S$.
+
+$S$ is closed if it contains all its adherent (or limit) points.
+
+{\bf Perfect / bounded / dense sets.}
+
+$S$ is perfect if it closed and contains no isolated points.
+
+$S$ is bounded if $\exists p \in X$ and $M \geq 0$ so that $\forall x \in S, d(x, p) \leq M$.
+
+$S$ is dense if $\forall x \in X$, $x$ is adherent to $S$.
+
+{\bf Cover of a set.}
+
+A cover of a set is a set of subsets whose union equals the original set.  If $C = \left\{ U_{\alpha}; \alpha \in A \right\}$ is an indexed family of sets $U_{\alpha}$ then $C$ is a cover of $X$ if
+\begin{align*}
+  X \subseteq \bigcup_{\alpha in A} U_{\alpha}
+\end{align*}
+
+{\bf Compactness.}
+
+
+A subset $K \subseteq X$ of a topological space is called compact if $\forall \mathcal{G} \subseteq T$, with 
+\[
+  K \subseteq \bigcup \mathcal{G},
+  \]
+  $\exists$ a finite $\mathcal{G}'$ such that $K \subseteq \bigcup \mathcal{G}'$.
+
+  That is, each cover of $K$ has a finite subcover.
+
+  {\bf Prove that compact sets are closed.}
+
+  {\bf Bolzano-Weierstrass Theorem.}
+
+  {\bf Heine-Borel Theorem.}
+
+  {\bf Inverse powers.}
+
+  If $\alpha > 0$ and $p \geq 1$ is an integer, there exists a unique $\beta > 0$ such tha $ \beta^p = \alpha$.
+
+  \begin{proof}
+    Uniqueness is easy once existence is shown.  Assume $0 < \alpha < 1$, (since $\alpha = 1$ is easy, and for $\alpha > 1$, just take $\left( \frac{1}{\beta} \right)^n = \frac{1}{\alpha}$ \todo{check this detail}.
+
+      Consider two sequences $(a_n)_n$ and $(s_n)_n$ with
+
+      \begin{align*}
+        a_n &= \max \left\{ k \in \mathbb{Z}: \left( \frac{k}{2^n} \right)^p \leq \alpha \right\}.
+      \end{align*}
+      and $s_n = \frac{a_n}{2^n}$.  We define these because $(s_n)_n$ consists of better binary approximations to $\alpha^{1/p}$.  Need to check that $a_n$ is well defined, but that is not too difficult.
+
+      Claim: $(s_n)_n$ is increasing and bounded above. It is bounded above by 1, since $s_n > 1$ would imply $s_n^p = (a_n / 2^n)^{p} > 1 > \alpha$, which contradicts the definition of $a_n$.  To see that is $(s_n)$ is increasing is straightforward.  Thus, $(s_n)_n$ converges to some limit $\beta$.
+
+      Finally, we will show that $(s_n^p)_n \to \alpha$.  This will show that $\beta$ satisfies $\beta^{p} = \alpha$.  Note that
+      \begin{align*}
+        \left( \frac{a_n}{2^n} \right)^p \leq \alpha < \left( \frac{a_n+1}{2^n} \right)^{p}
+      \end{align*}
+
+      Thus, it suffices to check that the difference between the left and right hand sides approaches zero as $n \to \infty$.  Note that
+      \begin{align*}
+        (a_n + 1)^{p} - a_n^p = \sum_{k=0}^{p-1} a_n^k,
+      \end{align*}
+      so since $a_n \leq 2^n$, we have $a_n^k \leq 2^{nk} \leq 2^{n(p-1)}$, when $k = 0, \dots, p-!$.
+
+      In particular,
+      \begin{align*}
+        \left( \frac{a_n+1}{2^n} \right)^p - \left( \frac{a_n}{2^n} \right)^p \leq \frac{p \cdot 2^{n(p-1)}}{2^{np}} = \frac{p}{2^n}.
+      \end{align*}
+
+      Thus, the left hand quantity $\to 0$ as $n \to \infty$.
+  \end{proof}
+
+\end{document}

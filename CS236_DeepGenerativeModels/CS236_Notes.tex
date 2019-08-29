@@ -1,0 +1,120 @@
+\section{Variational Autoencoder}
+
+% Useful refs: https://jaan.io/what-is-variational-autoencoder-vae-tutorial/
+
+\begin{itemize}
+  \item Observations: $\mathbf{x} \in \left\{ 0, 1 \right\}^d$.
+  \item Latent variables $\mathbf{z} \in \mathbb{R}^k$.
+  \item Goal: learn a latent variable model that satisfies
+    \begin{align*}
+      p_{\theta}(\x) &= \int p_{\theta} (\x, \z) \, d\z \\
+      &= \int p(\z) p_{\theta} (\x | \z) \, d\z.
+    \end{align*}
+\end{itemize}
+
+In particular, the VAE is defined by the following generative process:
+\begin{align*}
+  p(\z) &= \N(\z | 0, I) \\
+  p(\x | \z) &= \Ber(\x | f_{\theta}(\z)),
+ \end{align*}
+where $f_{\theta}(\z)$ is a neural network decoder to obtain the parameters of the $d$ Bernoulli random variables which model the pixels in each image.
+
+For inference, we want good values of the latent variables given observed data (that is, $p(\z | \x)$. 
+  
+Indeed, by Bayes' theorem, we can write
+
+\begin{align*}
+  p(\z | \x) &= \frac{p(\x | \z) p(\z)}{p(\x)} \\
+  &= \frac{p(\x | \z) p(\z)}{\int p(\x | \z) p (\z) \, dz}.
+\end{align*}
+
+We want to maximize the marginal likelihood $p_{\theta}(\x)$, but the integral over all possible $\z$ is intractable.  Therefore, we use a variational approximation to the true posterior.
+
+We write
+\begin{align*}
+  q_{\phi}(\z | \x) &= \N(\z | \mu_{\phi}(\x), \diag(\sigma^2_{\phi}(\x))).
+\end{align*}
+
+Variational inference approximates the posterior with a family of distributions $q_{\phi}(\z | \x)$.
+
+To measure how well our variational posterior $q(\z | \x)$ approximates the true posterior $p(\z | \x)$, we can use the KL-divergence.
+
+The optimal approximate posterior is
+  \begin{align*}
+  q_{\phi}(\z | \x) &= \argmin_{\phi} KL(q_{\phi}(\z | \x) || p(\z | \x)) \\
+  &= \argmin_{\phi} \left \{ \E_{q}\left[ \log q_{\phi}(\z | \x) \right] - \E_{q} \left[ \log p(\x, \z) \right] + \log p(\x) \right \}.
+  \end{align*}
+
+But this is impossible to compute directly, since we end up getting $p(\x)$ in the divergence.
+
+We then maximize the lower bound to the marginal log-likelihood:
+\begin{align*}
+  \log p_{\theta}(\x) &\geq \text{ELBO}(\x; \theta, \phi) \\
+&= \E_{q_{\phi}(\z | \x)} [\log p_{\theta}(\x | \z)] - D_{KL} (q_{\phi}(\z | \x) || p(\z))
+\end{align*}
+
+And this ELBO is tractable, so we can optimize it.
+
+\subsection{Reparametrization trick}
+
+% Useful refs: https://stats.stackexchange.com/questions/199605/how-does-the-reparameterization-trick-for-vaes-work-and-why-is-it-important
+
+Instead of sampling
+\begin{align*}
+  z \sim \N(\mu, \Sigma),
+\end{align*}
+we can sample
+\begin{align*}
+  z &= \mu + L \eps; \\
+  \eps &\sim \N(0, I); \Sigma = L L^T
+\end{align*}
+
+Allows for low variance estimates.
+
+
+\subsection{GMVAE}
+
+Same set up as vanilla VAE, except the prior is a mixture of Gaussians.  That is,
+
+\[
+  p_{\theta}(\x) = \sum_{i=1}^{k} \frac{1}{k} \N (\z | \mu_i, \diag(\sigma_i^2))
+\]
+
+However, the KL term cannot be computed analytically between a Gaussian and a mixture of Gaussians.  We can obtain an unbiased estimator, however:
+
+\begin{align*}
+  D_{KL}(q_{\phi}(\z | \x) || p_{\theta}(\z)) & \approx \log q_{\phi} (\z^{(1)} | \x) - \log p_{\theta}(\z^{(1)}) \\
+  & = \log \N (\z^{(1)} | \mu_{\phi}(\x), \diag(\sigma_{\phi}^2 (\x))) - \log \sum_{i=1}^{k} \frac{1}{k} \N (\z^{(1)} | \mu_i, \diag(\sigma_i^2)).
+\end{align*}
+
+
+\subsection{IWVAE}
+
+The ELBO bound may be loose if $q_{\phi}(\z | \x)$ is a poor approximation to $p_{\theta}(\z | \x)$.  For a fixed $\x$, the ELBO is, in expectation, the log of the unnormalized density ratio 
+
+
+\[
+  \frac{p_{\theta}(\x, \z)}{q_{\phi}(\z | \x)} = \frac{p_{\theta}(\z | \x)}{q_{\phi}(\z | \x)} p_{\theta}(\x),
+\]
+where $\z \sim q_{\phi}(\z | \x)$.
+
+\begin{enumerate}
+  \item Prove that IWAE is a valid lower bound of the log-likelihood.
+
+    \begin{align*}
+      \log p_{\theta}(\x) & \geq \E_{\z^{(1)}, \dots, \z^{(m)} \sim q_{\phi}(\z | \x)} \left( \log \frac{1}{m} \sum_{i=1}^{m} \frac{p_{\theta}(\x, \z^{(i)}}{q_{\phi}(\z^{(i)} | \x)} \right) \\
+        & \geq \E_{z^{(1)} \sim q_{\phi}(\z | \x)} \log \frac{p_{\theta}(\x, \z^{(1)})}{q_{\phi}(\z^{(1)} |  \x)}
+    \end{align*}
+
+    Jensen states that for convex functions, $\E f[X] \geq f \E[X]$. $\log$ is concave.  So
+
+\end{enumerate}
+
+\subsection{Questions}
+
+
+\begin{itemize}
+  \item Why is the reparametrization trick lower variance? (Asked on Piazza.)
+\end{itemize}
+
+

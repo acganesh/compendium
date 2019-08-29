@@ -1,0 +1,1528 @@
+\documentclass[12pt]{extarticle}
+
+\usepackage{extsizes}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{todonotes}
+\usepackage{amsthm}
+\usepackage{amsopn}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{libertine}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{exercise}{Exercise}
+\newtheorem*{remark}{Remark}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{sol}{Solution}
+
+\usepackage{latexsym}
+\usepackage{bbm}
+\usepackage[small,bf]{caption2}
+\usepackage{graphics}
+\usepackage{epsfig}
+\usepackage{amsopn}
+\usepackage{url}
+
+\usepackage[parfill]{parskip}
+\usepackage[margin=1in]{geometry}
+
+\newcommand{\bc}{\binom}
+\newcommand{\bx}{\boxed}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\Ra}{\mathcal{R}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ol}{\overline}
+
+% From stackexchange
+\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
+
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Syl}{Syl}
+%\newcommand{\mat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
+\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+
+\usepackage[parfill]{parskips
+\usepackage[margin=1in]{geometry}
+
+\pagestyle{fancy}
+
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\T}{\text}
+
+\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
+
+\def\Ber{\text{Ber}}
+\def\ub{\underbrace}
+\def\UU{\mathcal{U}}
+\def\WW{\mathcal{W}}
+\def\XX{\mathcal{X}}
+\def\VV{\mathcal{V}}
+\def\Unif{\text{Unif}}
+\def\Xh{\hat{X}}
+\def\P{\text{P}}
+\def\PP{\mathbb{P}}
+\def\CC{\mathbb{C}}
+\def\KK{\mathbb{K}}
+\def\ZZ{\mathbb{Z}}
+\def\lb{\lambda}
+\def\rot{\text{rot}}
+
+\title{Information Theory and Statistical Learning}
+\author{Adithya Ganesh}
+
+\lhead{MATH DRP}
+
+\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+\begin{document}
+\maketitle
+
+\renewcommand{\abstractname}{Acknowledgments}
+
+\begin{abstract}
+  \noindent Thank you to Yuval Widgerson from the Stanford Mathematics Department for useful discussions.
+\end{abstract}
+
+\tableofcontents
+
+\section{The Source Coding Theorem}
+
+%\begin{exercise}
+  %You are given $N$ balls, all equal in weight except for one that is either heavier or lighter.  You are also given a two-pan balance to use.  In each use of the balance, you may put $k$ balls on the left and right pans, and initiate the weighing: either the weights are equal, the balls on the left are heavier, or the balls on the left are lighter.  Design an algorithm to determine which is the odd ball and whether it is heavier or lighter in as few uses of the balance as possible.
+%\end{exercise}
+
+\medskip
+
+
+\begin{definition}
+  An {\bf ensemble} $X$ is a triple $(x, \mathcal{A}_X, \mathcal{P}_X)$ where the outcome $x$ is the value of a random variable, which takes on one of a set of possible values, $\mathcal{A}_X = \left\{ a_1, a_2, \dots, a_i, \dots, a_I \right\}$ having probabilities $\mathcal{P}_X = \left\{ p_1, p_2, \dots, p_I \right\}$, with $P(x = a_i) = p_i, p_i \geq 0$ and $\sum_{a_i \in \mathcal{A}_X} P(x = a_i) = 1$.
+\end{definition}
+
+\medskip
+
+\begin{definition}
+  We define the {\bf Shannon information content} of the outcome $x = a_i$ to be
+  \[
+    h(x = a_i) \equiv \log_2 \frac{1}{p_i}.
+  \]
+\end{definition}
+
+\begin{definition}
+  We define the {\bf entropy} of the ensemble to be
+  \begin{align*}
+    H(X) = \sum_{i} p_i \log_2 \frac{1}{p_i}.
+  \end{align*}
+\end{definition}
+
+{\bf Intuition.} The outcome of a random experiment is guaranteed to be most informative if the probability distribution over outcomes is uniform.
+
+\subsection{A basic example}
+
+What's the smallest number of yes/no questions needed to identify an integer $x$ between 0 and 63?
+
+Intuitively, the best questions successively divide the 64 possibilities into equal sized sets.  One strategy is to ask the following questions.
+
+\begin{itemize}
+  \item Is $x \geq 32$?
+  \item Is $x \mod{32} \geq 16?$
+  \item Is $x \mod{16} \geq 8?$
+  \item Is $x \mod{8} \geq 4?$
+  \item Is $x \mod{4} \geq 2$?
+  \item Is $x \mod{2} = 1$.
+\end{itemize}
+
+The answers to these questions if encoded in binary, give the expansion of $x$, for example $35 \implies 100011$.  If all values of $x$ are equally likely, then the answers to the questions are independent, and each has Shannon information content $\log_2 (1 / 0.5) = 1$ bit.
+
+The Shannon information content in this setting measures the length of a binary file that encodes $x$.
+
+Similarly, refer to the submarine game example (pg. 71, MacKay).
+
+\begin{definition}
+  The {\bf raw bit content} of $X$ is 
+  \[
+    H_0(X) = \log_2 | \mathcal{A}_X |,
+  \]
+which is a lower bound for the number of binary questions that are guaranteed to identify an outcome from the ensemble $X$.
+\end{definition}
+
+\def\AA{\mathcal{A}}
+\begin{definition}
+  The {\bf smallest $\delta$-sufficient subset} $S_{\delta}$ is the smaller subset of $\AA_x$ satisfying
+  \begin{align*}
+    P(x \in S_{\delta}) \geq 1 - \delta
+  \end{align*}
+\end{definition}
+
+\medskip
+
+\begin{definition}
+  The {essential bit content} of $X$ is
+  \begin{align*}
+    H_{\delta}(X) = \log_2 |S_{\delta}|.
+  \end{align*}
+\end{definition}
+
+\begin{theorem}[Shannon's source coding theorem] Let $X$ be an ensemble with entropy $H(X) = H$ bits.  Given $\epsilon > 0$ and $0 < \delta < 1$, there exists a positive integer $N_0$ such that for $N > N_0$, 
+  \begin{align*}
+    \left | \frac{1}{N} H_{\delta} (X^N) - H \right | < \epsilon.
+  \end{align*}
+\end{theorem}
+
+\begin{theorem}[Chebyshev's inequality 1] Let $t$ be a non-negative real random variable, and let $\alpha$ be a positive rela number.  Then
+
+  \begin{align*}
+    P(t \geq a) \leq \frac{\ol{t}}{\alpha}.
+  \end{align*}
+\end{theorem}
+
+\begin{theorem}[Chebyshev's inequality 2]
+  Let $x$ be a random variable, and let $\alpha$ be a positive real number.  Then
+  \begin{align*}
+    P( (x - \ol{x})^2 \geq \alpha) \leq \sigma_x^2 / \alpha.
+  \end{align*}
+\end{theorem}
+
+\begin{theorem}[Weak law of large numbers] Take $x$ to be the average of $N$ independent random variables $h_1, \dots, h_N$, having common mean $\ol{h}$ and common variance $\sigma_h^2$: $x = \frac{1}{N} \sum_{n=1}^{N} h_n$.  Theno
+  \begin{align*}
+    P( (x - \ol{h}^2) \geq \alpha) \leq \sigma_h^2 / \alpha N.
+  \end{align*}
+\end{theorem}
+
+\begin{theorem}[Asymptotic equipartition principle.] For an ensemble of $N$ independent identically distributed (i.i.d.) random variable $X^{N} \equiv (X_1, X_2, \dots, X_N)$, with $N$ sufficiently large, the outcome $\mathbf{x} = (x_1, x_2, \dots, x_N)$ is almost certain to belong to a subset of $\mathcal{A}_X^{N}$ having only $2^{NH(X)}$ members, each having probability ``close'' to $2^{-NH(X)}$.  (The term equipartition is chosen to describe the idea that the members of the typical set have roughly equal probability.)
+\end{theorem}
+
+{\it Proof of source coding theorem.}
+
+Verbally, the source coding theorem states that $N$ i.i.d. random variables each with entropy $H(X)$ can be compressed into more than $N H(X)$ with negligible risk of information loss as $N \to \infty$.  Conversely, if they are compressed into fewer than $NH(X)$ bits, it is virtually certain that information will be lost.
+
+A long string of $N$ symbols will usually contain about $p_i N$ occurences of the $i$-th symbol, so that the probability of this ``typical'' string is roughly
+\begin{align*}
+  P(\mbf{x})_{typ} \approx p_1^{p_1N} p_2^{p_2 N} \cdots p_l^{p_l N},
+\end{align*}
+so that the information content of a typical string is 
+\[
+  \log_2 \frac{1}{P(\mbf{x})} \approx N \sum_{i} p_i \log_2 \frac{1}{p_i} = NH.
+\]
+
+First, apply the weak law of large numbers to the random variable $\frac{1}{N} \log_2 \frac{1}{P(x)}$.  Define the {\it typical set} with parameters $N$ and $\beta$ as follows:
+
+\begin{align*}
+  T_{N \beta} = \left\{ x \in \AA_{X}: \left[ \frac{1}{N} \log_2 \frac{1}{P(x)} - H \right]^2 < \beta^2 \right\}.
+\end{align*}
+
+For all $x \in T_{N \beta}$, the probability of $x$ satisfies 
+\[
+  2^{-N (H + \beta)} < P(x) < 2^{-N (H- \beta)}.
+\]
+
+  By the law of large numbers, $P(x \in T_{N \beta}) \geq 1 - \sigma^2 / (\beta^2 N)$.
+
+  This means that as $N$ increases, the probability that $\mathbf{x}$ falls in $T_{N \beta}$ approaches 1, for any $\beta$.
+
+  Now, we will relate $T_{N \beta}$ to $H_{\delta}(X^N)$.   Our strategy is to show that for any given $\delta$, there is a sufficiently large $N$ such that $H_{\delta}(X^N) \equiv NH$.
+
+  {\it Part 1.} $\frac{1}{N} H_{\delta}(X^N) < H + \epsilon$.
+
+  Since the total probability contained by $T_{N \beta}$ can't be larger than 1, we hve that
+  \begin{align*}
+    |T_{N \beta}| 2^{-N (H + \beta)} < 1,
+  \end{align*}
+  that is
+  \begin{align*}
+    |T_{N \beta}| < 2^{N (H + \beta)}.
+  \end{align*}
+
+  Setting $\beta = \eps$, and choosing $N_0$ such that $\frac{\sigma^2}{\eps^2 N_0} \leq \delta$, then $P(T_{N \beta}) \geq 1 - \delta$, and analyzing the set $T_{N \beta}$ implies
+  \begin{align*}
+    H_{\delta}(X^N) \leq \log_2 |T_{N \beta}| < N (H + \eps).
+  \end{align*}
+
+  {\it Part 2.} $\frac{1}{N} H_{\delta}(X^N) > H - \epsilon$.
+
+  We set $\beta = \eps / 2$, so it suffices to show that that a subset $S'$ having $|S'| \leq 2^{N (H - \2beta)}$ and achieving $P(\mbf{x} \in S') \geq 1 - \delta$ cannot exist.
+
+  The probability of the subset $S'$ is
+  \begin{align*}
+    P(\mbf{x} \in S') = P(\mbf{x} \in S' \cap T_{N \beta}) + P(\mbf{x} \in S' \cap \ol{TN_{N \beta}}),
+  \end{align*}
+  where $\ol{T_{N \beta}}$ denotes the complement of the typical set.
+
+  IThe maximum value of the first term is found if $S' \cap T_{N \beta}$ contains $2^{N(H - 2 \beta)}$ outcomes all with the maximum probability $2^{-N (H - \beta)}$.  The maximum value the second term can have is $P(\mbf{x} \not \in T_{N \beta})$.
+
+  Thus:
+  \begin{align*}
+    P(\mbf{x} \in S') \leq 2^{N (H - 2 \beta)} 2^{-N (H - \beta)} + \frac{\sigma^2}{\beta^2 N} = 2^{-N \beta} + \frac{\sigma^2}{\beta^2 N}.
+  \end{align*}
+
+  We can now set $\beta = \frac{\eps}{2}$ and $N_0$ such that $P(\mbf{x} \in S') < 1 - \delta$, which shows that $S'$ does not satisfy the desired conditions.
+
+  Therefore, for large enough $N$, the function $\frac{1}{N} H_{\delta} (X^N)$ is essentially a constant function of $\delta$ for $0 < \delta < 1$. In particular, this shows us that regardless of our specific tolerance for error, the number of bits per symbol needed to specify $\mbf{x}$ is $H$ bits.
+
+  Figure:
+
+  (fill in)
+
+
+
+  \section{Maximum Entropy Principle}
+
+  Due to E.T. Jaynes in 1957, where he explored the correspondence between statistical mechanics and information theory.  Take precisely stated prior data or testable information about a probability distribution function.  The distribution with maximal entropy is the best choice to encode the prior data.
+
+  \begin{itemize}
+    \item The exponential distribution for which the density function is
+      \[
+        p(x | \lambda) = 
+        \begin{cases}
+          \lambda e^{- \lambda x}; \qquad x \geq 0 \\
+          0; \qquad x < 0,
+        \end{cases}
+      \]
+      is the maximum entropy distribution among all continuous distributions supported in $[0, \infty)$ that have a specified mean of $\frac{1}{\lambda}$.
+    \item The normal distribution $\mathcal{N}(\mu, \sigma^2)$ for which the density function is
+      \[
+        p(x | \mu, \sigma) = \frac{1}{\sigma \sqrt{2 \pi}} \exp \left( - \frac{(x-\mu)^2}{2 \sigma^2} \right)
+      \]
+      has maximum entropy among all real-valued distributions supported on $(-\infty, \infty)$ with specified variance $\sigma^2$.  Therefore: the assumption of normality imposes the minimal prior structural constraint. 
+
+    \end{itemize}
+
+
+    To do: watch David Tse talk + talk on Information Theory on deep learning (Stanford).
+
+
+\section{Core ideas in information theory}
+\begin{enumerate}
+  \item Overview
+    \begin{enumerate}
+      \item Compression (lossless vs. lossy)
+      \item Communication (reliable vs. communication with loss [also joint source channel coding)
+    \end{enumerate}
+  \item Course goals
+    \begin{enumerate}
+      \item Measures of information (entropy, relative entropy, mutual information, chain rules)
+      \item Compression, storage, communication
+      \item Fundamental limits
+      \item Concrete schemes for compression and communication
+      \item Existence proofs via random constructions (random coding)
+      \item Typical sequences & interplay between info theory, probability, and stats
+    \end{enumerate}
+
+\end{enumerate}
+
+\begin{description}
+  \item[Example 1.] Lossless compression.
+
+    Consider the source: $U_1, U_2, \dots$ iid $\sim U \in \{ A, B, C \}$.
+
+    Further, suppose
+    \[
+      P(U = A) = 0.7, P(U=B) = P(U=C) = 0.15.
+    \]
+
+
+    {\it Approach 1.} Consider $A \to 00$, $B \to 01, C \to 11$.  But too wasteful, since $A$ occurs more frequently.
+
+    {\it Approach 2.} Better is $A \to 0, B \to 01, C \to 11$.  Note that this is 'prefix code': no code forms the prefix of another; this makes code easy to decode.
+
+    Expected number of bits per source symbol:
+
+    \[
+      \overline{L} = 0.7 \cdot 1 + 0.15 \cdot 2 + 0.15 \cdot 2 = 1.3 \text{ bits / symbol}
+    \]
+
+    {\it Approach 3.} In fact, we can do better.  Consider pairs of source symbols.  Namely, let us examine 
+
+   
+    \begin{center}
+      \begin{tabular}{|c|c|c|}
+        \hline
+        Pair & Probability & Code Word \\ \hline
+        AA & 0.49 & 0 \\
+        AB & 0.105 & 100\\
+        AC & 0.105 & 111 \\
+        BA & 0.105 & 101 \\
+        CA & 0.105 & 1100 \\
+        BB & 0.0225 & 110100 \\
+        BC & 0.0225 & 110101 \\ 
+        CB & 0.0225 & 110110 \\
+        CC & 0.0225 & 110111 \\ \hline
+      \end{tabular}
+    \end{center}
+
+    Satisfies prefix code.  Encoding and decoding done in linear time.  Later: we will see that this is optimal for these source symbols.
+
+    Again, let's compute expected bits per symbol:
+
+    \[
+      \overline{L} = \frac{1}{2} (0.49 \cdot 1 + 0.105 \cdot 3 \cdot 3 + 0.105 \cdot 4 + 0.0225 \cdot 6 \cdot 4) = 1.1975 \text{ bits / symbol}
+    \]
+
+  \item[Entropy.] For any scheme, the value $\overline{L} \geq H(U)$, where the source entropy
+    \[
+      H(U) = \sum_{u \in \mathcal{U}} P(u) \log_2 \frac{1}{P(u)}.
+    \]
+
+    In the above case:
+    \[
+    H(U) \approx 1.18129.
+    \]
+
+    On the other hand for all $\epsilon > 0$, there exists a scheme such that
+    \[
+      \overline{L} \leq H(U) + \epsilon.
+    \]
+
+  \item[Example 2.] Consider a source
+    \[
+      U_1, U_2, \dots, \quad \text{ iid }; \quad P(U_i = 0) = P(U_i = 1) = \frac{1}{2}.
+    \]
+
+    Suppose further that a channel flips each bit w.p. $q < \frac{1}{2}$.
+
+    Output of channel:
+    \[
+      Y_i = X_i \bigoplus_2 W_i,
+    \]
+    where $W_i \sim \text{Ber}(q)$.  Note that the source symbol $U_i$ is different from the encoding $X_i$.
+
+    {\it Approach 1.} We can let
+    \[
+      X_i = U_i,
+    \]
+    we will get probability of error per source bit, $P_e = q$.
+
+    {\it Approach 2.} Alternatively, can repeat $3$ times:
+
+    if $U = 0 1 1 0$, then we can let $X = 000 111 111 000$.
+
+    In this case:
+    \[
+      \text{rate} = \frac{1}{3} \text{ bits / channel use }
+    \]
+    The upside, is that the probability of error becomes
+    \[
+      P_e = 3 q^2 (1-q) + q^3 < q.
+    \]
+
+    So probability of error has dropped, at the cost of requiring more space.
+
+\end{description}
+
+\section{Dyadic $U$ and symbol counting}
+
+{\it Lemma.} Suppose $U$ is dyadic with $|U| \geq 2$, and let $n_{max} = \max_{u \in \UU} n_u$.  The number of symbols with $n_u = n_{max}$ is even.
+
+{\it Proof.} Observe that
+\begin{align*}
+  1 = \sum_{u} p(u) &= \sum_{u} 2^{-n_u} \\
+  &= \sum_{n=1}^{n_{max}} (\text{\# of letters $u$ with $n_u = n$}) \cdot 2^{-n}  \\
+\end{align*}
+
+Therefore,
+\begin{align*}
+  2^{n_{max}} &= \sum_{n=1}^{n_{max}} (\text{# of letters $u$ with $n_u = n$}) \cdot 2^{n_{max} - n}. \\
+  &= \sum_{n=1}^{n_{max}-1} (\text{\# of letters $u$ with $n_u = n$}) \cdot 2^{n_{max} - n} + (\text{\# of letters $u$ with $n_u = n_{max}$}).
+\end{align*}
+
+By parity, it follows that \text{\# of letters $u$ with $n_u = n_{max}$} must be even.
+
+
+
+\section{Optimality of Huffman Codes}
+{\bf Construction of Huffman Codes.}  Exactly the same as that for dyadic sources.  Recall that the procedure identifies the symbols with the smallest probabilities and merges them in a binary tree structure.
+
+{\bf Example.} (Senary Source) Consider the alphabet
+
+\todo{Add D1}
+
+\begin{center}
+\begin{tabular}{c|c}
+  $u$ & $p(u)$ \\ \hline
+  $a$ & 0.25 \\
+  $b$ & 0.25 \\
+  $c$ & 0.2 \\
+  $d$ & 0.15 \\
+  $e$ & 0.1 \\
+  $f$ & 0.05 
+\end{tabular}
+\end{center}
+
+{\bf Theorem.} Huffman code is an optimal prefix code.
+
+(Note that we say an optimal and not ``the optimal'' because there may be more than one construction.  Even within the construction of Huffman, the way we break ties is arbitrary.  We can also choose to split the binary tree in one direction via a 1 vs. 0.  So we can have many different schemes, though they are all essentially equivalent, in terms of the length function.)
+
+\def\l{\overline{l}}
+
+When we use the term ``optimality'' here, we mean in terms of minimizing the expected length $\l$.
+
+{\bf Proof.} Assume without loss of generality that $U \sim P$ over an alphabet $\UU = \{ 1, 2, \dots, r \}$.  Further, suppose that $p(1) \geq p(2) \dots \geq p(r)$ (i.e. they are arranged in descending probabilities).
+
+\def\VV{\mathcal{V}}
+
+Let $V$ denote the random variable with $\VV = \{1, 2, \dots, r-1 \}$ obtained from $U$ by merging $r-1$ and $r$.
+
+\def\ct{\tilde{c}}
+
+Let $\{ c(i) \}_{i=1}^{r-1}$ be a prefix code for $V$.  Then we can obtain $\{\ct\}_{i=1}^{r}$ which is a prefix code that \textit{splitting} the last codeword $c(r-1)$.  
+
+{\it Observation.} The Huffman code for $U$ is obtained from the Huffman code from $V$ by splitting.
+
+{\it Lemma.} Suppose that $\{ c(i) \}_{i=1}^{r-1}$ is an optimal prefix code for $V$.  If $\{ \ct(i) \}_{i=1}^{r}$ is obtained from $\{ c(i) \}_{i=1}^{r-1}$ by splitting, then $\{ \ct(i) \}_{i=1}^{r}$ is an optimal prefix code for $U$.
+
+This observation coupled with the lemma directly implies the theorem.  We can iterate this argument to merely need establish optimality of Huffman code for binary alphabet ($r=2$), which is trivially true.
+
+\def\ep{\hfill \blacksquare}
+\def\dq{\triangleq}
+{\it Proof of Lemma.}  Note there is an optimal prefix code for $U$ that satisfies:
+
+\def\lt{\tidle{l}}
+\begin{enumerate}
+  \item $\l(1) \leq l(2) \leq \dots \leq l(r-1) \leq l(r) \dq l_{max}$ (lengths are in increasing order).
+  \item $l(r-1) = l(r)$.  
+    
+    (Otherwise, we would be able to ``chop off'' the final part of the last code word to achieve $l(r-1) = l(r)$ and improve the code.)
+  \item The last two code words differ only in the last bit.
+    
+    (Otherwise, we can swap out the last code word.  This follows since the first $r-1$ codewords comprise a prefix code.)  This ensures that the prefix code for $U$ is obtained by splitting on the code for $V$. 
+\end{enumerate}
+
+
+Recall the following:
+
+\[
+  \EE l_{split} (U) = \EE l(V) + p(r-1) + p(r).
+\]
+
+Therefore: an optimal prefix code for $U$ is obtained by splitting an optimal prefix code for $V$. \ep
+
+Further reading on lossless compression: 
+
+\begin{itemize}
+  \item Shannon-Fano-Elias coding (5.9 of Cover and Thomas)
+  \item Arithmetic coding (13.3)
+  \item Lempel-Ziv coding (13.4)
+\end{itemize}
+
+Note that optimally applying Huffman codes requires working in blocks of symbols.  And the table of symbols is exponential in the block length $n$.  The Shannon-Fano-Elias and Arithmetic coding permit constructions that scale gracefully in the block length $n$.  Lempel-Ziv coding is elegant algorithmically, and is guaranteed to be optimal even without the source being memoryless and even without knowing the probability distribution!  Indeed, $\texttt{gzip}$ at its heart is implemented in terms of the Lempel-Ziv coding scheme.
+
+
+\section{Channel Capacity}
+
+Given a channel with inputs $X$ and outputs $Y$:
+\eq{X \to [P(Y|X)] \to Y}
+
+\textbf{Define:} Channel capacity $C$ is the maximal rate of reliable communication (over memoryless channel characterized by $P(Y|X)$).
+
+Further, recall the following definition:
+\[
+C^{(I)} = \max_{P_X} I(X; Y).
+\]
+
+{\bf Theorem.} Channel capacity is limited by maximum mutual information. 
+\[
+C = C^{(I)}.
+\]
+\textbf{Proof: } We will see this proof soon. 
+
+\begin{itemize}
+\item This theorem is important because $C$ is challenging to optimize over, whereas $C^{(I)}$ is a tractable optimization problem.
+\end{itemize}
+
+\subsubsection{Examples}
+\textbf{\textit{Example I. Channel capacity of a Binary Symmetric Channel (BSC).}}
+
+Define alphabets $\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}$. A BSC is defined by the PMF:
+\[
+P_{Y|X}^{(y|x)} = \begin{cases}
+p & y \neq x \\ 
+1 - p & y = x.
+\end{cases}
+\]
+
+This is equivalent to a channel matrix
+\[
+\begin{pmatrix}
+1-p & p \\
+p & 1 - p
+\end{pmatrix}
+\]
+
+And the graph representation
+
+\includegraphics[width=0.4\textwidth]{img/bsc.png}
+
+This can also be expressed in the form of additive noise.
+
+\[
+Y = X \bigoplus_2 Z, \text{ where } Z \sim \text{Ber}(p).
+\]
+
+To determine the channel capacity of a BSC, by the theorem we must maximize the mutual information.
+\begin{align*}
+I(X; Y) &= H(Y) - H(Y|X) \\
+		&= H(Y) - H(X \bigoplus_2 Z | X) \\
+\intertext{Because only the random noise can't be modeled by conditioning on $X$, we can simplify the second term:}
+I(X; Y) &= H(Y) - H(Z) \\
+        &= H(Y) - h_2(p) \leq 1 - h_2(p).
+\end{align*}
+
+Taking $X \sim \text{Ber}(\frac{1}{2})$ achieves equality: $I(X; Y) = 1 - h_2(p)$.
+
+\textbf{\textit{Example II. Channel capacity of a Binary Erasure Channel (BEC).}}
+
+Define alphabets $\mathcal{X} = \mathcal{Y} = \{ 0, 1 \}$. Any input symbol $X_i$ has a probability of $1 - \alpha$ of being retained in the output sequence and a probability of $\alpha$ of being erased.  Schematically, we have:
+
+\includegraphics[width=0.4\textwidth]{img/bec.png}
+
+Examining the mutual information, we have that
+
+\begin{align*}
+I(X; Y) &= H(X) - H(X|Y) \\
+		&= H(X) - [H(X | Y=e) P(Y=e) + H(X | Y=0) P(Y = 0) + H(X | Y=1) P(Y=1)] \\
+        &= H(X) - [H(X) \cdot \alpha + 0 \cdot P(Y=0) + 0 \cdot P(Y=1)] \\
+        &= (1 - \alpha) H(X)
+\end{align*}
+Because the entropy of a binary variable can be no larger than 1:
+\eq{(1 - \alpha) H(X) \leq 1 - \alpha}
+
+Equality is achieved when $H(X) = 1$, that is $X \sim \text{Ber}(\frac{1}{2})$.
+
+\subsection{Information of Continuous Random Variables}
+\textbf{Definition:} The relative entropy between two probability density functions $f$ and $g$ is given by
+\[
+D(f||g) = \int f(x) \log \frac{f(x)}{g(x)} \, dx.
+\]
+{\it Exercise:} Show that $D(f||g) \geq 0$ with equality if and only if $f = g$.
+
+\textbf{Proof.} Observe that that
+\begin{align*}
+D(f||g)&=\int f(x)\log\frac{f(x)}{g(x)}dx\\
+&=-\int f(x)\log\frac{g(x)}{f(x)}dx\\
+&=-\mathbb{E}\left [\log\frac{g(x)}{f(x)} \right]\\
+&\geq-\log\mathbb{E}\left [\frac{g(x)}{f(x)} \right ]\\
+&=-\log\int f(x)\frac{g(x)}{f(x)} \, dx \\
+&=0.
+\end{align*}
+Equality occurs in the manner of Jensen's when $f=g.$
+
+\textbf{Definition:} The mutual information between $X$ and $Y$ that have a joint probability density function $f_{X, Y}$ is
+\[
+I(X; Y) = D(f_{X, Y} || f_X f_Y).
+\]
+
+\textbf{Definition:} The differential entropy of a continuous random variable $X$ with probability density function $f_X$ is
+\[
+h(X) = - \int f_X(x) \log f_X(x) \, dx = \mathbb{E} \left [ - \log f_X(X) \right ]
+\]
+
+If $X, Y$ have joint density $f_{X, Y}$, the conditional differential entropy is
+\[
+h(X|Y) = - \int f_{X, Y} (x, y) \log f_{X|Y} (x|y) \, dx \, dy = \mathbb{E} [ - \log f_{X|Y} (X|Y)],
+\]
+
+and the joint differential entropy is
+\[
+h(X, Y) = \int f_{X, Y} (x, y) \log f_{X, Y} (x, y) \, dx \, dy = \mathbb{E} [- \log f_{X, Y} (X, Y)].
+\]
+
+\subsection{Exercises}
+\textbf{\textit{Exercise 1.  Show that}}
+\[
+h(X | Y ) \leq h(X)
+\]
+with equality iff $X$ and $Y$ are independent.
+
+\textbf{Proof.} This follows since $f_{X|Y}(x|y)=\frac{f_{X,Y}(x,y)}{f_{Y}(y)}\leq f_X(x)$ and log is monotonic. The equality condition is true since we have equality in $f_{X|Y}(x|y)=f_X(x)$ iff $X$ and $Y$ are independent.
+
+\textbf{\textit{Exercise 2.   Show that}}
+\begin{align*}
+I(X; Y) &= h(X) - h(X | Y) \\
+		&= h(Y) - h(Y | X) \\
+        &= h(X) + h(Y) - h(X, Y).
+\end{align*}
+
+\textbf{Proof.}
+\begin{align*}
+I(X;Y)&=\int f_{X,Y}(x,y)\log\frac{f_{X,Y}(x,y)}{f_X(x)f_Y(y)}dxdy\\
+&=\int f_{X,Y}(x,y)\log\frac{f_{X,Y}(x,y)}{f_X(x)}dxdy-\int f_{X,Y}(x,y)\log f_Y(y)dxdy\\
+&=\int f_X(x) \left [ \int f_{Y|X}(y|x)\log f_{Y|X}(y|x)dy \right ] dx-\int f_{Y}(y)\log f_Y(y)dy\\
+&=H(Y)-H(Y|X). 
+\end{align*}
+Symmetrically the same can be shown for $I(X;Y)=H(X)-H(X|Y).$ Also
+\begin{align*}
+I(X;Y)&=\int f_{X,Y}(x,y)\log\frac{f_{X,Y}(x,y)}{f_X(x)f_Y(y)}dxdy\\
+&=\int f_{X,Y}(x,y)\log f_{X,Y}(x,y)dxdy-\int f_{X,Y}(x,y)\log f_X(x)dxdy-\int f_{X,Y}(x,y)\log f_Y(y)dxdy\\
+&=H(X,Y)-H(X)-H(Y).
+\end{align*}
+
+\textbf{\textit{Exercise 3.   Show that}}
+\begin{align*}
+h(X + c) &= h(X).
+\end{align*}
+and
+\begin{align*}
+h(c \cdot X) &= h(X) + \log \lvert c\rvert, c\neq 0.
+\end{align*}
+
+\textbf{Proof.} 
+
+Note that
+\[
+h(X+c) = \mathbb{E} [-\log f_X(X+c)] = \mathbb{E}[-\log f_X(X)] = h(X);,
+\]
+since we are integrating over the same probabilities, we are integrating over the same probabilities, the expectation of the log-density is invariant to constant shifts.
+
+Further, note that
+\[
+h(c \cdot X) = \mathbb{E} [- \log f_X]
+\].
+
+To compute $h(c \cdot X)$, we start by considering the density function $p(c \cdot X)$.  Set $y = c \cdot X$, yielding $dy = c dx$.  We must have
+\[
+\int p(y) \, dy = 1 = \int p(cx) \cdot c \, dx.
+\]
+To satisfy this equality, it follows that  $p(y) = \frac{p(x)}{c}$.
+
+Therefore,
+\begin{align*}
+h(Y) &= - \int p(y) \log p(y) \, dy \\
+	 &= - c \int p(cx) \log p(|cx|) \, dx \\
+     &= -c \int \frac{p(x)}{c} \log \frac{p(x)}{|c|} \, dx \\
+     &= - \int p(x) [\log p(x) - \log(|c|)] \, dx \\
+     &= h(X) + \log |c|.
+\end{align*}
+
+We have introduced the absolute value on $c$ to satisfy the domain of the logarithm function.
+
+\subsection{Examples}
+\textbf{\textit{Example I:} Differential entropy of a uniform random variable $U \sim \text{Uni}(a, b)$.}
+\begin{itemize}
+\item Remember that the distribution of a uniform random variable is \eq{f_X(x) = \begin{cases}
+\frac{1}{b - a} & a \leq x \leq b \\
+0 & \text{otherwise}
+\end{cases}}
+\end{itemize}
+The differential entropy is simply:
+ \eq{h(X) = \EE[ - \log f_X (x)] = \log (b - a)}
+\begin{itemize}
+\item Notice that the differential entropy can be negative or positive depending on whether $b - a$ is less than or greater than 1. In practice, because of this property, differential entropy is usually used as means to determine mutual information rather than by itself.
+\end{itemize}
+
+\noindent \textbf{\textit{Example II:} Differential entropy of a Gaussian random variable $X \sim \mathcal{N}(0, \sigma^2)$.}
+\begin{itemize}
+\item Remember that the distribution of a Gaussian random variable is $f(X) = \frac{1}{\sqrt[]{2 \pi \sigma^2}}e^{- \frac{1}{2 \sigma^2}x^2}$.
+\end{itemize}
+The differential entropy is:
+\eq{h(X) &= \EE[- \log f(X)]\\
+\intertext{For simplicity, convert the base to $e$:}
+h(X) &= \frac{1}{\ln 2} \EE[- \ln f(X)]\\
+&= \frac{1}{\ln 2} \EE\left[ \frac{1}{2}\ln 2 \pi \sigma^2 + \frac{1}{2 \sigma^2} X^2 \right] \\
+&= \frac{1}{\ln 2} \left[ \frac{1}{2}\ln 2 \pi \sigma^2 + \EE\left[\frac{1}{2 \sigma^2} X^2 \right]\right] \\
+&= \frac{1}{\ln 2} \left[ \frac{1}{2}\ln 2 \pi \sigma^2 + \frac{1}{2 \sigma^2} \sigma^2 \right] \\
+&= \frac{1}{\ln 2} \left[ \frac{1}{2} \ln 2 \pi e \sigma^2 \right] = \frac{1}{2} \log 2\pi e \sigma^2
+}
+\begin{itemize}
+\item Per Exercise 3, differential entropies are invariant to constant shifts. Therefore this expression represents the differential entropy of all Gaussian random variables regardless of mean.
+\item \textit{Claim:} The Gaussian distribution has maximal differential entropy, i.e. for all random variables $X \sim f_X$ with second moment $E[X^2] \leq \sigma^2$ and Gaussian random variable $G \sim \mathcal{N}(0, \sigma^2)$ then $h(X) \leq h(G)$. Equality holds if and only if $X \sim \mathcal{N}(0, \sigma^2)$.
+
+\textbf{Proof:}
+
+\eq{0 \leq D(f_X \Vert G ) &= \EE \left[ \log \frac{f_X(X)}{f_G(X)} \right] \\
+&= - h(X) + \EE \left[ \log \frac{1}{f_G(X)} \right]\\
+D(f_X \Vert G ) &= - h(X) + \EE \left[ \log \frac{1}{\sqrt[]{2 \pi \sigma^2}} + \frac{\frac{X^2}{2 \sigma^2}}{\ln 2} \right]\\
+\intertext{Because the second moment of $X$ is upper bounded by the second moment of $G$:}
+0 \leq D(f_X \Vert G ) &\leq - h(X) + \EE \left[ \log \frac{1}{\sqrt[]{2 \pi \sigma^2}} + \frac{\frac{G^2}{2 \sigma^2}}{\ln 2} \right]\\
+&\leq - h(X) + \EE \left[ \log \frac{1}{f_G (G)}\right] = -h(X) + h(G)
+}
+Rearranging:
+\eq{h(X) \leq h(G)}
+\qed
+\end{itemize}
+
+\noindent\textbf{Example III:  Channel capacity of an Additive White Gaussian Noise channel (AWGN) that is restricted by power $p$}
+\begin{itemize}
+\item Power constraint upper bounds the second moment of $X_i$, i.e. $p \geq E\left[ X_i^2\right]$.
+\item Remember that the AWGN channel is a channel in which inputs $X_i$ are corrupted by a sequence of iid additive Gaussian noise terms $W_i \sim \mathcal{N}(0, \sigma^2)$ to produce outputs $Y_i$.
+\item The Channel Coding Theorem in this setting states that:
+\eq{
+C(p) = \max_{E[X^2] \leq p} I(X ; Y)
+}
+Where $C(p)$ represents the `capacity'; the maximal rate of reliable communication when constrained to power $p$.
+
+\end{itemize}
+
+\section{Constraints and communication theory}
+
+Note that the encoder is equivalent to a ''codebook'' framed as follows:
+
+\[
+  c_n = \{ X^n (1), X^n (2), \dots, X^n (M) \}.
+\]
+
+Here, the decoder is equivalent to the mapping $\hat{J}(.)$.
+
+In this context, a scheme is defined as an ``encoder-decoder'' pair.  Equivalently, this can be framed in terms of a ``codebook-mapping'' pair.
+
+{\bf Definition.} The {\it rate} is defined as
+\[
+  \text{rate} = \frac{\log M}{n} = \frac{\log |C_n|}{n} \frac{\text{bits}}{\text{channel use}}.
+\]
+where $M$ is the number of messages, and $n$ is the number of channel uses.  Note that $M$ is equivalent to the size of the codebook $|C_n|$.
+
+The probability of error can be computed as
+\[
+  P_e = P(\hat{J} \neq J).
+\]
+
+Sometimes we also have a transmission constraint:
+
+\[
+  \frac{1}{n} \sum_{i=1}^{n} \Lambda (X_i) \leq P,
+\]
+where $\Lambda$ defines a cost function.  
+
+{\bf Example.} The most common physically meaningful cost constraint pertains to the power of an electromagnetic signal.  In particular, in wireless communication, we have:
+\[
+  \Lambda (x) = x^2.
+\]
+
+Another example is magnetic storage media, which might have a different cost of encoding.
+
+Recall the notion of capacity, where
+
+\[
+  C = \text{maximal rate of reliable communication}.
+\]
+
+Further, we had the informational capacity, defined as follows:
+
+\[
+  C^{(I)} = 
+  \begin{cases}
+  \displaystyle \max_{P_X} I(X; Y); \qquad \text{without a transmission constraint.} \\
+  \displaystyle \max_{P_X: \EE \Lambda(X) \leq P} I(X; Y); \qquad \text{with a constraint.}  
+  \end{cases}
+\]
+
+{\bf Theorem.} Recall the channel coding theorem, which states the remarkable fact that
+\[
+  C = C^{(I)}.
+\]
+
+Recall the following results.
+
+\begin{enumerate}
+  \item If $G \sim \NN (0, \sigma^2)$, then $h(G) = \frac{1}{2} \log 2 \pi e \sigma^2$.
+  \item If $X$ is any random variable such that $\EE [X^2] \leq \sigma^2$ (i.e. the second moment is constrained), then $h(X) \leq h(G)$.
+\end{enumerate}
+
+We now go back to example 3 from the previous section
+
+{\bf Example III.}  Consider the additive white Gaussian noise (AWGN) channel, defined as
+
+\todo{D2}
+
+(In particular, when we draw diagrams with perpendicular inputs as we have done here, we mean that $X$ and $W$ are independent.)
+
+And further, suppose that transmission is restricted to a power $p$.   Namely, suppose
+\[
+  \frac{1}{n} \sum_{i=1}^{n} X_i^2 \leq p.
+\]
+
+Let $C(P)$ denote the maximal rate of reliable communication constrained to power $P$.  The channel coding theorem states that
+\[
+  C(P) = \max_{P_X: \EE [X^2] \leq p} I(X; Y)
+\]
+
+If $\EE[X^2] \leq p$, then
+
+\def\Var{\text{Var}}
+
+\begin{align*}
+  I(X; Y) &= h(Y) - h(Y | X) \\
+  \intertext{Since differential entropy is invariant to constant shifts, we can write:}
+  I(X; Y) &= h(Y) - h(Y - X | X) \\
+          &= h(Y) - h(W | X) \\
+          &= h(Y) - h(W).
+  \intertext{Since $\Var(Y) = \Var(X) + \Var(W) \leq P + \sigma^2$,}
+  & \leq h(\NN(0, p + \sigma^2)) - h(\NN(0, \sigma^2)) \\
+  & = \frac{1}{2} \log2 \pi e (p + \sigma^2) - \frac{1}{2} \log 2 \pi e \sigma^2 \\
+  & = \frac{1}{2} \log\left(  1 + \frac{p}{\sigma^2} \right).
+\end{align*}
+
+We now try to find a distribution where this bound is achieved.  To achieve equality, we require $\Var(Y) = \Var(X) + \Var(W) = p + \sigma^2$.  
+
+In particular, let $X \sim \NN(0, p)$, which satisfies the equality, i.e.
+\[
+  X \sim \NN(0, p) \implies C(p) = \frac{1}{2} \log \left (1 + \frac{p}{\sigma^2} \right )
+\]
+
+Note that $\frac{p}{\sigma^2}$ is known as the {\it signal-to-noise ratio.}
+
+Rough geometric intuition:
+
+Note that the power constraint can be expressed as
+\[
+  \sqrt{\sum_{i=1}^{n} X_i^2} \leq \sqrt{np}.
+\]
+
+Think of $X^n(i)$ as points in $n$-dimensional Euclidean space.  Then they lie on a sphere of radius $\sqrt{np}$.
+
+Then, observe that
+\[
+  \frac{1}{n} \sum_{i=1}^{n} W_i^2 \approx \sigma^2 \Leftrightarrow \sqrt{\sum_{i=1}^{n} W_i^2} \approx \sqrt{n\sigma^2}.
+\]
+
+The channel output can be expressed as
+\[
+  \EE \left [ \sum_{i=1}^{n} Y_i^2 \right ] = \sum_{i=1}^{n} \EE[X_i^2] + \EE[W_i^2] + \underbrace{\EE[X_i W_i]}_{=0} \leq np + n \sigma^2.
+\]
+
+Geometrically, we would like the ``noise balls'' to be disjoint; i.e. they should not intersect, so we can reliably discern which message point is sent.
+
+We now want to consider bounds on the number of messages we can send.  In particular, consider
+
+\todo{fix}
+\begin{align*}
+  \text{\# of messages} &\leq \frac{\text{Vol(Ball of radius $\sqrt{n (p + \sigma^2)}$)}}{\text{Vol(Vall of radius $\sqrt{n \sigma^2}$)}}. \\
+    &= \frac{k_n (\sqrt{n (p + \sigma^2)})^2}{k_n (\sqrt{n \sigma^2})^n} =\left(  \frac{p + \sigma^2}{\sigma^2} \right)^{n/2} =\left(  1 + \frac{p}{\sigma^2} \right)^{n/2}
+\end{align*}
+
+Therefore, the rate can be bounded by
+\[
+  \text{rate} = \frac{1}{2} \log \frac{\text{\# of messages}}{n} \leq \frac{1}{2} \log\left(  1 + \frac{p}{\sigma^2} \right).
+\]
+
+\def\XX{\mathcal{X}}
+\def\YY{\mathcal{Y}}
+\subsection{Joint Asymptotic Equipartition Principle}
+
+Consider $X, Y$ which have finite alphabets $\XX$ and $\YY$, where
+\[
+  (X, Y) \sim P_{X, Y}; \quad X \sim P_X; \quad Y \sim P_Y.
+\]
+
+Here, the pairs
+\[
+  (X_i, Y_i); \text{ iid } \sim (X, Y),
+\]
+where 
+
+\[
+  p(x^n) = \prod_{i=1}^{n} P_X(x_i),
+\]
+\[
+  p(y^n) = \prod_{i=1}^{n} P_Y (y_i).
+\]
+\[
+  p(x^n, y^n) = \prod_{i=1}^{n} P_{X, Y} (x_i, y_i).
+\]
+
+{\bf Definition.} The set of jointly typical sequences is defined as
+\[
+  A^{n}_{\epsilon} (X, Y) = \{ (x^n, y^n): \left |-\frac{1}{n} \log P(x^n) - H(X) \right | \leq \epsilon; \quad \left | - \frac{1}{n} \log P(y^n) - H(Y) \right | \leq \epsilon; \quad \left |- \frac{1}{n} \log P(x^n, y^n) - H(X, Y) \right | \leq \epsilon\}
+\]
+
+{\bf Part A.} If $(X^n, Y^n)$ are formed by iid $(X_i, Y_i) \sim (X, Y)$, then
+
+\def\typ{A_{\epsilon}^{(n)} (X, Y)}
+\begin{enumerate}
+  \item $ P( (X^n, Y^n) \in A_{\epsilon}^{(n)} (X, Y)) \to 1$, as $n \to \infty$ (basically follows directly from the original AEP on each subpart of the definition).
+
+  \item $ 2^{n(H(X, Y) - \epsilon)} \leq | \typ | \leq 2^{n (H(X, Y) + \epsilon)}$ (proof left to scribers, basically follows from original AEP).
+\end{enumerate}
+
+{\bf Part B.} If $(\tilde{X}^n, \tilde{Y}^n)$ are formed  by iid $(\tilde{X}_i, \tilde{Y}_i) \sim (\tilde{X}, \tilde{Y})$ where $P_{\tilde{X}, \tilde{Y}} = P_X P_Y$.
+
+Then:
+
+\def\Xt{\tilde{X}}
+\def\Yt{\tilde{Y}}
+
+\[
+  (1 - \epsilon) 2^{-n I(X, Y) + 3 \epsilon} \leq P( (\Xt^n, \Yt^n)  \in \typ ) \leq 2^{-n I(X, Y) - 3 \epsilon};
+\]
+for all $\epsilon > 0$ and (analytical details to be covered next time).  Requires large $n$.
+
+{\bf Intuition.} Suppose $\Xt, \Yt$ are generated independently, how likely is it to look like it came from a joint distribution?  Answer: Exponentially unlikely.
+
+
+\section{Channel Capacity Theorem}
+
+Recall: the communication problem setting.
+
+\includegraphics[width=\textwidth]{img/com.png}
+
+Rate of communication: number of bits per channel use, i.e.
+
+\[
+  \T{rate} = \frac{\log M}{n} \frac{\T{bits}}{\T{channel use}}
+\]
+Define probability of error as
+\[
+  P_e = P(\hat{J} \neq J).
+\]
+
+Main result:
+\[
+  C = \max_{P_X} I(X; Y).
+\]
+
+Here, we will not concern ourselves with power / cost constraint.
+
+We will break down this result into two sub-results. Equivalent to:
+
+\begin{itemize}
+  \item Direct part: If $R < \max_{P_X} I(X; Y)$, then $R$ is achievable.  This means, that there exist schemes with rate $\geq R$, and $P_e \to 0$.
+  \item Converse part: If $R > \max_{P_X} I(X; Y)$, then $R$ is not achievable.
+\end{itemize}
+
+In this section, we will prove the direct part of the theorem.
+
+\subsection{Joint AEP}
+Recall the setting.  Consider a pair of random variables $(X, Y) \sim P_{X, Y}$ with finite alphabets $\mathcal{X}$, $\mathcal{Y}$.  This implies that the pair
+\[
+  (X, Y) \text{ has alphabet } \XX \times \YY,
+\]
+here $\times$ represents the Cartesian product over sets.
+The jointly typical set
+
+% Note: at 11:%1.
+\begin{align*}
+  A_{\eps}^{(n)} (X, Y) = \{ (X^n, Y^n): & \abs{- \frac{1}{n} \log p(X^n) - H(X)} \leq \epsilon, \\  
+    & \abs{-\frac{1}{n} \log p(Y^n) - H(Y)} \leq \epsilon, \\ 
+& \abs{-\frac{1}{n} \log p(X^n, Y^n) - H(X, Y)} \leq \eps \} 
+\end{align*}
+
+Note that Part A of the joint AEP states that:
+
+\begin{itemize}
+  \item If $(X_i, Y_i) \sim (X, Y)$, then for any $\epsilon > 0$,
+\[
+  P((X^n, Y^n)  \in A_{\eps}^{(n)} ) \to 1.
+\]
+
+\item $ (1- \epsilon) 2^{n (H(X, Y) - \epsilon)} \leq |A_{\eps}^{(n)} (X, Y)| \leq 2^{nH(X, Y) + \epsilon}$ essentially for all large $n$.
+
+\def\eqd{\stackrel{d}{=}}
+
+\item Suppose now $\Xt^n \stackrel{d}{=} X^n$ and $\Yt^n \eqd Y^n$ and $\Xt$ and $\Yt$ are independent.  Then
+  \[
+    \Xt^n \approx \T{uniformly distributed on } A_{\eps}^{n}(X).
+  \]
+  \[
+      \Yt^n \approx \T{uniformly distributed on } A_{\eps}^{n} (Y).
+    \]
+    and, since $\Xt^n$ and $\Yt^n$ are independent, the joint distribution
+    \[
+      (\Xt^n, \Yt^n) \approx \T{uniformly distributed on } A_{\eps}^{n} (X, Y).
+    \]
+
+    It follows that
+    \[
+      P( (\Xt^n, \Yt^n) \in A_{\eps}^{n} (X, Y)) \approx \frac{|A_{\eps}^{n} (X, Y)|}{|A_{\eps}^{n}(X) \times A_{\eps}^{n} (Y)|} \approx \frac{2^{n H(X, Y)}}{2^{n H(X)} 2^{n H(Y)}} = 2^{-n I(X; Y)}.
+    \]
+
+  \item Formally stated, we find that for all $\eps > 0$, for sufficient large $n$,
+    \[
+      (1 - \eps) 2^{-n (I (X; Y) + 3 \eps)}P( (\Xt^n, \Yt^n) \in A_{\eps}^{n} (X, Y)) \leq 2^{-n (I(X; Y) - 3 \eps)}.
+    \]
+\end{itemize}
+
+Interpretation of mutual information: quantifies ``how unlikely two sequences that are independent appear that they are jointly typical?''
+
+\subsection{Relation of AEP to Communication Problem}
+
+{\it Idea.} (Proof of direct part of Communication Theorem)
+
+\begin{itemize}
+  \item Randomly select codewords of the codebook from the typical set $A_{\eps}^{(n)}(X)$.
+
+
+    \includegraphics[width=0.7\textwidth]{img/random-cw.pdf}
+
+  \item Suppose we encode a codeword as $X^n(J)$.  Then
+    \[
+      P(\T{$Y^n$ is jointly typical with $X^n(J)$} ) \approx 1.
+    \]
+    Further,
+    \[
+      P(\T{$Y^n$ is jointly typical with some $X^n(i)$ for a particular $i$ not set}) \approx 2^{-n I(X; Y)}.
+    \]
+    Applying the previous result with a union bound:
+    \[
+      P(\T{$Y^n$ is jointly typical with any of the codewords not sent}) \approx \text{very small, provided that:}
+    \]
+    \[
+      R < I(X; Y).
+    \]
+  \item Implies that: Joint typicaly decoding will be reliable, for $R < I(X; Y)$ (i.e. get you very small probability of error).
+\end{itemize}
+
+{\it Proof of direct part.}  Fix $P_X$ and $R < I(X; Y)$.  We need to show that $R$ is an achievable rate for reliable communication.  Take $\eps > 0$ sufficiently small such that $R < I(X; Y) - 3 \epsilon$.  Generate a codebook $C_n$ of size $M = \lceil2^{nR} \rceil$ randomly:
+\[
+  \T{take } X^n(1), X^n(2), \dots, X^n(m) \T{ iid, each iid} \sim P_X.
+\]
+
+Then, the jointly typical decoding rule states that
+\[
+  \hat{J} = \hat{(Y^n)} =
+  \begin{cases}
+    j; \qquad \text{ if } (X^n(j), Y^n) \in A_{\eps}^{(n)} (X, Y) \text{ and } (X^{n}(k), Y^{n}) \not \in A_{\eps}^{(n)}(X, Y) \quad \forall k \neq j \\
+    e \quad (\text{error}); \qquad \T{otherwise}.
+    \end{cases}
+\]
+
+Our rough discussion states that with very high probability, we will find the true code word that was sent.  Consider one possible codebook $c_n$ and a decoding rule.  Let the probability of error be 
+\[
+  P_e(c_n)  = P(\hat{J} \neq J | C_n = c_n): 
+\]
+Then
+\[
+  \EE [P_e(c_n)] = P(\hat{J} \neq J) = \sum_{j=1}^{M} P(\hat{J} \neq J | J = j) P(J = j) = P(\hat{J} \neq J | J = 1).
+\]
+\[
+\leq P((X^n (1), Y^n) \not \in A_{\eps}^{(n)} (X, Y) | J = 1) + \sum_{j=2}^{M} P((X^n(j), Y^n) \in A_{\eps}^{(n)} (X, Y) | J = 1)
+\]
+
+In the last inequality, we have used a union bound: either 
+
+\begin{itemize}
+  \item  the $Y$ sequence is not jointly typical with the message sent, 
+  \item or it is jointly typical with one of the other codewords sent.
+\end{itemize}
+
+This last quantity is equal to
+
+\begin{align*}
+  &  P((X^n (1), Y^n) \not \in A_{\eps}^{(n)} (X, Y) | J = 1) + \sum_{j=2}^{M} P((X^n(j), Y^n) \in A_{\eps}^{(n)} (X, Y) | J = 1) \\
+    &= P ( (X^n, Y^n) \not \in A_{\eps}^{(n)} (X, Y)) + (M-1)P ((\Xt^n, \Yt^n) \in A_{\eps}^{(n)} (X, Y)) \\
+    & \leq 2^{-n (I(X; Y) - 3 \eps - R)}.
+\end{align*}
+
+Note that in particular there exists a codebook $c_n$ such that $|c_n| \leq 2^{nR}$ and $P_e(c_n) \leq \EE [P_e(c_n)]$.
+
+This implies that there exists a sequence of codebooks, $\{ c_n \}_{n \geq 1}$ with $|c_n| \geq 2^{nR}$ and vanishing $P_e(c_n) \to 0$.  And in particular, this means that $R$ is an achievable rate for reliable communication. \ep
+
+There are a couple of problematic aspects of this proof:
+
+\begin{itemize}
+  \item We have shown the existence of the codebooks, but not constructed one explicitly.
+  \item Even if you were to find the codebook, they don't necessarily have good structure (codebook might be exponentially large, and have other undesirable properties.)
+\end{itemize}
+
+Note, our notation of reliability is
+\[
+  P_e = P(\hat{J} \neq J) = \sum_{j=1}^{M} P(\hat{J} \neq J | J = j) P(J = j).
+\]
+
+One can consider a more stringent criterion:
+\[
+  P_{max} = \max_{1 \leq j \leq m} P(\hat{J} \neq J | J = j).
+\]
+
+{\bf Exercise.} Given $c_n$ with $P_e (c_n)$, there exists a codebook $c_n'$ such that $|c_n'| \geq \frac{1}{2} |c_n|$ and $P_{max} (c_n') \leq 2 P_e (c_n)$.  In this case, if $|c_n| = 2^{nR}$, then $|c_n'| \geq \frac{1}{2} 2^{nR} \implies \T{rate} \geq \frac{\log \frac{1}{2} 2^{nR}}{n} = R - \frac{1}{n}.$
+
+Next week: we will discuss practical constructions of these codebooks.  We still need to prove the converse part as well.
+
+
+\section{Channel Coding Theorem; Converse Part}
+
+In this section, we will discuss the proof of our main theorem in the communication setting.
+
+Recall the communication setting:
+
+\[
+  J \sim \Unif\{1, 2, \dots, m \} \to \text{encoder $(X_n)$} \to \text{memoryless channel $P_{Y|X}; Y^n$} \to \text{decoder $\hat{J}$} 
+\]
+
+Main result:
+\[
+  C = C^{(I)} = \max_{P_X} I(X; Y).
+\]
+
+Last week, we showed that $R$ is achievable if $R < C^{(I)}$.  In this section, we will show the converse, i.e. if $R > C^{(I)}$, then $R$ is not achievable.
+
+\begin{theorem}
+  (Fano's inequality) Let $X$ be a discrete random variable, and $\Xh(Y)$ be a guess of $X$ based on $Y$.  Let $P_e = P(X \neq \Xh)$.  Then:
+  \begin{align*}
+    H(X|Y) \leq h_2(P_e) + P_e \log (|\XX| - 1).
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  Intuition: Fano's inequality relates the notion of conditional entropy and the probability of error.
+
+  Let $V = 1\left\{ X \neq \Xh \right\}$.  By the data processing inequality, we have that
+  \begin{align*}
+    H(X|Y) & \leq H(X, V | Y) \\
+    &= H(V | Y) + H(X | V, Y) \tag{chain rule}\\
+    & \leq H(V) + \sum_{v, y} H(X | V = v, Y = y) P(V=v, Y=y) \tag{conditioning reduces entropy} \\
+    &= H(V) + \sum_{y} \ub{H(X | V = 0, Y = y) P (V = 0, Y = y)}_{0} + \sum_{y} \ub{H(X | V = 1, Y = y)}_{\leq \log (|\XX| - 1)} P(V = 1, Y = y) \\
+    &\leq H(V) + P(V=1) \log (|\XX| - 1)  \\
+    &= h_2(P_e) + P_e \log (|\XX| - 1)
+  \end{align*}
+\end{proof}
+
+\begin{remark}
+  Often, the weakened version of Fano's inequality is often used:
+\begin{align*}
+  H(X|Y) \leq 1 + P_e \log |\XX|,
+\end{align*}
+or equivalently
+\begin{align*}
+  P_e \geq \frac{H(X|Y) -1}{\log |\XX|}.
+\end{align*}
+\end{remark}
+
+
+\begin{proof} (Proof of converse part of channel coding theorem.)
+
+  For any scheme, consider
+  \begin{align*}
+    \log M - H(J | Y^n) &= H(J) - H(J | Y^n) \\
+    &= I(J; Y^n) \\
+    &= H(Y^n) - H(Y^n | J) \\
+    &= \sum_{i=1}^{n} H(Y_i | Y^{i-1}) - H(Y_i | Y^{i-1}, J) \tag{by the chain rule}  \\
+    & \leq \sum_{i=1}^{n} H(Y_i) - H(Y_i | Y^{i-1}, X_i, J) \tag{conditioning reduces entropy} \\
+    &= \sum_{i=1}^{n} H(Y_i) - H(Y_i | X_i) \tag{memorylessness of the channel, implying that $Y_i - X_i - (Y^{i-1}, J)$}\\
+    &= \sum_{i=1}^{n} I(X_i; Y_i) \\
+    & \leq n C^{(I)} \tag{since $C^{(I)}$ is the maximal mutual information}
+  \end{align*}
+
+  Now, consider any scheme with a rate $\frac{\log M}{n}  \geq R$.  By the weakened version of Fano, we have
+  \begin{align*}
+    P_e &\geq \frac{H(J | Y^n) - 1}{\log M} \\
+    & \geq \frac{\log M - n C^{(I)} - 1}{\log M} \\
+    & \geq 1 - \frac{C^{(I)}}{R} - \frac{1}{nR} \to 1 - \frac{C^{(I)}}{R} \tag{as $n \to \infty$}.
+  \end{align*}
+
+  But notice that if $R > C^{(I)}$, then the $P_e$ must be lower bounded by a positive value.  So this sequence of schemes cannot have a nonvanishing probability of error.
+
+  \[
+    \bx{\T{If $R > C^{(I)}$ then $R$ is not achievable.}}
+  \]
+  This concludes the proof.
+\end{proof}
+
+\begin{remark} (Some notes on this proof).
+  \begin{enumerate}
+    \item Communication with feedback: $X_i(J, Y^{i-1})$.  This is a perhaps more powerful encoder - since the encoder can adapt to what it has seen so far.  However, one can verify that the proof from before holds verbatim.  Therefore,
+      \begin{align*}
+        C = C^{(I)} \tag{with or without feedback}
+      \end{align*}
+
+      However - $P_e$ will vanish much more quickly, and the resulting schemes will be much more simple.
+
+      Consider the example of communicating to the erasure channel with feedback.  Earlier, we found that the capacity is given by
+      \begin{align*}
+        C = 1 - \alpha \frac{\T{bits}}{\T{channel use}}
+      \end{align*}
+
+      With feedback, just repeat each information bit until it gets through.  Then, one average, we will need $\frac{1}{1 - \alpha}$ channel uses per information bit that we want to send.  Hence, the rate achieved will be
+      \begin{align*}
+        1 - \alpha \frac{\T{bits}}{\T{channel use}}
+      \end{align*}
+
+      This protocol has 0 probability of error, since we can just wait until the bit gets through.
+
+    \item In the proof of the direct part, we showed mere existence of schemes; i.e. existence of codebooks $c_n$ with size $|c_n| \geq 2^{nR}$ and small $P_e$.  For practical schemes, note that LDPC codes and polar codes are concrete ways to construct these codebooks (see EE388).
+
+    \item Note that the proof of the direct part assumed finite alphabets.  This carries over to a general case by approximation / quantization.
+
+    \item How do communication limits change if we want the maximal probability of error $P_{max}$ to be small, instead of the average probability of error $P_e$?  Recall the definitions:
+      \[
+        P_e = P(\hat{J} \neq J) = \frac{1}{m} \sum_{j=1}^{m} P(\hat{J} \neq j | J = j).
+      \]
+      \[
+        P_{max} = \max_{1 \leq j \leq m} P(\hat{J} \neq j | J = j).
+      \]
+      But: let's look at the ``better half'' of the codebook.  Consider the set of messages 
+      \[
+        | \left\{ 1 \leq j \leq M: P(\hat{J} \neq j | J = j) \geq 2 P_e \right\} | \geq \frac{M}{2} \tag{by Markov's inequality}
+      \]
+
+      Given $c_n$ with $|c_n| = M$ and $P_e$, there exists $c_n'$ with $|c_n'| \geq \frac{M}{2}$ and $P_{max} \leq 2 P_e$ - just take the messages in this better set.  Then:
+      \[
+        \text{ rate of $c_n'$} \geq \frac{\log \frac{M}{2}}{n} = \frac{\log M}{n} - \frac{1}{n}.
+      \]
+      If there exist schemes of rate $\geq R$ with $P_e \to 0$, then there exist schemes of rate $\geq R - \eps$ with $P_{max} \to 0$.
+
+      In conclusion, 
+      \[
+        C = C^{(I)} \tag{ under either $P_e$ or $P_{max}$}
+      \]
+  \end{enumerate}
+\end{remark}
+
+\section{Lossy Compression \& Rate Distortion Theory}
+
+\subsection{Lossy compression problem setting}
+
+\begin{itemize}
+  \item Let $U_i$ iid $\sim U$.
+  \item Let the compressor compress the source to $n$ bits.
+\begin{align*}
+  U_1, U_2, \dots, U_n \to \T{compressor / encoder} \to \T{decoder} \to V_1, V_2, \dots, V_n \\
+\end{align*}
+  \item Compression rate is defined as
+    \begin{align*}
+      \frac{n}{N} \frac{\T{bits}}{\T{source symbol}}
+    \end{align*}
+  \item Specify a distortion criterion $d$, and we will look at the expected per-symbol distortion; referred to as the ``distortion'' achieved.
+    \begin{align*}
+      D = \EE \left [ \frac{1}{N} \sum_{i=1}^{N} d(U_i, V_i) \right ]
+    \end{align*}
+  \item In lossy compression, we may allow $D$ to be positive, but we want to constrain $D$.
+  \item In general, there will be a tension between the distortion and the rate.  We would like to identify the tradeoff.  Of course, if we force distortion $D = 0$, then the best rate is the entropy.  More generally, if we agree to incur a positive distortion, we can get away with smaller rate (less than the entropy).
+  \item Concretely, when we parametrize a scheme, we need to specify:
+    \[
+      \T{scheme} = (N, n, \T{encoder}, \T{decoder}).
+    \]
+\end{itemize}
+
+\begin{definition}
+  A pair $(R, D)$ is said to be achievable if for all $\eps > 0$ there exists a scheme such thatits rate
+  \begin{align*}
+    \frac{n}{N} \leq R + \eps \quad \text{ and } \quad \EE \left[ \frac{1}{N} \sum_{i=1}^{N} d(U_i, V_i)  \right] \leq D + \eps.
+  \end{align*}
+\end{defintion}
+
+\begin{definition}
+  The rate distortion function $R(D)$ is defined to be
+  \begin{align*}
+    R(D) = \inf \left\{ R': (R', D) \text{ is achievable } \right\}.
+  \end{align*}
+\end{definition}
+
+Note that the rate distortion function is the minimal rate, optimized across all the possible schemes in the world. \\
+
+\begin{definition}
+  The informational rate distortion function is given by
+\begin{align*}
+  R^{(I)}(D) = \min_{\EE d(U, V) \leq D} I(U; V)
+\end{align*}
+\end{definition}
+
+Note that in the setting when you have continuous data, the notion of rate distortion is perhaps more important, because it does not make sense to talk about lossless compression. \\
+
+\begin{theorem}
+  (Main result)
+  \begin{align*}
+    R(D) = R^{(I)}(D)
+  \end{align*}
+\end{theorem}
+
+\subsection{Qualitative analysis of $R(D)$}
+
+What does $R(D)$ look like (qualitatively?)  Assume a discrete source, which we can compress losslessly with a rate equal to the entropy.
+
+\begin{center}
+\includegraphics[width=0.7\textwidth]{img/rdf.png}
+\end{center}
+
+Note that $R(D)$ is monotone decreasing and convex.  This is intuitive -- we can always compress at at least the same rate if allowed higher distortion.  $R(D)$ takes its maximal value at $D = 0$.  On the other end, we see that $R(D)$ reaches its minimal value of 0 at $D_{max} = \min_v \EE[d(U,v)]$.  If we are willing to accept distortion of $D_{max}$ we can simply encode 0 bits and always decode as $v$.  
+
+\begin{claim}
+  $R(D)$ is convex, i.e. for all $0 \leq \alpha \leq 1$, $D_0, D_1$, we have that
+  \begin{align*}
+    R(\alpha D_0 + (1 - \alpha) D_1) \leq \alpha R (D_0) + (1 - \alpha) R(D_1).
+  \end{align*}
+\end{claim}
+
+{\it Proof outline.}  Consider the ``time sharing'' scheme for encoding the source symbols $(U_1, \dots, U_N)$.  Take the first $\alpha N$ source symbols and encode them with optimal distortion $D_0$, and the last $(1 - \alpha) N$ source symbols and encode them with optimal distortion $D_1$.  The total expected distortion is $\alpha  D_0 + (1 - \alpha)  D_1$.  Then the minimal rate across all schemes is at most the rate for this particular scheme:
+\begin{align*}
+  R(\alpha D_0 + (1 - \alpha)D_1) \leq \alpha R(D_0) + (1 - \alpha) R(D_1).
+\end{align*}
+
+\subsection{Examples}
+
+\begin{enumerate}
+  \item Let $U \sim \Ber(p)$ with $p \leq \frac{1}{2}$ and define the Hamming distortion as
+    \begin{align*}
+      d(u, v) = 
+      \begin{cases}
+        0; \qquad u = v \\
+        1; \qquad u \neq v
+      \end{cases}
+    \end{align*}
+    In this setting $U$ and $V$ take values in $\UU$ and $\VV$, where $\UU = \VV = \left\{ 0, 1 \right\}$. We claim that
+    \begin{align*}
+      R(D) &=
+      \begin{cases}
+        h_2(p) - h_2(D); \qquad 0 \leq D \leq p \\
+        0; \qquad D > p.
+      \end{cases}
+    \end{align*}
+
+    This function is convex, since in the region $0 \leq D \leq p$, the function takes the value of a constant minus the binary entropy function (which is concave).  When $D > p$, we can take the reconstruction to be all zeros.
+
+      Conditioning reduces entropy, so we obtain
+    \begin{proof}
+      Consider the case when $0 \leq D \leq p$.  For any $U, V$ such that $U \sim \Ber(p)$ and $\EE[d(U, v)]  = P(U \neq V) \leq D \leq p \leq 1/2$, consider
+      \begin{align*}
+        I(U; V) = H(U) - H(U | V) = H(U) - H(U \oplus_2 V | V)
+      \end{align*}
+      Conditioning reduces entropy, so we obtain
+      \begin{align*}
+        H(U) - H(U \oplus_2 V | V) & \geq H(U) - H(U \oplus_2 V) \\
+        &= h_2(p) - h_2(P(U \neq V))
+      \end{align*}
+      Equality in the above inequality is achieved when $U \oplus_2 V$ and $V$ are independent. 
+
+      Since the binary entropy function $h_2$ is monotonic increasing on the interval $[0, \frac{1}{2}]$, we know that
+      \begin{align*}
+        h_2(p) - h_2(P(U \neq V)) \geq h_2(p) - h_2(D).
+      \end{align*}
+
+      Thus, $I(U; V) \geq h_2(p) - h_2(D)$, implying that
+      \begin{align*}
+        R(D) &= R^{(I)}(D) \\
+        &= \min_{\EE[d(U, V) \leq D]} I(U; V)  \\
+        &\geq h_2(p) - h_2(D).
+      \end{align*}
+      
+      To show that equality is achievable, we can demonstrate that the two equality conditions above are satisfied.  This is straightforward - essentially we have to find $U, V$ such that
+      \begin{itemize}
+        \item $U \oplus_2 V$ is independent of $V$ and
+        \item $U \oplus_2 V \sim \Ber(D)$.
+      \end{itemize}
+
+    \end{proof}
+
+  \item Now, consider  $U \sim \NN(0, \sigma^2)$.  We claim that
+    \begin{align*}
+      R(D) = 
+      \begin{cases}
+        \frac{1}{2} \log (\sigma^2 / D); \qquad 0 < D \leq \sigma^2; \\
+        0; \qquad D > \sigma^2.
+      \end{cases}
+    \end{align*}
+    Note that this function is convex, and for allowed distortion $D$ greater than the variance $\sigma^2$, we don't need any bits to describe the reconstruction, since it can be taken to be always zero.
+
+    Since this is an analog source, the entropy is infinite, so we can't expect to describe it and get zero distortion for a fixed number of bits per source symbol. 
+
+    We will ccomplete the proof of this result in the next section.
+\end{enumerate}
+
+\section{Method of Types}
+
+Notation: Denote $x^n = \left\{ x_1, \dots, x_n \right\}$ with $x_i \in \XX = \left\{ 1, \dots, r \right\}$ and 
+\begin{align*}
+N(a | x^n) & = \sum_{i=1}^{n} \mathbf{I}_\left\{ x_i = a \right\} \\
+\P_{x^n}(a) &= \frac{N(a | x^n)}{n}.
+\end{align*}
+
+\begin{definition}
+  The empirical distribution of $x^n$ is the probability vector (\P_{x^n}(1), \dots, \P_{x^n}(r)).
+\end{definition}
+
+\begin{definition}
+  $\mathbf{P}_n$ denotes the collection of all empirial distributions of sequences of length $n$.
+\end{definition}
+
+\begin{definition}
+  For $\P \in \PP_n$, the type class or type of $\P$ is $T(P) = \left\{ x^n: \P_{x^n} = P \right\}.$
+\end{definition}
+
+\begin{theorem}
+  The number of type classes for sequences of length $n$, $|\PP_n|$, satisfies
+  \begin{align*}
+    |\PP_n| \leq (n+1)^{r-1}
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  Every empirical distribution $P_{x^n}$ is determined by a vector $N(1 | x^n), N(2 | x^n) \dots, N(r-1 | x^n)$.  This is a vector of length $r-1$, and each element can take up to $n+1$ values.  Therefore, there are at most $(n+1)^{r-1}$ possibilities.
+
+  
+  Note that for $r \geq 3$ the bound is not tight since we did not include the constraint $\sum_{a=1}^{r-1} N(a | x^n) \geq n$.
+\end{proof}
+
+More notation:
+
+\begin{itemize}
+  \item For a probability mass function $Q = \left\{ Q(x) \right\}_{x \in \XX}$, we will write $H(Q)$ to denote $H(X)$ where $X \sim Q$.
+  \item Let $Q(x^n) = \prod_{i=1}^{n} Q(x_i)$.  For $S \subset \XX^n$, we write $Q(S) = \sum_{x^n \in S} Q(x^n)$.
+\end{itemize}
+
+\begin{theorem}
+  For all $x^n$, we have $2^{-n [H(P_{x^n}) + D(P_{x^n} || Q)}$, where $H(P_{x^n})$ is referred to as the empirical entropy of $x^n$.
+\end{theorem}
+
+\begin{proof}
+  This is a few straightforward manipulations of definitions.
+  \begin{align*}
+    Q(x^n) &= \prod_{i=1}^{n} Q(x_i) \\
+    &= 2^{\sum_{i=1}^{n} \log Q(x_i)} \\
+    &= 2^{\sum_{a \in \XX} N(a | x^n) \log Q(a)} \\
+    &= 2^{-n [ \sum_{a \in \XX} \frac{N(a | x^n)}{n} \log \frac{1}{Q(a)}]} \\
+    &= 2^{-n \left[ \sum_{a \in \XX} P_{x^n} (a) \log \left( \frac{1}{Q(a)} \frac{P_{x^n}(a)}{P_{x^n}(a)} \right)\right]} \\
+    &= 2^{-n \left[ H(P_{x^n}) + D(P_{x^n} || Q) \right]}
+  \end{align*}
+\end{proof} 
+
+\begin{theorem}
+  For all $P \in \PP_n$, we have that
+  \begin{align*}
+    \frac{1}{(n+1)^{r-1}} 2^{n H(P)} \leq |T(P)| \leq 2^{n H(P)}
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  Proof is straightforward. \todo{Fill in later}
+\end{proof}
+
+\begin{theorem}
+  For any probability mass function $Q$ and any empirical distribution $P \in \PP_n$,
+\begin{align*}
+  \frac{1}{(n+1)^{r-1}}  2^{-n D(P || Q)}  \leq Q(T(P)) \leq 2^{-n D(P || Q)}.
+\end{align*}
+
+That is, on an exponential scale - the probability that the sequence looks like it came from source $P$ if the data is generated iid from distribution Q is very unlikely.
+\end{theorem}
+
+Note that in the expression above, $D(P || Q)$ is between $P$, the ``wrong'' source and $Q$ the ``true'' source.  This is different from the cost of mismatch in lossless compression; $D(p || q)$ is such that $p$ is the true source and $q$ is the wrong source.
+
+\section{Strong, Conditional, and Joint Typicality}
+
+\def\dl{\delta}
+\begin{definition}
+  A sequence $x^n \in \XX^n$ is strongly $\delta$-typical with respect to a probability mass function $\mathcal{P} \in \mathcal{M}(\XX)$ if
+  \begin{align*}
+    |P_{x^n}(a) - P(a)| \leq \delta P(a); \qquad \forall a \in \XX.
+  \end{align*}
+\end{definition}
+
+\begin{definition}
+  The strongly $\delta$-typical set of $p$, $T_{\dl}(P)$ is defined as the set of all sequences that are strongly $\dl$-typical with respect to $P$, that is
+  \begin{align*}
+    T_{\dl}(P) = \left\{ x^n: |P_{x^n}(A) \right\}
+  \end{align*}
+\end{definition}
+
+\end{document}

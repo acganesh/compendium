@@ -1,0 +1,866 @@
+\documentclass[8pt]{article}
+%Gummi|065|=)
+\date{}
+\usepackage{verbatim}
+\usepackage{lipsum}
+%\usepackage{mathpazo}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathptmx}
+
+\setlength\parindent{0pt}
+\usepackage[margin=0.25in]{geometry}
+\usepackage{fontspec}
+\setmainfont[BoldFont=bellbold.ttf,ItalicFont=belllol.ttf]{bell.ttf}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{microtype}
+
+%\DeclareMathSizes{2}{2}{1}{1}
+
+
+%1\RequirePackage[cache=false]{minted}
+\usepackage[cache=false]{minted}
+%\usepackage{minted}
+
+\setlength{\columnsep}{7pt} 
+\makeatletter
+\newlength{\norm}
+\setlength{\norm}{4.94pt}
+\newlength{\nrm}
+\setlength{\nrm}{3.94pt}
+\newlength{\sm}
+\setlength{\sm}{4.7pt}
+\newlength{\smm}
+\setlength{\smm}{4.7pt}
+\usepackage{paracol}
+\usepackage{underscore}
+\usepackage{wrapfig}
+
+\newcommand{\mstart}{   \begin{minted}[frame=lines,
+           framesep=2mm,
+                 breaklines]{c}
+                 }
+\newcommand{\mend}{\end{minted}}
+
+
+
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}% 
+  {\z@}{1.25ex \@plus 2pt \@minus 2pt}{-0.5em}% % 1ex .2ex
+  {\fontsize{\f@size}{\nrm}\normalfont\bfseries}%
+}
+\makeatother
+%\newcommand{\lmr}{\fontfamily{lmr}\selectfont} % Latin Modern Roman
+%\newcommand{\lmss}{\fontfamily{lmss}\selectfont} % Latin Modern Sans
+%\newfontfamily\garamond{EB Garamond}
+\newfontfamily\aaa{bell.ttf}
+\usepackage[utf8]{inputenc}
+\begin{document}
+{\fontsize{\norm}{\nrm}\selectfont\raggedright\interlinepenalty=100000\displaywidowpenalty=0\widowpenalty=0\clubpenalty=0
+\setlength{\parskip}{0cm plus1pt minus1pt}
+
+\def\sec#1{{\vspace{0.15cm}\fontsize{7pt}{8pt}\emph{#1}\par}}
+
+\begin{multicols*}{5}
+
+%\lstinputlisting[breaklines,basicstyle=\normalfont]{/home/joan/dummy.txt}
+%\input{/home/joan/dummy.txt}
+%
+
+  \newcommand{\RR}{\mathbb{R}}
+  \newcommand{\EE}{\mathbf{E}}
+  \newcommand{\Var}{\text{Var}}
+
+  \def\P{\paragraph}
+
+  \sec{1 - Modern Hashing}
+
+  \sec{Consistent Hashing and CMS}
+
+  \paragraph{Consistent Hashing} Very useful when need a hashtable distributed across multiple machines (e.g. shared cache). Hash all objects, but also hash all names of servers (to the same range), store objects in first server hashed to their right around the circle. Can reduce variance with virtual replication (with copies proportional to storage capacity). When new server is added, place it on the circle and rehash the things between it and the preceding bucket. To lookup the server, use balanced binary search tree to look up in $log(n)$ time, where $n$ is the number of servers.
+
+\paragraph{CMS} There is no algorithm that exactly solves Heavy Hitters in one pass while using sublinear amount of auxiliar space. Approximate: require every value that occurs at least $\frac{n}{k}$ times is returned, but also that every value in the list occurs at least $\frac{n}{k} - \epsilon n$ times in A (some false positives). CMS data structure has two operations, Inc(x) and Count(x). $l$ x $b$ table of $l$ hash functions each with $b$ buckets. For Count(x), return min value observed, for Inc(x) increment only set of minimum values. Bloom filter is CMS but with only binary entries - entry checking is "are ALL the buckets 1". Space required is $bl$ counters where $b = \frac{e}{\epsilon}$ and $l = ln\frac{1}{\delta}$, where $\delta$ is error probability. If $n$ the length of the stream is not known in advance, keep track of running size of stream $m$ and store elements in a min-heap that occur more than $\frac{m}{k}$ times. Prune minimum element if it falls below $\frac{m}{k}$. Heap contains at most $2k$ elements, so maintaining heap requires an extra $O(logk)$ work per array entry.
+
+  \sec{2 - Data with Distances}
+
+  \P{Jaccard} $ J(S, T) = \frac{|S \cap T |}{|S \cup T||}$.
+
+  \P{$L_p$} $ ||x - y||_p = \left ( \sum_{i=1}^{d} |x_i - y_i|^{p} \right )^{1/p}$
+
+  \P{Voronoi diagram}    Given points $X$ in $\RR^d$, and some metric $D$, the Voronoi diagram partitions space into regions (the set of all points that are closest to a single datapoint).  Concretely, for $x \in X$, $part(X) = \l    eft\{ y \in \RR^d \text{ s. t. } D(x, y) = \min_{x' \in X} D(x', y) \right\}$.
+
+  \P{$k-d$ tree} Given a set $S = \left\{ x: x \in \RR^d \right\}$. Pick a dimension / coordinate $i$. Compute the median of $\left\{ x_i  \right\}$. Partition: $S_1 = \left\{ x \in S | x_i < m \right\}$, and $S_2 = \left\{ x_i \geq m \right\}.$ Recurse on $S_1$ and $S_2$ and store which dimension we are looking at. Runtime is logarithmic in number of points, and exponential in the dimension of points.
+
+  {\it The kissing number.} How many identical spheres can you place around a sphere such that all of them are touching the center sphere?
+
+  \P{MinHash} Consider Jacard similarity, defined earlier.  We develop the ``MinHash'' technique that we can use to reduce dimesionality. Pick a uniformly random ordering of the universe $U$. Map set $S$ to $f(S) = \text{"min" element of $S$}$. For any sets $S$ and $T$, we have $\Pr(f(S) = f(T)) =J(S, T)$.
+
+\paragraph{MinHash} Minhash preserves Jaccard similarities in expectation, like JL preserves $l_2$ in expectation. MinHash is an unbiased estimator of Jaccard Similarity. If we want an accurate estimate up to $\pm \pesilon$ of all n choose 2 Jaccard similarities, use $O(\epsilon^{-2}logn)$ independent estimates. Locality sensitive hashing is an extension that maps close things to close buckets (so you can search nearby buckets to remove near-duplicates, which is not possible with a hash).
+
+\paragraph{KD Trees} Perform well in <20 dimensions, or if number of points is at least $2^d$. Build a binary search tree that partitions space; edges of tree correspond to subsets of space, and each node $v$ has the index of some dimension $i_v$ and a value $m_v$. Generally choose random dimension first and then choose $m_v$ to be median of that dimension's coordinates. Given a node $v$, first go down the tree and find the leaf in which $v$ would end up. Then go back up the tree, at each juncture, asking "Is it possible that the closest point to $v$ would have ended up down the other path?". In low dimensions, answer is almost always no, but in high dimensions we end up exploring a lot (exponential in number of dimensions due to curse of dimensionality - hence bad performance).
+
+  \P{JL transformation} First, note that normals are closed.  Let $X \sim \NN(\mu_1, \sigma_1^2)$, $Y \sim \NN(\mu_2, \sigma_2^2)$.  Then $X+Y \sim \NN(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$
+
+Note that this is fairly unique to Gaussians - this isn't true for most distributions. For any two vectors $x, y \in \RR^d$, we have $\EE [ (f_r(x) - f_r(y))^2 ] = \EE [ ||x - y||_2^2 ]$
+Proof is easy:
+  \begin{align*}
+    \EE [ (f_r(x) -  f_r(y))^2 ] &= \EE \left\{ \left( \sum_{i=1}^{d} r_i x_i - \sum_{i=1}^{d} r_i y_i \right)^2 \right\} \\
+    &= \EE \left\{ \left( \sum_{i=1}^{d} r_i (x_i - y_i) \right)^2 \right\} \\
+    &= \EE \left\{ \NN (0, \sum_i (x_i-y_i)^2) \right\} \\
+    &= \Var \left\{ \NN (0, \sum_{i} (x_i - y_i)^2) \right\} \\
+    &= \sum_{i=1}^{n} (x_i - y_i)^2.
+  \end{align*}
+
+  Note: If you repeat $l = \frac{\log n}{\eps^2}$ times, then with high probability, all $\binom{n}{2}$ pairwise distances are preserved to within a factor of $1 \pm \epsilon$.
+
+This transformation is referred to as the Johnson-Lindenstrauss transformation.
+
+
+\paragraph{JL Transform} Gaussians are closed under addition! $X_1 + X_2$ has distribution $N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$. Variances add for \textbf{independent} random variables, expectations add for \textbf{any} variables. For a set of $n$ points in $k$ dimensions, to preserve all n choose 2 interpoint Euclidean distances up to a $1 \pm \epsilon$ factor, set $d = O(\epsilon^{-2}logn)$. JL transform sends $x$ to $\frac{1}{d^{1/2}}Ax$ - don't forget scaling factor of $d^\frac{-1}{2}$! Preserves $l_2$ distances in reduced space. $A$ is a $d$ x $k$ matrix. Can also just use $\pm 1$ entries.
+
+\paragraph{MinHash} Minhash preserves Jaccard similarities in expectation, like JL preserves $l_2$ in expectation. MinHash is an unbiased estimator of Jaccard Similarity. If we want an accurate estimate up to $\pm \pesilon$ of all n choose 2 Jaccard similarities, use $O(\epsilon^{-2}logn)$ independent estimates. Locality sensitive hashing is an extension that maps close things to close buckets (so you can search nearby buckets to remove near-duplicates, which is not possible with a hash).
+
+
+
+  \sec{3 - Generalization}
+
+
+Consider the binary classification setting.  We can broadly define it as follows: Suppose we have some datapoints $x_1, \dots, x_n \in \RR^d$. Known distribution $D$ on $\RR^d$. Ground truth label function $f: \RR^d \to \left\{ 0, 1 \right\}$.
+
+{\it Problem.} Given $x_1, \dots, x_n$ drawn independently from $D$, and labels $f(x_1), \dots, f(x_n)$, our goal is to output $g: \RR^d \to \left\{ 0, 1 \right\}$ such that ``$g \approx f$''.
+
+Namely, we want the generalization error to be low, defined this way: $\text{generalization error}(g) = \Pr_{x \sim D} \left[ g(x) \neq f(x) \right]$.
+
+Can also define the training error as the fraction of the training points on which $g$ disagrees with the true labelling. \\
+
+\P{Claim} For any function $g$, the expected training error is equal to the generalization error.
+
+{\it Question.} Suppose we find $g$ with training error 0.  When does this imply that the generalization error is small?
+
+Factors that influence this question: Amount of data (how faithful is the sample?). The complexity of the function (\# of functions considered). Algorithm used to find $g$. This is often succinctly phrased as ``does $g$ generalize?''  If answer is no, this implies that you've ``overfit'' the data. First, we'll consider the ``well-separated finite setting.''  Here, we will make two enormous assumptions.  Assume that: The ground truth labelling function $f \in S = \left\{ f_1, f_2, \dots f_k \}$.  That is, $f$ belongs to a set of functions with $k$ elements which is finite. All of these functions are well separated.  No function in the class is similar to $f$.  For all $f_i \in S$ with $f_i \neq f$, the generalization error of $f_i > \eps$.  Note that this is sort of a silly assumption, but we will drop both.
+
+Naive ``algorithm:'' return any $g$ in our set $S$ that has training error 0.
+
+\P{Main theorem} Given assumptions 1 and 2, if the number of datapoints $n > \frac{1}{\eps} (\log k + \log \frac{1}{\delta} )$, then, with probability at least $1 - \delta$, $g$ will generalize.
+
+Some comments: logarithmic function in $k$ and $1/\delta$ is good, but inverse linear function in $\frac{1}{ \eps}$ is kind of bad.
+
+  We will prove this in two parts. First, we will analyze the probability that we are ``tricked'' by a bad $f_i$. Next, we will union bound over all bad $f_i$'s.
+
+  Consider a bad function $f_i$.  The probability that we are tricked by this function is 
+
+  \begin{align*}
+   \Pr\left\{ \text{TrainingError}(f_i) = 0 \right\} &= \prod_{j=1}^{n} \Pr_{x_j \sim D} (f_i(x_j) = f(x_j)) \\
+   & \leq (1-\eps)^{n} \\
+   & < e^{- \eps n}.
+  \end{align*}
+
+  The last inequality follows from the inequality $1 + x < e^{x}$.  Proof from Taylor series / plot.
+
+  There are at most $k$ ``bad'' functions.  Hence we can apply a union bound, to obtain $\delta = \Pr(\text{output bad function}) \leq k e^{-\eps n}.$Now, the desired result directly follows from solving for failure probability $\frac{1}{\delta}$. Results of this form are generally referred to as being in the ``PAC'' framework (probably appropximately correct).
+
+  \P{Theorem for linear classifiers} For linear classifiers, if the number of datapoints $n > \frac{C}{\eps} (d + \log \frac{1}{\delta})$, then, with probability $1 - \delta$, $g$ will generalize.
+
+
+\paragraph{Generalization} Does $g$ generalize is equivalent to asking if its test error is the same as its training error. Start with two assumptions: 1) there are $h$ (finite) possible ground truth functions, and every other candidate has generalization at least $\epsilon$. Then probability of being tricked by a single function that matches on all $n$ datapoints is $\leq (1 - \epsilon)^n \leq e^{-\epsilon n}$. Union bounding over $h$ possible functions, get probability $\leq he^{-\epsilon n}$. Letting $n \geq \frac{1}{\epsilon}(ln(h) + ln(\frac{1}{\delta}))$ then with probaility at least $1 - \delta$ we get the correct ground truth functions (sample complexity). Even if assumption (2) doesn't hold, can rephrase theorem as $n \geq \frac{1}{\epsilon}(ln(h) + ln(\frac{1}{\delta}))$ implies with probability at least $1 - \delta$ over the samples, the output of the learning algorithm is a function with generalization error less than $\epsilon$ (PAC guarantee). \\
+
+Can use curse of dimensionality for arbitrary linear classifiers - only exponentially many directions to look in (exp in dimension). Then if $f$ is a linear classifier, $n \geq \frac{c}{\epsilon}(d + ln(\frac{1}{\delta}))$, then with probability at least $1 - \delta$  the output of the learning algorithm is a function with generalization error less than $\epsilon$. Rule of thumb: make sure you training data size $n$ is linear in the number $d$ of free parameters/features you're trying to learn. \\
+
+If no function has 0 training error, output the function which has the smallest training error (ERM algorithm). Then if $n \geq \frac{c}{\epsilon^2}(d + ln(\frac{1}{\delta}))$, with probability at least $1 - \delta$, the generalization error of the output is the training error $\pm \epsilon$. Functions do not have to be linear classifiers, can be anything. In the same setting, if $\tau$ is the minimum generalization error of any linear classifier and $n \geq \frac{c}{\epsilon^2}(d + ln(\frac{1}{\delta}))$, then the output of the ERM algorithm will have generalization error $\leq \tau + 2\epsilon$. Note: from going to 0 percent error to nonzero error (i.e. realizable to non-realizable, we pick up another factor of $\frac{1}{\epsilon}$. 
+
+\paragraph{Regularization} Kernelization allows you to do polynomial embedding without actually writing out extra terms (do it implicitly instead). If we have a ton of data ($n > d$), then can use polynomial embeddings or random project + nonlinearity (neural networks). If the features in the input space are meaningful (i.e. coordinates matter), probably want polynomial embedding (or if you want to preserve interpretibility of features). If your features are rotationalliy invariatn, use random project + nonlinearity.\\
+
+Bayesian viewpoint: true model underlying the data is drawn from a known prior. Assuming gaussian noise, finding max likliehood function is equivalent to L-2 regularization. It's unclear if Bayesian priors will hold - and note that different priors give rise to different regularizers. Frequentists, in contrast, argue that regularization allows you to recover properties of the true model (e.g. sparsity). $l_1$ regularizer is a great proxy for $l_0$ regularizer: Given $n$ indepdent Gaussian vectors from $R^d$, consider labels $y_i = <a,x_i>$ for some vector $a$ with $||a||_0 = s$, then the minimizer of the $l_1$ regularized objective function will be the vector $a$ with high probability, provided that $n > c s log(d)$ for some constant $c$. Note the contrast to $O(d)$ data required with no regularization. 
+
+
+
+  \sec{3 - Regularization}
+
+Note on last part - it is very open ended, at the cutting edge of machine learning research (but don't feel obliged to write pages of analysis).
+
+{\it Punchline from last class.} If you a have a set $k$ different functions $\left\{ f_1, \dots, f_k \right\}$, then the ``best'' one will generalize if $n > O(\log k)$.  If we are classifying in $d$ dimensions - we can approximate by set of $\exp (d)$ linear functions.  If $n > d$, expect generalization.
+
+{\it Regularization.} A way to express a set of preferences over models.  Such a scheme that will take both performance on training data as well as these preferences into account. \\
+
+  For example, we can consider $L_2$-regularized least squares.  Let $x_1, \dots, x_n \in \RR^d$, and $y_1, \dots, y_n \in \RR$.  In this setting, we want to minimize the following objective: $\min_{a} f(a) = \sum_{i=1}^{n} \left( \langle x_i, a \rangle - y_i \right)^2 + \underbrace{\lambda ||a||_2^{2}}_{\text{regularization term}}$.
+
+There are two broad types of regularization, explicit or implicit: Explicit regularization (e.g. $L_2$ regularization, preferring sparse vectors). Implicit regularization (algorithm itself has ``preferences'').
+
+Why should we regularize; why wouldn't we just return the empirical risk minimizer?
+
+{\it Perspective.} You always want roughly $n \approx d$, where generalization might not hold.  If you have $n = 1,000,000$, then you want $d \approx 1,000,000$.  Otherwise - it's sort of a ``waste''; if $d$ is truly 1000 in your dataset, try to construct additional features to learn a model in 1,000,000 dimensional space.
+
+How should we construct additional features?  Here are two approaches.
+
+ {\it Polynomial embedding.} (For example - quadratic embedding.} $x = (x_1, x_2, \dots x_d) \to f(x) = (x_1, \dots, x_d, x_1^2, x_1 x_2, x_1 x_3, \dots, x_d^2, 1) \in \RR^{2d+1 + \binom{d}{2}}$ One simple setting in which you need quadratic features to fit a classifier is when you are fitting a circular decision boundary.
+
+  {\it Random projection + non-linearity.}  You really need the non-linearity, since otherwise you'll just be learning another linear function.  Can choose $\sqrt{x}, x^2, \sigma(x)$, or most other ``nice'' nonlinearities (since they all roughly have similar properties).
+
+Downsides of adding new features:
+   One objection could be that working with $\approx d^2$ dimensional points is annoying.  But this isn't an issue: you can ``implicitly'' work over the embedded points without computing the embedding.  The area of math devoted to this is referred to as ``kernelization'' (usually covered in the context of SVMs).
+
+   Real issue: if you need $d^2$ features, you generally need much more data.
+
+Rule of thumb: if the coordinates actually have signifiance, the polynomial embedding preserves interpretability.
+
+How should you think about regularization?  There are two views: the Bayesian view, and the frequentist view.
+
+   {\it Bayesian view.} Assume that the true model is drawn from some known ``prior'' distribution.  This allows us to evaluate the ``likelihood'' / probability of a given candidate model.
+
+   {\it Frequentist view.} Goal: argue that if true model has ``nice structure,'' then can find it.
+
+{\it Bayesian approach to regularization.} (``Gaussian prior'') Suppose we have $x_1, \dots, x_n \in \RR^d$, assume that the true label $a^{*} \in \RR^d$ is drawn by choosing each coordinate independently from $\NN(0, 1)$.
+
+Now, suppose that each label is set as $y_i = \langle x_i, a^{*} \rangle + z_i$, where noise $z_i \sim \NN(0, \sigma^2)$.  Now, given $x_1, \dots, x_n, y_1, \dots, y_n$, ask $\text{Likelihood}(a) = \Pr(a) \Pr(\text{data} | a).$
+Because we made strong assumptions on the label distributions, we can directly compute these probabilities.  Hence
+
+\begin{align*}
+  \text{Likelihood}(a) &= \prod_{i=1}^{d} \frac{1}{\sqrt{2\pi}}\exp (- a_i^2 / 2) \prod_{i=1}^{n} \exp (- (\langle x_i, a \rangle - y_i)^2 / 2 \sigma^2) \\
+  &\propto \exp (-||a||_2^2 / 2 - \frac{1}{2 \sigma^2} \sum_{i=1}^{n} \left( \langle x_i, a \rangle - y_i\right)^2)
+\end{align*}
+
+Maximum likelihood of $a$ is equivalent to minimizing $\sum_{i=1}^{n} \left( \langle x_i, a \rangle - y_i \right)^2 + 2 \sigma^2 ||a||_{2}^{2}.$
+
+This derivation even told us how to set the regularization constant.  Should be 2 times the variance of the noise.
+
+{\it Frequentist approach to sparsity / regularization.} Consider a model $a^{*}$ that is $s$-sparse (i.e. there are $s$ nonzero coordinates).  
+
+Question: why do we care about sparse models?
+
+   One answer is that lots of models are actually sparse.  Think of the laws of physics.
+   Other view: maybe the world is sloppy, and the best model might not be sparse.  But what's most helpful for interpretability is fitting a sparse model.
+
+Question: can we build a regularizer that lets us selectively find sparse models?  The obvious choice is $f(a) = \sum_{i=1}^{n} \left( \langle x_i, a \rangle - y_i \right)^2 + \lambda ||a||_0$
+where we are using the ``0-norm'' that computes sparsity.
+
+{\it Claim.} If $n > O (s \log (d))$ then the sparsest model that fits the data is ``correct.''
+
+The number of $s$-sparse $d$-dimensional function is just $\binom{d}{s}$, and there are about $\exp(s)$ sparse functions.  So there are approximately $d^s \exp(s)$ sparse functions, and we need datapoints around the logarithm of this.
+
+The problem with using sparse models is that it is not differentiable (so finding the minimizer is NP-hard).
+
+So, we can note the following: $l_0$ regularization is great, but computationally intractable. Idea: use $l_1$ regularization as proxy for $l_0$.
+
+Miraculously, the claim from before still holds for $l_1$ regularization (proved in the early 2000's, Candes in the stat / math department here).
+
+
+  \sec{4 - PCA}
+%http://homepages.inf.ed.ac.uk/rbf/CVonline/LOCAL_COPIES/FISHER/PCA/pca.tex
+Principal component analysis can be used to analyze the structure
+of a data set or allow the representation of the data in a lower
+dimensional dataset (as well as many other applications).
+
+Let $\{ \vec{x}_i \}$ be a set of $N$ column vectors of dimension $D$.
+Define the scatter matrix ${\bf \rm S}_x$ of the data set as ${\bf \rm S}_x = \sum^N_{i=1} ( \vec{x}_i - \vec{\mu}_x )( \vec{x}_i - \vec{\mu}_x )^{T}$ where $\vec{\mu}_x$ is the mean of the dataset $\vec{\mu}_x = \frac{1}{N} \sum^N_{i=1} \vec{x}_i$
+
+The $d$ largest principal components are the eigenvectors
+$\vec{w}_i$ corresponding to the $d$ largest eigenvalues.
+$d$ can be chosen arbitrarily with $d < D$.
+The eigenvectors of {\bf S} can usually be found by using 
+singular value decomposition.
+
+The dominant eigenvectors describe the main directions of variation of
+the data. For example, if a dataset had 2 large eigenvalues, then
+the data variation is described largely by linear combinations of
+the 2 corresponding eigenvectors (ie. the data is largely coplanar).
+
+The $d$ eigenvectors can also be used to project the data into a
+$d$ dimensional space.
+Define ${\bf \rm W} = [\vec{\mu}_1, \vec{\mu}_2, \dots, \vec{\mu}_d ]$
+The projection of vector $\vec{x}$ is $\vec{y} = {\bf \rm W}^T \vec{x}$.
+The corresponding scatter matrix ${\bf \rm S}_y$ of the
+vectors $\{ \vec{y}_i \}$ is: ${\bf \rm S}_y = {\bf \rm W}^T {\bf \rm S}_x {\bf \rm W}$
+The matrix ${\bf \rm W}$ maximizes the determinant of ${\bf \rm S}_y$
+for a given $d$.
+
+
+\paragraph{PCA} PCA does not necessarily preserve pairwise distances like JL. JL is also data-oblivious, PCA is deterministic. Coordinates used in JL have no intrinsic meaning. PCA often finds latent variables. Linear regression has a "preferred" variable. PCA treats all coordinates equally - works well when there are a set of latent ariables and all coordinates are linear combinations of those variables. PCA requires mean subtraction, and scaling of coordinates so that each coordinate has unit standard deviation. PCA assumes variance in the data corresponds to interesting information. PCA tries to maximize the square projection of each vector onto subspace, alternatively lower its square distances from the hyperplane. PCA does not find nonlinear structure. If the structure is non-orthogonal, PC components may lose interpretibility bc they're forced to be orthogonal. PCA can also fail due to high-variance noise. Can show with some extra work that we're trying to diagonalize the covariance matrix $X^TX$. Every covariance matrix can be diagonalized by an orthogonal matrix, i.e. $X^TX = QDQ^T$, $Q$ orthogonal. If only need the top few principal components, compute them with power iteration: choose random unit vector, apply covariance matrix, rescale to unit, continue until convergence. Converged vector will be top principal component. Subtract out this PC from everything and reiterate.  With probability at least $\frac{1}{2}$ over the choice of initial unit vector, for t >= 1, m datapoints in n dimensions, $|<A^tu_0, v1>| \geq 1 - 2n^\frac{1}{2}(\frac{\lambda_2}{\lambda_1})^t)$. , so number of iterations required scales as $\frac{logn}{log(\frac{\lambda_1}{\lambda_2})}$ (i.e. in the spectral gap). Can exponentially improve this probability $\frac{1}{2}$ by repeating this with different random initial unit vectors. 
+
+\paragraph{SVD} Low-rank matrix approximations are great for matrix completions. $A = USV^T$. Left singular vectors are in $U$, right singular vectors are in $V$ (remember diagram). $U, V$ are orthogonal. $S$ is diagonal matrix with entries sorted in nonincreasing order. Only for covariance matrix is $U = V$. The columns of $U$ are called hte left singular vectors of $A$ and the rows of $V^T$ (columns of $V$ are the right singular vectors of $A$). Running time is min $m^2n$ or $n^2m$. If just want $k$ largest singular values and singular vectors, can do it in $kmn$ time. Rank-k SVD is optimal in Frobenius norm of all rank-k matrices. How to choose k? Choose such that top $k$ singular values sum to a multiple of the rest (maybe 10). The right singular vectors of $X$ are the same as the eigenvectors of $X^TX$ (the principal components, and the eigenvalues of the covariance matrix are the square of the singular values of X. So PCA reduces to computing the SVD of A without forming the covariance matrix. If you only need the top fiew eigenvectors, use Power Iterations If you want them all, use SVD. In frobenius norm, each row of $A - A_k$ is exactly the distance from each poitn to the span of the top $k$ principal components. SVD and PCA are equivalent. The rows of $X$ can be interpreted as linear combinations of the rows of $V^T$. The columns of $X$ can be interpreted as linear combinations of the columns of $U$ (the left singular vectors). When the columsn of $U$ are interpretable, this is valuable. Otherwise, use PCA. In customers x products, the right singular vectors are customer types and left singular vectors are product types. Can develop PCA (not SVD) based low-rank approximations by computing covariance, and each row as the projection onto the top $k$ princiapal components, which is exactly the same as rank-k SVD approximation. 
+
+  \sec{5 - SVD}
+
+  \P{Rank} A matrix has rank $k$ if it can be written as the sum of $k$ rank one matrices.
+
+  \P{Low rank approximation examples} Compression, de-noising, matrix-completion.
+
+  \P{SVD} A SVD of an $m \times n$ matrix $A$ can be written as $A = USV^T$, where $U$ is $m\times m$ ortho, $V$ is $n \times n$ ortho, and $S$ is an $m \times n$ diagonal matrix with nonnegative entries (diagonal entries sorted from high to low).  Columns of $U$: left SVs, cols of $V$: right SVs, and entries of $S$ are singular values.  Note that $SVD$ is equivalent to $A = \sum_{i=1}^{\min(m, n)} s_i \cdot u_i v_i^T$.  Runtime is smaller of $O(n^2m)$ and $O(m^2 n)$.  If you just want the largest $k$ SVs, can compute this significantly faster, in time $O(kmn)$.  
+  
+  \P{Rank k approx.} Rank $k$ approximation is $A_k = U_k S_k V_k^T$.  Storing the matrices in rank $k$ is $O(k(m+n))$, compared to $O(mn)$ space for original matrix $A$.  Note that $||A - A_k||_F \leq ||A - B||_F$, for every matrix $A$, rank target $k \geq 1$, and rank $k$ $m \times n$ matrix $B$.
+
+
+  \def\mbf{\mathbf}
+
+  \P{PCA reduces to SVD} We start by sketching the equivalence of truncated rank $k$ SVD and a PCA projection onto the first $k$ principal components.  Suppose $\mathbf{X}$ is an $n \times p$ matrix (assume it is mean normalized, for simplicity).  The $p \times p$ covariance matrix is computed as $\mathbf{X^T X}$.  Since it is symmetric, we can diagonalize it as $\mbf{X^T X} = \mbf{Q \Lambda Q^T}$ where $\mbf{Q}$ is a matrix of eignevectors, and $\Lambda$ is a diagonal matrix with eigenvalues $\lambda_i$ in decreasing order on the diagonal.  Projecting our data onto these eigenvectors yield the principal components.
+
+  Now, performing singular value decomposition gives us $\mathbf{X = USV^T}$, where $\mbf{U}$ is a unitary matrix, and $\mbf{S}$ is the diagonal matrix of singular values $s_i$.  Expressing the covariance matrix in terms of the singular value decomposition of $\mbf{X}$, we can write $\mbf{X^T X} = \mbf{VSU^T U S V^T} / (n-1) = \mbf{V} \frac{\mbf{S^2}}{n-1}\mbf{V}^T$. Therefore, the right singular vectors $\mbf{V}$ are the eigenvectors of $\mbf{X^T X}$.  Furthermore, singular values can be expressed in terms of the eigenvalues of $\mbf{X^T X}$ with the relation $\lambda_i = s_i^2 / (n-1)$.
+
+
+  \sec{5B - Tensors}
+
+
+\paragraph{Tensors} Examples: 3-Tensor with works that appear next to each other, moments tensor. n-Tensor's basis are outer product of n different sets of vectors. FACTS: For tensors, cannot iterative ssubtract rank-1 aproximation and get best rank $k-1$ approximation. Also do not get the rank over the reals is the same as the rank over complex numbers for k-tensors with $k \geq 3$, even if tensor is real-valued. Also don't know how to construct $n$ x n x n tensors whose rank is greater than $n^{1.1}$ for all $n$ - hard to reason about rank of tensors. Computing the rank of 3-tensors is NP-hard. But, if the rank of a 3-tensor is sufficiently small, its rank can be efficiently computed and its low-rank representation is unique and can be efficiently recovered.\\
+
+Thm: Given a 3-tensor of rank $k$, the rank $k$ decomposition is unique up to scaling vectors by a constant and these factors can be efficiently recovered. The factors do NOT need to be orthogonal, as long as they are linearly independent.  Skipping proof.
+
+
+
+  \sec{6 - Spectral Graph Theory}
+
+  \P{Graph} Given a graph $G = (V, E)$ with $|V| = n$ vertices, can associate matrices to graph.  Laplacian matrix is $L_G = D - A$, where $D$ is degree matrix (diagonal matrix where $D(i, i)$ is degree of $i$th node in $G$), and $A$ is the adjacency matrix, with $A(i, j) = 1$ iff $(i, j) = E$.  Note that $v^t L v = \sum_{i < j: (i, j) \in E} (v(i) - v(j))^2$.  $v$ assigns number of each vertex in $G$, and $v^t L V$ is sum of squares of differences between values of neighboring nodes.
+
+  \P{Eigenspaces} From the previous identity, eigenvalues are nonnegative.  Number of zero eigenvalues of $L$ is the number of connecting components of $G$.  The maximum eigenvalue $\max_{||v||=1} v^t L v$ will maximize the discpreancy between neighbors values of $v$.
+
+  \P{Spectral embeddings} Smallest eigenvector is not helpful, since $v_1 = (\frac{1}{\sqrt{n}}, \dots, \frac{1}{\sqrt{n}})$.  Helpful to consider $v_2$ and $v_3$, and plot these together.
+
+  \P{Isoperimetric ratio} Given a set $S$, the isoperimetric ratio $\theta(S)$ is defined as  $\theta(S) = \frac{|\delta(S)|}{\min(|S|, |V \setminus S|)}$.  The isoperimetric number is $\theta_G = \min_{S \subset V} \theta(S)$.  
+  
+  \P{Conductance}The conductance of a partition of a graph is defined as $cond(S) = \frac{|\delta(S)|}{\min (\sum_{i \in S} deg(i), \sum_{i \not \in S} deg(i))}$.
+
+  \P{$\lambda_2$} Isoperimetric number of graph satisfies $\theta_G \geq \lambda_2 (1 - \frac{|S|}{|V|})$.
+
+  \P{Partial converse (Cheger)} If $\lambda_2$ is second smallest eigenvalue, there exists a set $S \subset V$ such that $cond(S) \leq \frac{\sqrt{2 \lambda_2}}{\sqrt{d}}$.
+
+  \sec{7 - Sampling / Estimation}
+
+  \P{RS - problem} Want to sample $k$ uniformly random elements from a datastream of length $N \gg k$.  $N$ large, and $N$ unknown.
+  
+  \P{Reservoir sampling} Given a number $k$, and a datastream $x_1, x_2, \dots $ of length $> k$:  Put the first $k$ elements of the stream into a reservoir $R = (x_1, \dots, x_k)$.  For $i \geq k+1$, withj probability $\frac{k}{i}$ replace a random entry of $R$ with $x_i$.  Return reservoir at the end of stream.
+
+  \P{RS is uniform} For $t \geq i$, $\Pr[x_i \in R_t] = \frac{k}{t}$ where $R_t$ is the reservoir after time $t$.  Proof by induction.
+
+  \P{Markov} Let $X$ be a real-valued RV with $X \geq 0$.  For any $c > 0$, $\Pr[X \geq c \EE[X]]\leq \frac{1}{c}$.  Intuition: at most 10\% of population can have income > 10 $\times$ avg. income.
+
+  \P{Chebyshev} Let $X$ be real-valued RV, and $c > 0$.  Then $\Pr \left[ |X - \EE[X]| \geq c \sqrt{\Var[X]} \right] \leq \frac{1}{c^2}$.
+
+  \P{Importance sampling} We can estimate properties of distribution $A$, based on samples from distribution $B$.  Idea: have distribuytion $B$ place higher weight on the ``important'' elements of the domain.  
+  
+  \P{Importance sampling ex.} For example, suppose we know that computer scientists have higher income, and that computer scientists are $0.05$ of population. Instead of taking $n$ random samples from pop, take $0.8n$ samples of non-computer scientists, and $0.2$ samples of random computer sciences.  Then: $avg = 0.95 a_1 + 0.05 a_2$ allows us to estimate the population average salary.  Benefit: reduce variance of the estimate, by focusiong our samples on the important portion of the distribution.
+
+  \P{Good-Turing frequency estimation}  Given $n$ independent draws from a distribution, estimate: $\Pr[\text{next draw new}] \approx \frac{\text{\# elts seen once}}{n}$.
+
+  \P{Monte Carlo method} Broadly, learning about a distribution via random sampling. MCMC: Markov Chain Monte Carlo - applying Monte Carlo to Markov Processes.
+
+  \P{Markov Process} Has two parts: a set of states $S = \left\{ s_1, s_2, \dots \right\}$ and a transition function $P: S \times S \to [0, 1]$, where $P(s_i, s_j)$ is the probability that the process transitions $s_i \to s_j$.  For any $s_i$, $\sum_{j} P(s_i, s_j) = 1$.  Markov property: distribution of $X_i$ depends only on $X_{i-1}$.
+
+  \P{Calculating $D(t, s)$} Let $D(t, s)$ be the distribution over values of $X_t$.  Can directly calculate $D(t, s) = D(0, s) \cdot P^t$. Requires $O(\log t)$ matrix multipilcations using the ``repeated squaring'' trick.  Alternatively, can use Monte Carlo.  Start with $X_0 = s$, and for all $i = 1, \dots, t$  simulate the selection of $X_i$ aaccording to $P$ and $X_{i-1}$.   If you do this $k$ times, have obtained $k$ samples drawn from the distribution $D(t, s)$.  Time to compute is $kt \cdot update T$, where $updateT$ is the time to sample from the distribution defined by a row of $P$.
+
+\P{Fundamental Theorem} Suppose 1) $\forall$ pairs $s_i, s_j$, we can reach $s_j$ if we start at $s_i$.  2) Chain is aperiodic, i.e. $\gcd(\left\{ t_1, \dots \right\}) = 1$, where $\left\{ t_1, \dots \right\}$ is the set of times consisting of all $t$ for which $\Pr [X_t = s_j | X_0 = s_i] > 0$.  Basically: as long as the chain is not a directed cycle or a bipartite graph.  Then, for all states $s$, $\lim_{t \to \infty} D(t, s) \to \pi$.
+
+\P{Mixing time}  ``Time until we are close to $\pi$'' is the mixing time of the distriobution.   Formally, $mixingTime = \min \left\{ t: \max_{s} ||  D(t, s) - \pi ||_{TV} \leq \frac{1}{4}\right\}$.  That is, the minimum time $t$ s.t. no matter where we start, the distance between $D(t, s)$ and $\pi$ is at most $\frac{1}{4}$.
+
+\P{Eigenvalues / Power iteration} Difficult to estimate the mixing time of a given chain.  Ratio of second largest eigenvalue to largest, $\frac{\lambda_{max-1}}{\lambda_{max}}$ determines the rate aat which chain will converge to $\pi$.
+
+  \def\FF{\mathcal{F}}
+  \sec{8 - Fourier Analysis}
+
+  \paragraph{Transform}  Given a length $n$ vector, the Fourier transform $\mathcal{F}(v)$ is a complex valued vector of length $n$ defined as $\mathcal{F}(v) = M_n v$, where $j, k$ entry of $M_n$ is defined to be $w_n^{jk}$, where $w_n = \exp(- \frac{2 \pi i}{n})$. 
+
+  \paragraph{Transform 2} Consider a sequence of complex numbers $\left\{ x_i \right\}$.  The FT is $X_k = \sum_{n=0}^{N-1} x_n \cdot \exp(-\frac{2\pi i}{N} kn)$.
+
+  \paragraph{Properties} FFT is $O (n \log n)$.  Inverse Fourier transform is multiplication by matrix $M^{-1}$ whose $j, k$ entry is $w^{-jk}$.  FT is almost its own inverse.
+
+  \paragraph{Fourier basis} Can interpret $v$ as a linear combination in the Fourier basis $v = \sum_{j=0}^{n-1} c_j b_j$.  The $j$-th coordinate in the Fourier transform $Mv$ tells you how much of the $j$-th freqwuency the signal $v$ has.
+
+  \paragraph{FT as polynomial ops} Given a length $n$ vector $v$, define $P_v(x) = v_0 + v_1 x + \dots + v_{n-1} x^{n-1}$.  The $k$-th entry of the transform $Mv$ is $v_0 + v_1 w^k + \dots + v_{n-1} w^{(n-1)k}$.  Inverse transform takes a vector representing $P_v$ evaluated as roots of unity, and returns coefficients of polynomial $P_v$ (interpolation).
+
+  \paragraph{FFT} Given a length $n = 2^k$ vector $v$, we output its Fourier transform.  Recursively compute $q_1 = \FF(v_{even})$ and $q_2 = \FF(v_{odd})$.  Define the length $n/2$ vector $s$ whose $j$-th index is $\exp(- 2\pi ij / n)$.  Output the concatenation of $q_1 + (q_2 \times s)$ and $q_1 - (q_2 \times s)$, where $q \times s$ is elementwise product.  This decomposition only involves computation of two Fourier transforms of length $n/2$ vectors, and two element-wise multiplications and additions.  $T(n)$ satisfies $T(n) = 2 T(n/2) + O(n)$.
+
+  \paragraph{Convolution} Convolution of two vectors $v, w$ of lengths $n, m$ is the vector of coefficients in the product of the polynomials associated with $v,w$.  We can write $v * w = \FF^{-1}(\FF(v) \times \FF(w))$, where $\times$ is element-wise product.
+
+  \paragraph{Properties of convolutions} Liunearity. $(v+w) * a = (v * a) + (w * a)$ and $(cv) * a = c (v*a)$.  Translational invariance. Shifting a vector by padding with $k$ zeros and cconvolving is same as shifting the convolution.
+
+  \paragraph{Why convolutions are important} Any transformation of a vector that is linear and translation invariant is a convolution.  Can use this fact to simulate physical systems, e.g. gravity.
+
+  \sec{9 - Compressive Sensing}
+
+  \paragraph{Problem setup} Design $m$ ``linear measurements'' $a_1, \dots, a_m \in \RR^n$.  Nature picks a ``signal'' $z \in \RR^n$.  Compute $b_i = \langle a_i, z \rangle$.  Use the vector $b$ to recovere $z$.
+
+\paragraph{Idea} The idea of compressive sensing is to capture data in a compressed form (i.e. dot product with certain vectors). Applications: lower power cameras, MRI and tomography, demystifying undersampling (don't need as many samples as we thought - e.g. in oil drilling). Goal is to design $m$ linear measurements in $R^n$ that can recover any unknown signal $z$ in $R^n$. Get a vector $b$ in $R^m$ of the dot products, want to recover $z$ from $b$ by solving linear program. Can we get away with $m < n$ measurements? Not unless $z$ is sparse (otherwise $z$ is underdetermined). NOTE: in images, usually black is 0 and white is 1. Usually assume $z$ is sparse in the standard basis, but can also focus on sparsity in Fourier basis or other bases and throw an extra change-of-basis matrix into some of the statements below.
+
+  \paragraph{Main theorem} Fix signal length $n$ and a sparsity level $k$.  Let $A$ be an $m \times n$ matrix of iid standard Gaussian RVs with $m = O(k \log \frac{n}{k})$ rows.  For every $k$-sparse signal $z$, the unique solution to $\min ||x||_1$ subject to $Ax = b$ is $z$.
+  
+  \paragraph{Theorem comments} Extends to ``almost $k$-sparse'' signals.  Extends to non Gaussian matrices $A$.  However, sparse matrices $A$ don't work. $m$ is optimal up to a constant factor, since $\log_2 \binom{n}{k} = O(k \log \frac{n}{k})$ by Stirling's approximation.
+
+  \paragraph{Uncertainty principle} No signal can be made sparse simultaneously in both time and frequency domains.
+
+  \paragraph{LPs} Consist of decision variables, linear constraints of the form $\sum_{j=1}^{n} a_{ij} x_{j} \leq b_i$, or $\sum_{j=1}^{n} a_{ij} x_j = b_i$.  Objective function should be linear, of the form $\min \sum_{j=1}^{n} c_j x_j$.
+
+  \paragraph{$\ell_1$ linearization} Add $y_j$ to represent $|x_j|$. Use objective function $\min \sum_{j=1}^{n} y_j$ which is linear, with $2n$ inequalities of the form $y_j - x_j \geq 0$, $y_j + x_j \geq 0$.  Can also extend LPs to accommodate noise.
+
+  \paragraph{Convexity} A set $C \subseteq \RR^n$ is convex for every $x, y \in C$ and $\lambda \in [0, 1]$, $\lambda x + (1 - \lambda) y \in C$.  A function $f: \RR^n \to \RR$ is convex if the region above the graph is a convex set.  That is, $f(\lambda x + (1 - \lambda )y) \leq \lambda f(x) + (1 - \lambda) f(y)$ for every $x, y \in \RR^n$ and $\lambda \in [0, 1]$.  Note that LPs are convex, since intersection of half-spaces will be convex.  Also, the set of $n \times n$ symmetric and PSD matrices viewed as a subset of $\RR^{n^2}$ is convex.
+
+  \paragraph{Matrix completion} Suppose we have a matrix $\hat{M}$ derived from $M$ by erasing its entries.  Want to recover $M$, with key assumption that $M$ has low rank.  Suppose $M$ has SVD $USV^T$.  Rank of $M$ is the number of non-zero signular values, with every row of $M$ a linear combination of top $r$ right SVs, and every col is a linear combination of top $r$ left SVs.  Optimization problem can be viewed as $\min |\text{supp}(\Sigma (M)) |$, subject to $M$ agrees with $\hat{M}$ on known entries.  The exact problem is $\ell_0$, but we can relax it to optimization the $\ell_1$ norm with $\min || \Sigma(M)||_1$ (which is convex).
+
+  \paragraph{Matrix completion theorem} If $M$ has rank $r$, and $\hat{M}$ has at least $\Omega(r(m+n) \log^2(m+n))$ known entries, chosen uniformly at random from $M$.  Then $M$ is sufficiently dense and non-pathological.
+
+\paragraph{Application: Matrix Completion} Key assumption: we want to recover the entries of a partially observed matrix $M$ (observed is $Mhat$) that \textit{has low rank}. If we try to minimize the rank of $M$ subject to $M$ agreeing with $Mhat$ on observed entries, we get NP-hard problem. But if we reframe, we can say we want to minimize the number of nonzero signular values of $M$ s.t. $M$ agrees with $Mhat$ on known entries. Can again change this to \textbf{nuclear norm minimization} where we want to minimize the sum of the singular values and solve: $min||S(M)||_1$ s.t. $M$ agrees with $Mhat$ on known entries. In fact, the objective function here is convex and can be solved efficiently. 
+
+
+
+
+
+
+
+  \sec{Assignments}
+
+  \P{Six-sided die problem}
+
+\item Let $X, Y$ be discrete integer random variables.  Then we can write the distribution of $Z = X+Y$ as a convolution between $X$ and $Y$: $P(Z = z) = \sum_{k=-\infty}^{\infty} P(X=k) P(Y = z-k)$.
+        In particular, the vector $q = p * p * \dots * p$ (convolved 100 times) represents the probability distribution over 100 rolls of a six sided die.  Since $q[0]$ represents the probability that we roll a total of $100$, $q[150]$ will represent the probability that the 100 rolls sum to 250.
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.2\textwidth]{/Users/adithya/Dropbox/Stanford/Spring18/CS168/mini-project8/plots/p1.png}
+\end{figure}
+
+\P{Conv theorem}
+
+      \item Let $\mbf{f, g}$ be $N$-tuples.  Let $\mbf{h} = \mbf{f * g}$.  Computing the Fourier transform, we obtain
+        \begin{align*}
+          \mbf{F}_\mbf{h}(m) &= \sum_{j=0}^{2N-1} h[j] \exp (-2\pi i m j / N) \\
+          &= \sum_{j=0}^{2N-1} \left ( \sum_{k=0}^{2N-1} f[k] g[j-k] \right ) \exp \left( -2 \pi i m j / N \right) \\
+        &= \sum_{k=0}^{2N-1} f[k] \left ( \sum_{j=0}^{2N-1} g[j-k] \exp (- 2 \pi i m j / N) \right )  \\
+        &= \sum_{k=0}^{2N-1} f[k] \left ( \exp (- 2 \pi i m k / N)  \mathcal{F} (g^{+}) \right )  \\
+        &= \mathcal{F} (g^{+}) \sum_{k=0}^{2N-1} f[k] (\exp (-2 \pi i m k / N)) \\
+        &= \mathcal{F} (f^{+}) \mathcal{F} (g^{+}),
+        \end{align*}
+        which proves the desired result.
+
+        Therefore, we can implementation the convolution $\mbf{f} * \mbf{g}$ in the frequency domain as follows: $\mbf{f} * \mbf{g} = \F^{-1} (\F \mbf{f}^{+} \cdot \F \mbf{g}^{+})$.
+          A naive implementation of convolution would require $O(N^2)$ operations.  Since the complexity of the FFT is $O(n \log n)$, a FFT-based convolution is also $O(n \log n)$, and therefore much more efficient.
+
+          If $\mbf{f}$ is an $N$-tuple and $\mbf{g}$ is an $M$-tuple with $M < N$ we can zero-pad $\mbf{f}$ and $\mbf{g}$ to length $M+N$, and perform the same computation.
+
+          \P{PCA vs LS}
+
+    \item PCA does poorly with noise only in $Y$ because it aims to capture the variance in the $y$ direction because of noise.  As the noise coefficient $c$ increases, PCA will upweight the principal component in the $y$ direction, which increases the slope as $c$ increases.
+
+      Formally, the first principal component satisfies
+      \begin{align*}
+        \mbf{w}_{1} & = \argmax_{||\mbf{w}||=1} \left\{ \sum_{i} \left( \mbf{x}_i \cdot \mbf{w} \right)^2 \right\} \\
+        &=  \argmax_{||\mbf{w}||=1} \left\{ \sum_{i} \left( (i/1000, 2i/1000 + \mathcal{N}(0, c))\cdot \mbf{w} \right)^2 \right\}.
+      \end{align*}
+
+      Since the noise is biased towards the second component of $x$, the net effect is to scale each dot product, biasing the first principal component towards the $y$ direction.
+
+    \item PCA does well with noise in both $X$ and $Y$, because there is now variance in both dimensions.  In this setting, we can compute $\mbf{w}_1$ as follows:
+
+      \begin{align*}
+        \mbf{w}_{1} &= \argmax_{||\mbf{w}||=1} \left\{ \sum_{i} \left( \mbf{x}_i \cdot \mbf{w} \right)^2 \right\} \\
+        &= \argmax_{||\mbf{w}||=1} \left\{ \sum_{i} \left( (i/1000 + \mathcal{N}(0, c), 2i/1000 + \mathcal{N}(0, c))\cdot \mbf{w} \right)^2 \right\}.
+      \end{align*}
+
+      Since the variance is spread across both dimensions, $\mbf{w}$ does not get ``biased'' towards either dimension, and PCA recovery results in a good estimate of the slope.
+
+    \item Least squares performs poorly because with increasing noise in $X$ and $Y$, there is less of a predictive relationship between $X$ and $Y$.
+
+      The least squares slope estimate can be computed as follows:
+      \[
+        \langle X_n - \overline{X_n}, Y_n - \overline{Y_n} \rangle // || X_n - \overline{X_n} ||_2^{2},
+        \]
+        where
+        \[
+          X_n = X + \mathcal{N}(0, c)
+        \]
+        \[
+          Y_n = Y + \mathcal{N}(0, c).
+        \]
+        This results in a decreasing slope as the noise coefficient $c$ increases.  In particular, as $c \to \infty$, the slope $\to 0$, since there will be no correlation between $X$ and $Y$.
+
+        \sec{New stuff}
+\paragraph{Frequentists vs. Bayesians}
+what is probability? 
+
+One is called the \textbf{frequentist} interpretation. In this view, probabilities represent long run frequencies of events. For example, the above statement means that, if we flip the coin many times, we expect it to land heads about half the time.
+
+The other interpretation is called the \textbf{Bayesian} interpretation of probability. In this view, probability is used to quantify our \textbf{uncertainty} about something; hence it is fundamentally related to information rather than repeated trials (Jaynes 2003). In the Bayesian view, the above statement means we believe the coin is equally likely to land heads or tails on the next toss
+
+One big advantage of the Bayesian interpretation is that it can be used to model our uncertainty about events that do not have long term frequencies. For example, we might want to compute the probability that the polar ice cap will melt by 2020 CE. This event will happen zero or one times, but cannot happen repeatedly. Nevertheless, we ought to be able to quantify our uncertainty about this event. To give another machine learning oriented example, we might have observed a “blip” on our radar screen, and want to compute the probability distribution over the location of the corresponding target (be it a bird, plane, or missile). In all these cases, the idea of repeated trials does not make sense, but the Bayesian interpretation is valid and indeed quite natural. We shall therefore adopt the Bayesian interpretation in this book. Fortunately, the basic rules of probability theory are the same, no matter which interpretation is adopted.
+
+
+\paragraph{A brief review of probability theory}
+
+
+\paragraph{Basic concepts}
+We denote a random event by defining a \textbf{random variable} $X$.
+
+\textbf{Descrete random variable}: $X$ can take on any value from a finite or countably infinite set.
+
+\textbf{Continuous random variable}: the value of $X$ is real-valued.
+
+
+\paragraph{CDF}
+
+\begin{equation}
+F(x) \triangleq P(X \leq x)=\begin{cases}
+\sum_{u \leq x}p(u) & \text{, discrete}\\
+\int_{-\infty}^{x} f(u)\mathrm{d}u & \text{, continuous}\\
+\end{cases}
+\end{equation}
+
+
+\paragraph{PMF and PDF}
+For descrete random variable, We denote the probability of the event that $X=x$ by $P(X=x)$, or just $p(x)$ for short. Here $p(x)$ is called a \textbf{probability mass function} or \textbf{PMF}.A probability mass function is a function that gives the probability that a discrete random variable is exactly equal to some value\footnote{\url{http://en.wikipedia.org/wiki/Probability_mass_function}}. This satisfies the properties $0 \leq p(x) \leq 1$ and $\sum_{x \in \mathcal{X}} p(x)=1$.
+
+For continuous variable, in the equation $F(x)=\int_{-\infty}^{x} f(u)\mathrm{d}u$, the function $f(x)$ is called a \textbf{probability density function} or \textbf{PDF}. A probability density function is a function that describes the relative likelihood for this random variable to take on a given value\footnote{\url{http://en.wikipedia.org/wiki/Probability_density_function}}.This satisfies the properties $f(x) \geq 0$ and $\int_{-\infty}^{\infty} f(x)\mathrm{d}x=1$.
+
+
+\paragraph{Mutivariate random variables}
+
+
+\paragraph{Joint CDF}
+We denote joint CDF by $F(x,y) \triangleq P(X \leq x \cap Y \leq y)=P(X \leq x , Y \leq y)$.
+
+\begin{equation}
+F(x,y) \triangleq P(X \leq x, Y \leq y)=\begin{cases}
+\sum_{u \leq x, v \leq y}p(u,v) \\
+\int_{-\infty}^{x}\int_{-\infty}^{y} f(u,v)\mathrm{d}u\mathrm{d}v \\
+\end{cases}
+\end{equation}
+
+\textbf{product rule}:
+\begin{equation}\label{eqn:product-rule}
+p(X,Y)=P(X|Y)P(Y)
+\end{equation}
+
+\textbf{Chain rule}:
+\begin{equation}
+p(X_{1:N})=p(X_1)p(X_2|X_1)p(X_3|X_2,X_1)...p(X_N|X_{1:N-1})
+\end{equation}
+
+
+\paragraph{Marginal distribution}
+\textbf{Marginal CDF}:
+\begin{equation}\begin{split}
+& F_X(x) \triangleq F(x,+\infty)= \\
+& \begin{cases}
+\sum\limits_{x_i \leq x}P(X=x_i)=\sum\limits_{x_i \leq x}\sum\limits_{j=1}^{+\infty}P(X=x_i,Y=y_j) \\
+\int_{-\infty}^{x}f_X(u)du=\int_{-\infty}^{x}\int_{-\infty}^{+\infty} f(u,v)\mathrm{d}u\mathrm{d}v \\
+\end{cases}
+\end{split}\end{equation}
+
+\begin{equation}\begin{split}
+& F_Y(y) \triangleq F(+\infty,y)= \\
+& \begin{cases}
+\sum\limits_{y_j \leq y}p(Y=y_j)=\sum\limits_{i=1}^{+\infty}\sum_{y_j \leq y}P(X=x_i,Y=y_j) \\
+\int_{-\infty}^{y}f_Y(v)dv=\int_{-\infty}^{+\infty}\int_{-\infty}^{y} f(u,v)\mathrm{d}u\mathrm{d}v \\
+\end{cases}
+\end{split}\end{equation}
+
+\textbf{Marginal PMF and PDF}:
+\begin{equation} \begin{cases}
+P(X=x_i)=\sum_{j=1}^{+\infty}P(X=x_i,Y=y_j) & \text{, descrete}\\
+f_X(x)=\int_{-\infty}^{+\infty} f(x,y)\mathrm{d}y & \text{, continuous}\\
+\end{cases}\end{equation}
+
+\begin{equation}\begin{cases}
+p(Y=y_j)=\sum_{i=1}^{+\infty}P(X=x_i,Y=y_j) & \text{, descrete}\\
+f_Y(y)=\int_{-\infty}^{+\infty} f(x,y)\mathrm{d}x & \text{, continuous}\\
+\end{cases}\end{equation}
+
+
+\paragraph{Conditional distribution}
+\textbf{Conditional PMF}:
+\begin{equation}
+p(X=x_i|Y=y_j)=\dfrac{p(X=x_i,Y=y_j)}{p(Y=y_j)} \text{ if } p(Y)>0
+\end{equation}
+The pmf $p(X|Y)$ is called \textbf{conditional probability}.
+
+\textbf{Conditional PDF}:
+\begin{equation}
+f_{X|Y}(x|y)=\dfrac{f(x,y)}{f_Y(y)}
+\end{equation}
+
+\paragraph{Bayes rule}
+\begin{equation}
+\begin{split}
+p(Y=y|X=x) & =\dfrac{p(X=x,Y=y)}{p(X=x)} \\
+           & =\dfrac{p(X=x|Y=y)p(Y=y)}{\sum_{y'}p(X=x|Y=y')p(Y=y')}
+\end{split}
+\end{equation}
+
+
+\paragraph{Independence and conditional independence}
+We say $X$ and $Y$ are unconditionally independent or marginally independent, denoted $X \perp Y$, if we can represent the joint as the product of the two marginals, i.e.,
+\begin{equation}
+X \perp Y=P(X,Y)=P(X)P(Y)
+\end{equation}
+
+We say $X$ and $Y$ are conditionally independent(CI) given $Z$ if the conditional joint can be written as a product of conditional marginals:
+\begin{equation}
+X \perp Y|Z=P(X,Y|Z)=P(X|Z)P(Y|Z)
+\end{equation}
+
+\paragraph{Quantiles}
+Since the cdf $F$ is a monotonically increasing function, it has an inverse; let us denote this by $F^{-1}$. If $F$ is the cdf of $X$ , then $F^{-1}(\alpha)$ is the value of $x_{\alpha}$ such that $P(X \leq x_{\alpha})=\alpha$; this is called the $\alpha$ quantile of $F$. The value $F^{-1}(0.5)$ is the \textbf{median} of the distribution, with half of the probability mass on the left, and half on the right. The values $F^{-1}(0.25)$ and $F^{−1}(0.75)$are the lower and upper \textbf{quartiles}.
+
+\paragraph{Mean and variance}
+The most familiar property of a distribution is its \textbf{mean},or \textbf{expected value}, denoted by $\mu$. For discrete rv’s, it is defined as $\mathbb{E}[X] \triangleq \sum_{x \in \mathcal{X}}xp(x)$, and for continuous rv’s, it is defined as $\mathbb{E}[X] \triangleq \int_{\mathcal{X}}xp(x)\mathrm{d}x$. If this integral is not finite, the mean is not defined (we will see some examples of this later). 
+
+The \textbf{variance} is a measure of the “spread” of a distribution, denoted by $\sigma^2$. This is defined as follows:
+\begin{align}
+var[X]& =\mathbb{E}[(X-\mu)^2] \\
+      & =\int{(x-\mu)^2p(x)\mathrm{d}x} \nonumber \\
+      & =\int{x^2p(x)\mathrm{d}x}+{\mu}^2\int{p(x)\mathrm{d}x}-2\mu\int{xp(x)\mathrm{d}x} \nonumber \\
+	  & =\mathbb{E}[X^2]-{\mu}^2
+\end{align}
+
+from which we derive the useful result
+\begin{equation}
+\mathbb{E}[X^2]=\sigma^2+{\mu}^2
+\end{equation}
+
+The \textbf{standard deviation} is defined as
+\begin{equation}
+std[X] \triangleq \sqrt{var[X]}
+\end{equation}
+
+This is useful since it has the same units as $X$ itself.
+
+\paragraph{Some common discrete distributions}
+In this section, we review some commonly used parametric distributions defined on discrete state spaces, both finite and countably infinite.
+
+
+\paragraph{The Bernoulli and binomial distributions}
+
+\begin{definition}
+Now suppose we toss a coin only once. Let $X \in \{0,1\}$ be a binary random variable, with probability of “success” or “heads” of $\theta$. We say that $X$ has a \textbf{Bernoulli distribution}. This is written as $X \sim \text{Ber}(\theta)$, where the pmf is defined as 
+\begin{equation}
+\text{Ber}(x|\theta) \triangleq \theta^{\mathbb{I}(x=1)}(1-\theta)^{\mathbb{I}(x=0)}
+\end{equation}
+\end{definition}
+
+
+\begin{definition}
+Suppose we toss a coin $n$ times. Let $X \in \{0,1,\cdots,n\}$ be the number of heads. If the probability of heads is $\theta$, then we say $X$ has a \textbf{binomial distribution}, written as $X \sim \text{Bin}(n, \theta)$. The pmf is given by 
+\begin{equation}\label{eqn:binomial-pmf}
+\text{Bin}(k|n,\theta) \triangleq \dbinom{n}{k}\theta^k(1-\theta)^{n-k}
+\end{equation}
+\end{definition}
+
+
+\paragraph{The multinoulli and multinomial distributions}
+
+\begin{definition}
+The Bernoulli distribution can be used to model the outcome of one coin tosses. To model the outcome of tossing a K-sided dice, let $\vec{x} =(\mathbb{I}(x=1),\cdots,\mathbb{I}(x=K)) \in \{0,1\}^K$ be a random vector(this is called \textbf{dummy encoding} or \textbf{one-hot encoding}), then we say $X$ has a \textbf{multinoulli distribution}(or \textbf{categorical distribution}), written as $X \sim \text{Cat}(\theta)$. The pmf is given by: 
+\begin{equation}
+p(\vec{x}) \triangleq \prod\limits_{k=1}^K\theta_k^{\mathbb{I}(x_k=1)}
+\end{equation}
+\end{definition}
+
+\begin{definition}
+Suppose we toss a K-sided dice $n$ times. Let $\vec{x} =(x_1,x_2,\cdots,x_K) \in \{0,1,\cdots,n\}^K$ be a random vector, where $x_j$ is the number of times side $j$ of the dice occurs, then we say $X$ has a \textbf{multinomial distribution}, written as $X \sim \text{Mu}(n, \vec{\theta})$. The pmf is given by 
+\begin{equation}\label{eqn:multinomial-pmf}
+p(\vec{x}) \triangleq \dbinom{n}{x_1 \cdots x_k} \prod\limits_{k=1}^K\theta_k^{x_k}
+\end{equation}
+where $\dbinom{n}{x_1 \cdots x_k} \triangleq \dfrac{n!}{x_1!x_2! \cdots x_K!}$
+\end{definition}
+
+Bernoulli distribution is just a special case of a Binomial distribution with $n=1$, and so is multinoulli distribution as to multinomial distribution. See Table \ref{tab:multinomial-summary} for a summary.
+
+\begin{table}
+\caption{Summary of the multinomial and related distributions.}
+\label{tab:multinomial-summary}
+\centering
+\begin{tabular}{llll}
+\hline\noalign{\smallskip}
+Name & K & n & X \\
+\noalign{\smallskip}\svhline\noalign{\smallskip}
+Bernoulli & 1 & 1 & $x \in \{0,1\}$ \\
+Binomial & 1 & - & $\vec{x} \in \{0,1,\cdots,n\}$ \\
+Multinoulli & - & 1 & $\vec{x} \in \{0,1\}^K, \sum_{k=1}^K x_k=1$ \\
+Multinomial & - & - & $\vec{x} \in \{0,1,\cdots,n\}^K, \sum_{k=1}^K x_k=n$ \\
+\noalign{\smallskip}\hline
+\end{tabular}
+\end{table} 
+
+
+\paragraph{The Poisson distribution}
+\begin{definition}
+We say that $X \in \{0,1,2,\cdots\}$ has a \textbf{Poisson distribution} with parameter $\lambda>0$, written as $X \sim \text{Poi}(\lambda)$, if its pmf is
+\begin{equation}
+p(x|\lambda)=e^{-\lambda}\dfrac{\lambda^x}{x!}
+\end{equation}
+\end{definition}
+
+The first term is just the normalization constant, required to ensure the distribution sums to 1.
+
+The Poisson distribution is often used as a model for counts of rare events like radioactive decay and traffic accidents. 
+
+\paragraph{The empirical distribution}
+The \textbf{empirical distribution function}\footnote{\url{http://en.wikipedia.org/wiki/Empirical_distribution_function}}, or \textbf{empirical cdf}, is the cumulative distribution function associated with the empirical measure of the sample. Let $\mathcal{D}=\{x_1,x_2,\cdots,x_N\}$ be a sample set, it is defined as 
+\begin{equation}
+F_n(x) \triangleq \dfrac{1}{N}\sum\limits_{i=1}^N\mathbb{I}(x_i \leq x)
+\end{equation}
+
+
+\paragraph{Some common continuous distributions}
+In this section we present some commonly used univariate (one-dimensional) continuous probability distributions.
+
+
+\paragraph{Gaussian (normal) distribution}
+
+% \begin{table}
+% \caption{Summary of Gaussian distribution}
+% \centering
+% \begin{tabular}{cccccc}
+% \hline\noalign{\smallskip}
+% Name & Written as & $f(x)$ & $\mathbb{E}[X]$ & mode & $\text{var}[X]$ \\
+% \noalign{\smallskip}\svhline\noalign{\smallskip}
+% Gaussian distribution & $X \sim \mathcal{N}(\mu,\sigma^2)$ & $\dfrac{1}{\sqrt{2\pi}\sigma}e^{-\frac{1}{2\sigma^2}\left(x-\mu\right)^2}$ & $\mu$ & $\mu$ & $\sigma^2$ \\
+% \noalign{\smallskip}\hline
+% \end{tabular}
+% \end{table} 
+
+If $X \sim N(0,1)$,we say $X$ follows a \textbf{standard normal} distribution.
+
+The Gaussian distribution is the most widely used distribution in statistics. There are several reasons for this. 
+\begin{enumerate}
+\item First, it has two parameters which are easy to interpret, and which capture some of the most basic properties of a distribution, namely its mean and variance. 
+\item Second,the central limit theorem (Section TODO) tells us that sums of independent random variables have an approximately Gaussian distribution, making it a good choice for modeling residual errors or “noise”. 
+\item Third, the Gaussian distribution makes the least number of assumptions (has maximum entropy), subject to the constraint of having a specified mean and variance, as we show in Section TODO; this makes it a good default choice in many cases. 
+\item Finally, it has a simple mathematical form, which results in easy to implement, but often highly effective, methods, as we will see. 
+\end{enumerate}
+See (Jaynes 2003, ch 7) for a more extensive discussion of why Gaussians are so widely used.
+
+
+\begin{figure}[hbtp]
+\centering
+\subfloat[]{\includegraphics[scale=.70]{robustness-a.png}} \\
+\subfloat[]{\includegraphics[scale=.70]{robustness-b.png}}
+\caption{Illustration of the effect of outliers on fitting Gaussian, Student and Laplace distributions. (a) No outliers (the Gaussian and Student curves are on top of each other). (b) With outliers. We see that the Gaussian is more affected by outliers than the Student and Laplace distributions.}
+\label{fig:robustness} 
+\end{figure}
+
+If $\nu=1$, this distribution is known as the \textbf{Cauchy} or \textbf{Lorentz} distribution. This is notable for having such heavy tails that the integral that defines the mean does not converge.
+
+To ensure finite variance, we require $\nu>2$. It is common to use $\nu=4$, which gives good performance in a range of problems (Lange et al. 1989). For $\nu \gg 5$, the Student distribution rapidly approaches a Gaussian distribution and loses its robustness properties.
+
+
+Here $\mu$ is a location parameter and $b>0$ is a scale parameter. See Figure \ref{fig:pdfs-for-NTL} for a plot.
+
+Its robustness to outliers is illustrated in Figure \ref{fig:robustness}. It also put mores probability density at 0 than the Gaussian. This property is a useful way to encourage sparsity in a model, as we will see in Section TODO.
+
+
+
+\paragraph{Introduction}
+Linear regression is the “work horse” of statistics and (supervised) machine learning. When augmented with kernels or other forms of basis function expansion, it can model also nonlinear relationships. And when the Gaussian output is replaced with a Bernoulli or multinoulli distribution, it can be used for classification, as we will see below. So it pays to study this model in detail.
+
+
+\paragraph{Representation}
+
+\begin{equation}
+p(y|\vec{x},\vec{\theta})=\mathcal{N}(y|\vec{w}^T\vec{x}, \sigma^2)
+\end{equation}
+where $\vec{w}$ and $\vec{x}$ are extended vectors, $\vec{x}=(1,x)$, $\vec{w}=(b,w)$.
+
+Linear regression can be made to model non-linear relationships by replacing $\vec{x}$ with some non-linear function of the inputs, $\phi(\vec{x})$ \begin{equation}
+p(y|\vec{x},\vec{\theta})=\mathcal{N}(y|\vec{w}^T\phi(\vec{x}), \sigma^2)
+\end{equation}
+
+This is known as \textbf{basis function expansion}. (Note that the model is still linear in the parameters $\vec{w}$, so it is still called linear regression; the importance of this will become clear below.) A simple example are polynomial basis functions, where the model has the form
+\begin{equation}
+\phi(x)=(1, x, \cdots, x^d)
+\end{equation}
+
+
+
+\paragraph{MLE}
+Instead of maximizing the log-likelihood, we can equivalently minimize the \textbf{negative log likelihood} or \textbf{NLL}:
+\begin{equation}
+\text{NLL}(\vec{\theta}) \triangleq -\ell(\vec{\theta})=-\log(\mathcal{D}|\vec{\theta})
+\end{equation}
+
+The NLL formulation is sometimes more convenient, since many optimization software packages are designed to find the minima of functions, rather than maxima.
+
+Now let us apply the method of MLE to the linear regression setting. Inserting the definition of the Gaussian into the above, we find that the log likelihood is given by
+\begin{align}
+\ell(\vec{\theta})& =\sum\limits_{i=1}^N \log\left[\dfrac{1}{\sqrt{2\pi}\sigma}\exp\left(-\dfrac{1}{2\sigma^2}(y_i-\vec{w}^T\vec{x}_i)^2\right)\right] \\
+     & =-\dfrac{1}{2\sigma^2}\text{RSS}(\vec{w})-\dfrac{N}{2}\log(2\pi\sigma^2)
+\end{align}
+
+RSS stands for \textbf{residual sum of squares} and is defined by
+\begin{equation}
+\text{RSS}(\vec{w}) \triangleq \sum\limits_{i=1}^N (y_i-\vec{w}^T\vec{x}_i)^2
+\end{equation}
+
+We see that the MLE for $\vec{w}$ is the one that minimizes the RSS, so this method is known as \textbf{least squares}.
+
+Let's drop constants wrt $\vec{w}$ and NLL can be written as
+\begin{equation}
+\text{NLL}(\vec{w}) = \dfrac{1}{2}\sum\limits_{i=1}^N (y_i-\vec{w}^T\vec{x}_i)^2
+\end{equation}
+
+There two ways to minimize NLL$(\vec{w})$.
+
+
+\paragraph{OLS}
+Define $\vec{y}=(y_1,y_2,\cdots,y_N)$, $\vec{X}=\left(\begin{array}{c}\vec{x}_1^T \\ \vec{x}_2^T \\ \vdots \\ \vec{x}_N^T\end{array}\right)$, then NLL$(\vec{w})$ can be written as
+\begin{equation}
+\text{NLL}(\vec{w})=\dfrac{1}{2}(\vec{y}-\vec{X}\vec{w})^T(\vec{y}-\vec{X}\vec{w})
+\end{equation}
+
+When $\mathcal{D}$ is small(for example, $N < 1000$), we can use the following equation to compute \vec{w} directly
+\begin{equation}
+\hat{\vec{w}}_{\mathrm{OLS}}=(\vec{X}^T\vec{X})^{-1}\vec{X}^T\vec{y}
+\end{equation}
+
+The corresponding solution $\hat{\vec{w}}_{\mathrm{OLS}}$ to this linear system of equations is called the \textbf{ordinary least squares} or \textbf{OLS} solution.
+
+\begin{proof}
+We now state without proof some facts of matrix derivatives (we won’t need all of these at this section).
+\begin{eqnarray}
+trA &\triangleq& \sum\limits_{i=1}^n A_{ii} \nonumber \\
+\frac{\partial}{\partial A}AB &=& B^T \\
+\frac{\partial}{\partial A^T}f(A) &=& \left[\frac{\partial}{\partial A}f(A)\right]^T \label{eqn:matrix-1} \\
+\frac{\partial}{\partial A}ABA^TC &=& CAB+C^TAB^T \label{eqn:matrix-2} \\
+\frac{\partial}{\partial A}|A| &=& |A|(A^{-1})^T
+\end{eqnarray}
+
+Then,
+\begin{eqnarray*}
+\text{NLL}(\vec{w}) &=& \frac{1}{2N}(\vec{X}\vec{w}-\vec{y})^T(\vec{X}\vec{w}-\vec{y}) \\
+\frac{\partial \text{NLL}}{\vec{w}} &=& \frac{1}{2} \frac{\partial}{\vec{w}} (\vec{w}^T\vec{X}^T\vec{X}\vec{w}-\vec{w}^T\vec{X}^T\vec{y}-\vec{y}^T\vec{X}\vec{w}+\vec{y}^T\vec{y}) \\
+                           &=& \frac{1}{2} \frac{\partial}{\vec{w}} (\vec{w}^T\vec{X}^T\vec{X}\vec{w}-\vec{w}^T\vec{X}^T\vec{y}-\vec{y}^T\vec{X}\vec{w}) \\
+						   &=& \frac{1}{2} \frac{\partial}{\vec{w}} tr(\vec{w}^T\vec{X}^T\vec{X}\vec{w}-\vec{w}^T\vec{X}^T\vec{y}-\vec{y}^T\vec{X}\vec{w}) \\
+						   &=& \frac{1}{2} \frac{\partial}{\vec{w}} (tr\vec{w}^T\vec{X}^T\vec{X}\vec{w}-2tr\vec{y}^T\vec{X}\vec{w})
+\end{eqnarray*}
+
+Combining Equations \ref{eqn:matrix-1} and \ref{eqn:matrix-2}, we find that 
+\begin{equation*}
+\frac{\partial}{\partial A^T}ABA^TC = B^TA^TC^T+BA^TC
+\end{equation*}
+
+Let $A^T=\vec{w}, B=B^T=\vec{X}^T\vec{X}$, and $C=I$, Hence,
+\begin{eqnarray}
+\frac{\partial \text{NLL}}{\vec{w}} &=& \frac{1}{2} (\vec{X}^T\vec{X}\vec{w}+\vec{X}^T\vec{X}\vec{w} -2\vec{X}^T\vec{y}) \nonumber \\
+						   &=& \frac{1}{2} (\vec{X}^T\vec{X}\vec{w} - \vec{X}^T\vec{y}) \nonumber \\
+\frac{\partial \text{NLL}}{\vec{w}} &=& 0 \Rightarrow \vec{X}^T\vec{X}\vec{w} - \vec{X}^T\vec{y} =0 \nonumber \\
+\vec{X}^T\vec{X}\vec{w} &=& \vec{X}^T\vec{y} \label{eqn:normal-equation} \\
+\hat{\vec{w}}_{\mathrm{OLS}} &=& (\vec{X}^T\vec{X})^{-1}\vec{X}^T\vec{y} \nonumber
+\end{eqnarray}
+\end{proof}
+
+Equation \ref{eqn:normal-equation} is known as the \textbf{normal equation}.
+
+\paragraph{Final} Eigenvalues of Laplacian matrix of the complete graph: if eigs are $\lambda_1, \dots, \lambda_n$, then eigenvalues of Laplacian are $d - \lambda_1, \dots, d - \lambda_n$.
+
+\paragraph{Why better for Count to return min instead of average?} a) Since we always increment CMS[i][hi(x)] for each i when x appears, CMS[i][hi(x)] can only be an overestimate of the actual count of x. Therefore taking the minimum over all i provides a closer estimate of the count of x than taking the average.
+
+\paragraph{PCA vs JL}
+a) PCA computes the k (k<<m) eigenvectors of the covariance matrix of m data points, which correspond to the largest eigenvalues, trying to express the data points as a sum of appropriately scaled vectors, thus revealing low-dimensional linear structure in the data. JL multiplies each of the input data point with an appropriate matrix of i.i.d. entries from a standard Gaussian distribution thus producing a data point with fewer coordinates (the coordinates now have no intrinsic meaning) as the original. However, this mapping has the property that pairwise euclidean distances are preserved. JL has also the nice property of being data-oblivious.
+b) PCA is more appropriate for visualization. Usually plotting the first 2 or 3 components (as we did with genome data) will contain a lot of interesting insights about the data. JL reduces the dimension but not to a point where visualization is intuitive.
+c) PCA exactly tries to capture the low-dimensional linear structure as it tries to express all data points as the sum of a few vectors scaled appropriately. However, if the structure is low-dimensional but non-linear PCA will fail.
+d) JL because if the noise is in a particular direction then the relative distances wouldn’t be influenced a lot. PCA as we saw in the problem set tries to capture this noise as part of a latent variables’ dependence and doesn’t perform well.
+e) JL would be appropriate for NN search queries and classification since it approximately preserves the pairwise (euclidean) distances used in the computations of NN. PCA offers no guarantees about preserving pairwise distances.
+
+
+
+
+
+
+\end{document}
+
+

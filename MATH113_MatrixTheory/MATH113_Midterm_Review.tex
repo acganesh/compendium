@@ -1,0 +1,178 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{todonotes}
+\usepackage{amsthm}
+\usepackage{amsopn}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{libertine}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{prop}{Proposition}
+
+\usepackage{latexsym}
+\usepackage{bbm}
+\usepackage[small,bf]{caption2}
+\usepackage{graphics}
+\usepackage{epsfig}
+\usepackage{amsopn}
+\usepackage{url}
+
+\newcommand{\bc}{\binom}
+\newcommand{\bx}{\boxed}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\Ra}{\mathcal{R}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\ds}{\displaystyle}
+
+% From stackexchange
+\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
+
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\range}{range}
+
+\usepackage[parfill]{parskip}
+\usepackage[margin=1in]{geometry}
+
+\pagestyle{fancy}
+
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\T}{\text}
+
+\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
+
+\def\Ber{\text{Ber}}
+\def\ub{\underbrace}
+\def\UU{\mathcal{U}}
+\def\WW{\mathcal{W}}
+\def\XX{\mathcal{X}}
+\def\VV{\mathcal{V}}
+\def\Unif{\text{Unif}}
+\def\Xh{\hat{X}}
+\def\P{\text{P}}
+\def\PP{\mathbb{P}}
+\def\CC{\mathbb{C}}
+\def\KK{\mathbb{K}}
+\def\lb{\lambda}
+
+\title{MATH 113 - Matrix Theory; Midterm Review}
+\author{Instructor: Michael Kemeny; Notes: Adithya Ganesh}
+
+\lhead{MATH 113}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\section{Notes on 3.F: Duality}
+
+\begin{definition}
+  A linear functional on $V$ is a linear map from $V$ to $\mbf{F}$, i.e. an element of $\mathcal{L}(V, \mbf{F})$. \\
+\end{definition}
+
+\begin{definition}
+  The dual space of $V$, denoted $V'$ is the vector space of all linear functions on $V$.  In other words, $V' = \mathcal{L}(V, \mbf{F})$.
+\end{definition}
+
+Note that $\dim V' = \dim V$.  This follows from 3.61, which states that  $\dim \mathcal{L}(V, W) = \dim (V) \dim(W)$.
+
+\begin{definition}
+  If $v_1, \dots, v_n$ is a basis of $V$, then the dual basis of $v_1, \dots, v_n$ is the list $\phi_1, \dots, \phi_n$ of elements of $V'$ where each $\phi_j$ is the linear functional on $V$ such that
+
+  \[
+    \phi_j(v_k) =
+    \begin{cases}
+      1; \qquad \text{ if } k = j \\
+      0; \qquad \text{ if } k \neq j.
+    \end{cases}
+    \]
+\end{definition}
+
+%
+
+\section{Review}
+
+\begin{itemize}
+  \item Let $T \in L(V, W)$.  Then $T$ is injective if and only if $\Null T = \left\{ 0 \right\}$.
+  \item Fundamental theorem of linear maps.  Let $T$ be a linear map from $V$ to $W$.  Then
+    \[
+      \dim V = \dim \Null T + \dim \range T
+      \]
+    \item Matrix of a linear map.  Suppose $T \in L(V, W)$ and $v_1, \dots, v_n$ is a basis of $V$ and $w_1, \dots, w_m$ is a basis of $W$.  The matrix of $T$ w.r.t. these bases is the $m \times n$ matrix whose entries $A_{j, k}$ are defined by
+
+      \[
+        Tv_k = A_{1, k} w_1 + \dots + A_{m, k} w_m.
+      \]
+
+      (Look at picture on pg. 71).
+
+    \item A linear functional on $V$ is a linear map from $V$ to $F$.
+
+    \item The dual space of $V$, denoted $V'$, is the vector space of all linear functionals on $V$, with $V' = L(V, F)$.  Note that $\dim V' = \dim V$.
+
+    \item If $v_1, \dots, v_n$ is a basis of $V$, then the dual basis of $v_1, \dots, v_n$ is the list $\phi_1, \dots, \phi_n$ of elements of $V'$, where each $\phi_j$ satisfies $\phi_j(v_k) = 1$ if $k = j$, else $0$.
+
+    \item Suppose $V$ is finite dimensional and $U$ is s subspace of $V$.  Then
+      \[
+        \dim U + \dim U^0 = \dim V.
+      \]
+
+    \item (3.5) Suppose $v_1, \dots, v_n$ is a basis of $V$ and $w_1, \dots, w_n \in W$.  Then there exists a unique linear map $T: V \to W$ such that
+      \[
+        Tv_j = w_j
+      \]
+      for each $j = 1, \dots, n$.
+
+    \item Volume functions.  A function $f: \RR^2 \times \RR^2 \to \RR$ is a volume function if it satisfies bilinearity and alternation.
+      \begin{itemize}
+        \item Bilinearity: $f(u, av + bw) = a f(u, v) + b f(u, w)$ and $f(au + bv, w) = a f(u, w) + b f(v, w)$.
+        \item Alternation, $f(u, u) =0$.
+      \end{itemize}
+
+    \item Note that volume functions are a vector space.
+
+    \item In general, can write volume functions in general for multilinear functions.
+
+    \item Swapping two vectors changes the sign of the volume.
+
+    \item For any permutation, define $inv(\sigma)$ to be the number of inversions.  The number of times that $i < j$, but $\sigma(i) > \sigma(j)$.
+
+    \item For any permutation, define the sign as $(-1)^{inv(\sigma)}$.
+
+    \item If $A_{ij}$ is an $n \times n$ over a field $k$, then $\det A$ is
+      \[
+        \det A = \sum_{\sigma \in \Sigma_n} \sign(\sigma) A_{\sigma(1), 1} \dots A_{\sigma(n), n}
+      \]
+
+    \item Q1a.  If $T$ is injective, then $Tv_1 = Tv_2$ implies $v_1 = v_2$.  To show linear independence, we claim that
+      \[
+        a_1 Tv_1 + a_2 Tv_2 + \dots + a_n T v_n = 0
+        \]
+        implies $v_i = 0$ for all $i$.
+
+    \item Q2.
+
+\end{itemize}
+
+\end{document}

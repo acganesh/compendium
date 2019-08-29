@@ -1,0 +1,1685 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{todonotes}
+\usepackage{amsthm}
+\usepackage{amsopn}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{libertine}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{sol}{Solution}
+
+\usepackage{latexsym}
+\usepackage{bbm}
+\usepackage[small,bf]{caption2}
+\usepackage{graphics}
+\usepackage{epsfig}
+\usepackage{amsopn}
+\usepackage{url}
+
+\usepackage[parfill]{parskip}
+\usepackage[margin=1in]{geometry}
+
+\newcommand{\bc}{\binom}
+\newcommand{\bx}{\boxed}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\Ra}{\mathcal{R}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ol}{\overline}
+
+% From stackexchange
+\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
+
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Syl}{Syl}
+%\newcommand{\mat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
+\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+
+
+
+\usepackage[parfill]{parskips
+\usepackage[margin=1in]{geometry}
+
+\pagestyle{fancy}
+
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\T}{\text}
+
+\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
+
+\def\Ber{\text{Ber}}
+\def\ub{\underbrace}
+\def\UU{\mathcal{U}}
+\def\WW{\mathcal{W}}
+\def\XX{\mathcal{X}}
+\def\VV{\mathcal{V}}
+\def\Unif{\text{Unif}}
+\def\Xh{\hat{X}}
+\def\P{\text{P}}
+\def\PP{\mathbb{P}}
+\def\CC{\mathbb{C}}
+\def\KK{\mathbb{K}}
+\def\ZZ{\mathbb{Z}}
+\def\lb{\lambda}
+\def\rot{\text{rot}}
+
+\title{MATH 120 - Groups and Rings}
+\author{Instructor: Church; Notes: Adithya Ganesh}
+
+\lhead{MATH 120}
+
+\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Lecture 4: }
+
+\subsection{Homomorphisms}
+
+Two ways in which a homomorphisms can arise.
+
+\begin{itemize}
+  \item Define a function completely, and ask if its a homomorphism.
+  \item 
+\end{itemize}
+
+{\it Example.} Consider the group $GL_2 \RR$.  Consider the function called the determinant:
+
+\[
+  \det GL_2 \RR \to \RR^x.
+\]
+
+Fix matrix
+
+\[
+  \det \mat{a & b \\ c d} = ad - bc.
+\]
+
+We know the value of the function unambiguously.  The way to determine whether this is a homomorphism is to ask whether
+
+\[
+  \det (AB) = \det A \det B.
+\]
+
+{\it Side comment on notation.}  Note that $\RR^x$ should be viewed as the nonzero elements of $\RR$ as a group under multiplication.
+\[
+  \RR^x = \RR - \left\{ 0 \right\}, \times
+\]
+\[
+  \CC^x = \CC - \left\{ 0 \right\}, \times.
+\]
+
+What about $\ZZ^x$?  Clearly the nonzero elements of $\ZZ$ under multiplication is not a group.
+
+
+So concretely,
+
+\[
+  \RR^x = \left\{ \text{elements of $\RR$ with multiplicative inverses in $\RR$} \right\}
+\]
+
+Generalizing this to $\ZZ^x$, we know $\ZZ^x = \left\{ 1, -1 \right\}$ all have inverses.
+
+Another example:
+
+\[
+  (\ZZ / 8 \ZZ)^{x} = \left\{ 1, 3, 5, 7 \right\}
+\]
+
+In general,
+\[
+  (\ZZ / n \ZZ)^{x} = \left\{ m \text{ such that $n$ and $m$ are relatively prime} \right\}
+\]
+
+{\it Example.} Consider the absolute value function:
+
+\[
+  \RR^x \to \RR_{> 0}^{x}
+\]
+\[
+  x \mapsto |x|.
+\]
+
+Since it is true that
+\[
+  |x y| = |x| |y|,
+\]
+we know that the absolute value is a homomorphism.
+
+{\it Example.} Consider the sign function.
+
+\[
+  \RR^x \to \left\{ \pm 1 \right\}
+\]
+\[
+  x \mapsto
+  \begin{cases}
+    +1; \quad \text{if } x > 0 \\
+    -1; \quad \text{ if } x < 0.
+  \end{cases}
+\]
+
+Clearly,
+\[
+  \sign (xy) = \sign (x) \sign (y).
+\]
+
+{\it Example.} Consider the map
+\[
+  \RR \to \GL_2 \RR
+\]
+\[
+  x \mapsto \mat{\cos x & - \sin x \\ \sin x & \cos x}
+\]
+
+Is it true that
+\[
+  (cos (x+y), - \sin (x+ y), sin (x+y), cos (x+y)) = (cos x -sin x sin x cos x) (cos y, -sin y, sin y, cos y)
+\]
+
+\[
+  \mat{\cos x+y & - \sin (x+y) \\ \sin (x+y) & \cos (x+y)} = \mat{\cos x & - \sin x \\ \sin x & \cos x} \mat{\cos y & - \sin y \\ \sin y & \cos y}
+\]
+
+This is tricky, but it is
+\[
+  \text{rot}(x+y) = rot(x) \circ \rot (y)
+\]
+
+Notice that we can also show that there is a homomorphism on rotation without knoing the exact formula for the matrix.
+
+\subsection{Approach 2: Bottom-up homomorphisms}
+
+In this setting, partially define the map.  Define the function on generators for a group.  Then, ask if there exists a homomorphism (alternative phrasing: ask if it extends to a homomorphism).
+
+{\it Example.} Let $G = \ZZ_4 = \left\{ 1, x, x^2, x^3 \right\}$ with $x^4 = 1$.
+
+Questions we can ask
+
+Is there a homomorphism from $f_1: \ZZ_4 \to GL_2 \RR$ with $f(x) = \mat{0 & -1 \\ 1 & 0}$?
+
+Is there a homomorphism with $f_2(x) = \mat{2 & 0 \\ 0 & 1}$, and $f_3(x) = \mat{1 & 0 \\ 0 & -1}$
+
+Clearly $f_1$ and $f_3$ with matrix multiplication operations end up being homomorphisms (since the matrix raised to fourth powers are the identity).  But $f_2$ is not: since if you raise it to the fourth power, you do not get the identity.
+
+Key observation:
+\begin{itemize}
+  \item Whether or not there is a homomorphism, there is at most one.  i.e. If there is one, it's unique.  Why?  Because if it is a homomorphism, we must have
+    \[
+      f_1(x) = \mat{0 & -1 \\ 1 & 0};
+    \]
+    \[
+      f_1(x^2) = \mat{0 & -1 \\ 1 & 0}^2.
+    \]
+    \[
+    \dots
+  \]
+
+    We also know that
+    \[
+      f_1(x^4)= \mat{0 & -1 \\ 1 & 0}^4
+    \]
+    and
+    \[
+      f_1(x^5) = \mat{0 & -1 \\ 1 & 0}^5
+    \] 
+
+    But $x = x^5$, so $f(x)$ must equal $f(x^5)$!
+
+  But the element $C$ from $f_3$ has order 2!  We must have $C^4 = 1$ to obtain a well defined homomorphism, and this is fine).
+
+  There is only one homomorphism for {\it each question} above.
+
+\end{itemize}
+
+Question: is there a homomorphism $f: \ZZ \to \left\{ \pm 1 \right\}$ with $f(2) = 1$?
+
+Clearly, there is a trivial homomorphism $f(anything) = 1$.  We also have $f'(k) =(-1)^{k}$.
+
+If $G$ is generated by $\left\{ x, y, z \right\}$ and you pick $p, q, r \in H$, there's at most one homomorphism.
+
+Suppose you know $f_1: G \to H$ and $f_2: G \to H$.  You want to  know if $f_1 = f_2$.  Just need to check if $f_1(x) = f_2(x)$ for all $x$.
+
+This is very much like the theorem in linear algebra that says the value of a linear transformation is determined by its value on a basis.
+
+{\it Key observation 2.} In general, its hard to know if there is a homomorphism or not.  Suppose we had asked, instead that
+
+{\it Example.} Let $G = \text{subgroup of } GL_2 \CC$ generated by $a = \mat{i & 0 \\ 0 & -i}$ and $b = \mat{0 & -1 \\ 1 & 0}$.  Is there a homomorphism from $G \to \left\{ \pm 1 \right\}$ with $f(a) = -1$ and $(b) = -1$?
+
+Problem: we don't have a list of all the coincidences in the group $G$.  For example, suppose we had to know $a^2 bab = -1$ and $b^{-1} ab a^2b = 1$.  Without the list of coincidences, can't check whether this extends to a valid homomorphism.
+
+In the previou ssetting, we really do have a list of complete concidences, $x^k = x^l$, only if $k \equiv l \pmod{4}$.
+
+In the future, we will use the following notation, $Z_4 = < x | x^4 = 1>$ which is called a group presentation.  The only relation you need to know and all other relations follow from that.
+
+Q: With enough computation, is it possible to systematically enumerate these coincidences?  
+
+A: For this subgroup of GL2 C, the answer is yes (since there are only 8 elements).  But for an infinite group, this isn't in general possible, because you run into the halting problem.  This is broadly referred to as the ``word problem''.
+
+Frequent setting: you can have homomorphisms $f$ with $f: G \to \Perm(X)$ in a set, $Perm(X) = \text{group of permutations (bijections)}$ with $g: X \to X$.
+
+\section{Lecture 5}
+
+Notation: given a subset $T \subset G$, the notation
+\[
+  <T> = \text{subgroup of $G$ generated by $T$}
+\]
+\[
+  <T> = \cap H_{\text{all subgroups $H < G$}}
+\]
+
+Recall:
+\[
+  \text{Perm}(X) = \text{group of bijections $g: X \to X$ under O} 
+\]
+
+The symmetric group $S_n$ is defined as
+\[
+  S_n = \text{Perm}(\left\{ 1, 2, \dots, n \right\})
+\]
+
+Note the idea of cycle decomposition.  Suppose we have a setting where
+\begin{align*}
+  g(1) &= 4 \\
+  g(2) &= 3 \\
+  g(3) &= 2 \\
+  g(4) &= 5 \\
+  g(5) &= 1
+\end{align*}
+
+We can also draw out a diagram.
+
+Alternatively, we can decompose this into cycles.  Can write this as
+\[
+  g = \text{(1 4 5)(2 3)}
+\]
+
+This is called the ``cycle decomposition'' of $g$, where we express the group element as a product of disjoint cycles.
+
+Usually we drop length-1 cycles.  For example, in a setting with
+\[
+  h = \text{(1 2)(3)(4)(5)},
+\]
+we would usually write
+\[
+  h = \text{(1 2)}
+\]
+
+Note that symmetric groups are not abelian!  The order of function composition definitely matters.  However - disjoint cycles do commute with each other.
+
+What is the order of a permutation $\sigma \in S_n$?
+
+For example, the order of $\sigma = \text{(2 3)}$ is two.  In general, the order of a cycle decomposed permutation is the LCM of the cycle lengths.
+
+Cycle decomposition is unique up to ordering of each cycle + ordering withing each cycle.
+
+\subsection{Order}
+
+{\it HW question.} Recall the optional homework question - had to show that if $|g| = 2$, then $|G|$ is even.
+
+{\it More general statement.} More generally, if $|g| = k$, then $|G| \equiv 0 \pmod{k}$.  (If $g$ is a generator of the group $G$, then we know that $|G| = k$ exactly).
+
+{\it Remark.} Any element $g$ corresponds to a cyclic subgroup $<g>$.
+
+{\it Even more general.} (Lagrange's Theorem) If $H$ is any subgroup of $G$, then $|G|$ is divisible by $|H|$.
+
+{\it Notation.} The index of $H$ in $G$ is the whole number $|G| / |H|$. So, for example, if $|G| = 100$, and $H < G$, with $|H| = 25$, then the index $[G \cdot H] = 4$.
+
+Importantly, this makes sense even when we have infinite groups.  Consider $G = \ZZ$, with $H < G = \text{the multiples of $2$}$.  We can still say that $[G \cdot H] = 2$. \\
+
+\begin{example}
+  Let $p$ be a prime number.  Suppose $|G| = p$.  Then every $g \in G$ has $|g| = 1$ or $|g| = 7$.  This means that $G \equiv \ZZ_7$.
+\end{example}
+
+{\it Outline of proof.}  Define the following equivalence relation.  Given a subgroup $H < G$, we say $x \sim y$ iff there exists $h \in H$ such that $y = xh$.
+
+This is an equivalence relation exactly because $H$ is a subgroup.  Note that:
+\begin{itemize}
+  \item Reflexivity holds.  (since $1 \in H$)
+  \item Symmetry holds. (since $H$ is closed under inverses)
+  \item Transitivity holds. (since $H$ is closed under multiplication)
+\end{itemize}
+
+We will say that the equivalence class of $x$ is called $xH$ is called its left coset (of $H$ in $G$).  In particular,
+
+\begin{align*}
+  xH &= \left\{ y | x \sim y \right\} \\
+  &= \left\{ y | \exists h \text{ s.t. } y = xh \right\} \\
+  &= \left\{ xh | h \in H \right\} \\
+\end{align*}
+
+The key to the argument, which we will show on Friday, is that $|xH| = |H|$.  Therefore, $G$ can be partitioned into a bunch of cosets (which are all the same size); and hence
+\[
+  |G| = (\text{\# of cosets}) \cdot |H|
+\]
+\section{Lecture 6}
+
+{\it Problem setting.} Let $G$ be a group, $H < G$, and let $g \in G$.  We will discuss three notions of translations of $H$ by $g$.
+
+\begin{itemize}
+  \item {\it Left coset.} $\left\{ gH = \left\{ gh | h \in H \right\} \right\}$
+  \item {\it Right coset.} $\left\{ Hg = \left\{ hg | h \in H \right\} \right\}$
+  \item {\it Conjugate (of $H$ by $g$)} $gHg^{-1} = \left\{ ghg^{-1} | h \in H \right\}$
+\end{itemize} \\
+
+\begin{example}
+  Let $G = S_5$, and suppose $H = \left\{ \sigma \in G | \sigma(2) = 2 \right\}.$  Let $g = (1 2 3)(4 5)$.  Want to find $gH$, $Hg$, and $gHg^{-1}$.
+
+  Note that $|G| = 120$, $H = 24$.  Note that $|gH| = |Hg| = |gHg^{-1}| = 24$.  Compute the cosets and the conjugate.
+\end{example}
+
+Note that 
+\[
+  gH = \left\{ \sigma \in S_5 | \sigma(2) = 3 \right\}.
+\]
+\[
+  Hg = \left\{ \sigma \in S_5 | \sigma(1) = 2 \right\}.
+\]
+\[
+  gHg^{-1} = \left\{ \sigma \in S_5 | \sigma(3) = 3 \right\}.
+\]
+
+Also, it is clear that $gH$ and $Hg$ are not subgroups (not preserved under composition).  However, $gHg^{-1}$ is a subgroup.
+
+\begin{example}
+ 
+  Let $G = \text{Isometries}(\RR^2)$, that is, distance preserving bijections in the plane.  Let
+  \begin{align*}
+    H &= \left\{ h \in G | h(\mbf{0}) = \mbf{0} \right\} \\
+    g &= 90^{\circ} \text{ rotation around }  (1, 0)
+  \end{align*}
+
+  Compute the cosets and conjugate.
+\end{example}
+
+We can compute that
+\[
+  gH = \left\{ \gamma \in G | \gamma (\mbf{0}) = g(\mbf{0}) \right\}
+\]
+\[
+  Hg = \left\{ \gamma \in G | \gamma(q) = \mbf{0} \right\}
+\]
+\[
+  gHg^{-1} = \left\{ \gamma \in G | \gamma(p) = p \right\}
+\]
+
+(where $p = g(\mbf{0})$).
+
+{\it Question 1 on HW2.} Answer is $K = \ZZ$.  Look at solutions for details.
+
+On homework, discussed the notion of a kernel.  If $f: G \to Q$, then
+\[
+  \Ker (f) = \left\{ g \in G | f(g) = 1 \right\}.
+\]
+
+We can ask a question.  Can every subgroup $H < G$ be the kernel of something?
+
+
+Consider an example of $G = S_3 = \left\{ e, (1 2), (2 3), (1 3), (1 2 3), (1 3 2) \right\}$.  Set $H = \left\{ e, (1 2) \right\}.$
+
+Question.  If I tell you I have a homomorphism $f: G \to Q$, with $\Ker (f) = H$, how can you prove I'm lying?
+
+Answer. Write out where each element maps to:
+
+\begin{align*}
+  e & \to e \\
+  (1 2) & \to 1 \\
+  (2 3) & \to a \\
+  (1 3) & \to b \\
+  (1 2 3) & \to c \\
+  (1 3 2) & \to c^{-1}
+\end{align*}
+
+Note that
+\[
+  (12)(23) = (123)
+\]
+so
+\[
+  f(1 2) f(2 3) = f(1 2 3).
+\]
+Hence $1a = c$, that is $a = c$.  Similarly, $(1 3)(1 2) = (1 2 3)$ implies $b = c$. Finally, $(2 3)(1 3) = (1 2 3)$ implies $a b = c$.  This implies $a \cdot a = a$, which gives $a = 1$.
+
+That means, $H$ was not the kernel.  That means, the kernel was the entire group.
+
+\begin{prop}
+  If $H < \Ker (F)$, then $gHg^{-1} < \Ker (f)$ also, for all $g \in G$.
+\end{prop}
+
+\begin{proof}
+  Note that
+
+  \begin{align*}
+    f(ghg^{-1}) & = f(g) f(h) f(g)^{-1} \\
+    &= f(g) 1 f(g)^{-1} = 1.
+  \end{align*}
+
+  Therefore, this shows that if $K = \Ker (f)$, we must have $gKg^{-1} = K$ for all $g \in G$.
+\end{proof}
+
+\begin{definition}
+  We say that a subgroup $K < G$ is normal if $gKg^{-1} = K$ for all $G$.  Notation: we write $K \triangleleft G$.
+\end{definition}
+
+Note that the kernel of any homomorphism is always a normal subgroup.
+
+This is completely unlike linear algebra.  You need a normal subgroup to be the kernel of something.
+
+For normal subgroups, left cosets equal right cosets, since $gKg^{-1} = K$ implies $gK = Kg$.  This is not true otherwise.
+
+\section{Lecture 7}
+
+Recall the definition of a normal subgroup. \\
+
+\begin{definition}
+  A subgroup $N < G$ is normal if $gN = Ng$ for all $g \in G$.
+\end{definition}
+
+(Obviously, if $G$ is abelian, then every subgroup of $G$ is normal.)
+
+Recall, that the coset $gN$ is the equivalence class of $g$ under the equivalence relation $G \sim h$ if $h = gn$ for some $n \in N$.
+
+Last week, we saw that if you have some homomorphism $f: G \to H$, then $\Ker(f)$ is always a normal subgroup of $G$.
+
+{\it Question.} Give a normal subgroup $N \triangleleft G$, can we find a group $Q$ and a homomorphism $f: G \to Q$, with $\Ker(f) = N$?
+
+\begin{example}
+  Take $G = \ZZ$, and let $N = 2 \ZZ$.  Does there exist some $f: \ZZ \to Q$ with $\Ker(f) = 2 \ZZ$?
+
+  Let's first establish what this means:
+  \[
+    f(n) = 1 \text{ if $n$ even}
+  \]
+  \[
+    f(n) \neq 1 \text{ if $n$ odd}
+  \]
+
+  Now, from Friday, call $f(1) = q$.  Then we know that $f(n) = q^n$.  We must have
+  \[
+    f(-1) = q^{-1} = q \neq 1
+  \]
+  \[
+    f(0) = q^{0} = 1
+  \]
+  \[
+    f(1) = q \neq 1
+  \]
+  \[
+    f(2) = q^{2} = 1
+  \]
+  \[
+    f(3) = q^{3} = q \neq 1.
+  \]
+
+  Therefore, the only possible group has two elements, $1$ and $q$ (with $q^2 = 1$). \\
+\end{example}
+
+\begin{example}
+  Let $G = \ZZ$, and $N = 10 \ZZ$.  We would like some map $f: \ZZ \to Q$, with $\Ker(f) = 10\ZZ$.
+
+  We know that all of the multiples of $10$ must map to the identity in $Q$.  But we know more, we can state that
+  \[
+    f(m) = f(n) \Leftrightarrow 10 | (n-m).
+  \]
+  The $\Leftarrow$ direction is easy.  The $\Rightarrow$ direction is true because if not, the kernel would be bigger.
+
+  Note that
+  \[
+    A = \left\{ \dots, -10, 0, 10, 20 \right\} \text{ map to 1 in $Q$}
+  \]
+  \[
+    B = \left\{ \dots, -9, 1, 11, 22 \right\} \text{ map to other element in $Q$}
+  \]
+  \[
+    \dots
+  \]
+  \[
+    J = \left\{ \dots, -1, 9, 19, 29 \right\} \text{ map to a tenth element in $Q$}.
+  \]
+
+  Insight: what if we call $Q = \left\{ A, B, C, \dots, J \right\}$.  Define the group operation $B+C = D$, and we can take any element from these subsets, and get the ``answer'' $D$.
+
+  So $Q = \ZZ / 10 \ZZ$, which is our quotient group.  In other words:
+  \[
+    10 \ZZ = \Ker (\ZZ \twoheadrightarrow \ZZ / 10 \ZZ).
+  \]
+  or:
+  \[
+    N = \Ker(G \twoheadrightarrow G / N).
+  \]
+
+
+
+  Aside on notation: \footnote{Note that $\twoheadrightarrow$ indicates a surjective map, and $\hookrightarrow$ indicates an injective map.}
+\end{example}
+
+We now formally define quotient groups. \\
+
+\begin{definition}
+  Given a group $G$ and a normal subgroup $N \triangleleft G$, the quotient group $G / N$ is defined by:
+  \begin{itemize}
+    \item its elements are the cosets $gN$ (note that left = right cosets for a normal subgroup).  In other words, these are equivalence classes $\overline{g}$ under the notation $g \sim h$ iff $h = gn$.\footnote{On equivalence classes: $g \sim h \Leftrightarrow h \in \overline{g} \Leftrightarrow \overline{g} = \overline{h}$}
+    \item Its group operation is $\overline{g} \cdot \ol{h} = \ol{gh}$.  {\bf We need to check that this is well defined!  This is critical, and this is where it matters that $N$ is normal.}
+  \end{itemize}
+\end{definition}
+
+{\it Check that the quotient group is a group.}
+
+\begin{itemize}
+  \item Identity: $\ol{1} \cdot \ol{h} = \ol{1h} = \ol{h} = \ol{h \cdot 1} = \ol{h} \cdot \ol{1}$
+  \item Associativity: $\ol{a} \cdot (\ol{b} \cdot \ol{c}) = \ol{a} \cdot \ol{bc} = \ol{a \cdot (b \cdot c)} = \ol{(a \cdot b) \cdot c} = \ol{ab} \cdot \ol{c} = (\ol{a} \cdot \ol{b}) \cdot \ol{c}$.
+\end{itemize}
+
+Several comments: \footnote{This is somehow similar to compiled languages.  Check once that the quotient group is well defined, and know that can write ``loose'' notation that can't go wrong.} \footnote{(Note that 3.1 in the book is pretty confusing)}
+
+Note that there is a canonical surjective homomorphism
+\[
+  \pi: G \twoheadrightarrow G / N
+\]
+that takes $g \mapsto \pi(g) = \ol{g}$.
+
+\begin{remark}
+  What is the size of the quotient group?  Note that
+  \[
+    |G / N| = \text{# of cosets of $N$ in $G$}
+  \]
+  \[
+    = \text{index} [G: N]
+  \]
+  If $|G|$ is finite, then
+  \[
+    |G / N| = |G| / |N|
+  \]
+  Now, we can still define the index of two groups that are infinite.  Easy example:
+  \[
+    [\ZZ: 10 \ZZ] = | \ZZ / 10 \ZZ | = 10.
+  \]
+  \[
+    |\ZZ| / | 10 \ZZ | = \infty / \infty.
+  \]
+\end{remark}
+
+\begin{theorem} (First isomorphism theorem.)  If $f: G \to H$ is any homomorphism, then
+  \[
+    G / \Ker(f) \cong \text{Im}(f).
+  \]
+
+  To name the map:
+  \[
+    \psi(\ol{g}) = f(g).
+  \] 
+\end{theorem}
+
+This theorem seems really simple - but its subtle, because its not super clear if its obvious or if we need to prove it.
+
+{\it Checking that $\ol{g} \cdot \ol{h} = \ol{gh}$ is well defined.}  Suppose that $\ol{g} = \ol{a}$ and $\ol{h} = \ol{b}$.  Then 
+
+\begin{itemize}
+  \item $\ol{g} \cdot \ol{h} = \ol{gh}$
+  \item $\ol{g} \cdot \ol{b} = \ol{gb}$
+  \item $\ol{a} \cdot \ol{b} = \ol{ab}$
+\end{itemize}
+
+We need to check that
+\[
+  \ol{gh} = \ol{gb} = \ol{ab}.
+\]
+
+Suppose $\ol{h} = \ol{b}$.  Then there exists $m \in N$ such that $b = hm$.  We have
+\[
+  (gb) = (gb)m,
+\]
+so $\gb \sim gh$, i.e. $\ol{gb} = \ol{gh}$.
+
+Note that $\ol{a} = \ol{g}$, i.e. there exists $n \in N$ such that $a = gn$.   Therefore - 
+\[
+  ab = gnb = gbn'.
+\]
+
+Therefore $ab \sim gb$ so $\ol{ab} = \ol{gb}$.
+
+For the above, we have used normality, since we know that $nb \in Nb = bN$.
+
+\section{Lecture 8}
+
+\subsection{More on conjugation}
+
+{\it Comment from office hours.} It was brought up that we don't really have that many examples of abelian groups.  $D_{2n}$ is generally non-abelian ($D_2$ is the only abelian case).
+
+One of the main topics today will be {\it conjugation.}  Earlier, we saw that $gNg^{-1}$ is a notion of ``translation'' by $N$.  More explicitly, let us analyze $a$ vs $g a g^{-1}$.  
+
+Where might you have seen an equation like $b = g a g^{-1}$?  One place is linear algebra --- if $A$ and $B$ are matrices that represent the same linear transformation, but in different bases, then you get $B = C A C^{-1}$ where $C$ is the change of basis matrix.  In this setting $A$ and $B$ are ``the same,'' but in different coordinate systems.
+
+Suppose we have two sets $\left\{ x, y, z, w \right\}$ and $\left\{ 1, 2, 3, 4 \right\}$ with the bijection $f$ where $x \mapsto 1$, $y \mapsto 2$, $z \mapsto 4$, $w \mapsto 3$.  Suppose we had a permutation $\sigma \in \text{Perm}(\left\{ x, y, z, w \right\} )$
+where 
+\[
+  \sigma = (x y z)(w).
+\]
+
+The claim: the earlier bijection lets us ``turn'' this into a bijection of the set $\left\{ 1, 2, 3, 4 \right\}$.  We can remap the permutations to obtain
+
+\[
+  1 \to x \to y \to 2
+\]
+\[
+  2 \to y \to z \to 4
+\]
+\[
+  3 \to w \to w \to 3
+\]
+\[
+  4 \to z \to x \to 1.
+\]
+
+This composition can be expressed as $f \sigma f^{-1}$.
+
+More commonly, suppose we have some $g \in S_n$, and some $\sigma \in S_n$.  We can consider a conjugation $g \sigma g^{-1}$.  
+
+\begin{example}
+  Let $\sigma = \text{(1 2 7)(5 8)(3 4)}$, and let $g(i) = i+10 \pmod{100}$.  Then
+  \[
+    g \sigma g^{-1} = \text{(11 12 17)(15 18)(13 14)}.
+  \]
+\end{example}
+
+
+\begin{definition}
+  Let $G$ be a group and let $a, b \in G$.  We say that $a, b$ are conjugates (in G) if there exists $g \in G$, such that
+  \[
+    b = g a g^{-1}
+  \]
+
+  Notes:
+  \begin{itemize}
+    \item This is an equivalence relation.
+    \item The equivalence classes are called conjugacy classes.
+    \item Intuitively, the conjugacy classes group elements with the ``same structure.''
+    \item If $G$ is abelian, then conjugacy classes are just $\left\{ 1 \right\}$, $\left\{ a \right\}, \left\{ b \right\}, \dots$.
+  \end{itemize}
+\end{definition}
+
+  {\it Question.} When are two permutations $\sigma, \tau \in S_n$ conjugates?
+
+  Any permutation with a cycle decomposition in a ``3-2-2'' pattern is conjugate to $\sigma = \text{(1 2 7)(5 8)(3 4)}$, for example $\text{(14 3 2)(7 8)(10 11)}$.
+
+  {\it Answer.} If their cycle decompositions have the same number of cycles of each length.
+
+  \begin{prop}
+    Every $A \in GL_2 \CC$ is conjugate to some $B$ of the form $B = \mat{x & y \\ 0 & z}$.
+  \end{prop}
+
+  If you apply this $B$ to $e_1 = \text{[1 0]}$, you get $B e_1 = x e_1$, i.e. $e_1$ is an eigenvector. So this holds because every $A$ has an eigenvector.
+
+  {\it Note.} Fix some element $g \in G$.  Consider the function $\alpha_g : G \to G$ given by conjugation: $\alpha_g(h) = ghg^{-1}$.  Is this a homomorphism?
+
+Consider
+\[
+  \alpha_g(hk) = g hk g^{-1}
+\]
+\[
+  \alpha_g(h) \alpha_g(k) = ghg^{-1} g k g^{-1} = ghk g^{-1}.
+  \]
+
+  So yes, it is a homomorphism.  What is the kernel of this function?  Just the identity.
+
+  If $f : G \to H$ is a homomorphism, then the following are equivalent:
+
+  \begin{itemize}
+    \item $f$ is injective
+    \item $\Ker(f) = \left\{ 1 \right\}$.
+  \end{itemize}
+
+  This implies that $\alpha_g$ is actually an isomorphism from $G$ to itself.
+
+  {\it Question.} Do the size of conjugacy classes divide the order of the group?  A: Yes, but not for the same reason as in Lagrange's theorem.
+
+  \subsection{Group actions}
+  
+  We start with the definition. \\
+
+  \begin{definition}
+    An action of a group $G$ on a set $X$ is a homomorphism $\alpha: G \to \text{Perm}(X)$.
+  \end{definition}
+
+  In other words, to each $g \in G$, we can associate a function $\alpha_g : X \to X$ such that
+  \[
+    \alpha_g \circ \alpha_h = \alpha_{gh}.
+  \]
+
+  This is almost the same is a group of functions, but the only difference is that nobody says that this homomorphism has to be injective.
+
+  Note: this is discussed in section 1.7 in the text, but it uses a different framework.
+
+  Concretely, suppose we have a group $D_8$, with a map to $\text{Perm}(\RR^2)$.  Since for example ``rotation by 90 degrees'' can be viewed as a translation in the plane.  So --- this is an action of $D_8$ on $\RR^2$.
+
+  The {\it action} is a realization of the group as functions on the plane.  The important thing here is {\it how the homomorphism is defined} (not the given $D_8$ or $\RR^2$). \\
+
+  But note that group actions don't always have natural geometric interpretations.
+  \begin{example}
+    Let $G = \ZZ / 7 \ZZ$, and let $X = \left\{ 1, 2, 3, 4 \right\}$.  Claim: any action of $G$ on $X$ is trivial.
+  \end{example}
+
+  {\it Notation in book.} Suppose we have $x \in X$, and we can consider $\alpha_g : X \to X$.  Then we can view $\alpha_g(x) \in X$.  One thing the book points out is that you can write $\alpha_g(x)$ as $g \cdot x$.  But the $\alpha_g(x)$ notation is arguably a bit clearer.
+
+
+  \section{Lecture 9}
+
+  We start be defining the notion of a {\it product group.}  If $A$ and $B$ are groups, then we can define a group on
+  \[
+    A \times B = \left\{ (a, b) | a\in A, b \in B \right\}.
+  \]
+  The operation is defined component wise:
+  \[
+    (a, b) \cdot (\alpha, \beta) = (a \alpha, b \beta).
+  \]
+
+  {\it Comments on question 6.}  Can we find some group $K$ such that $n(K, G) = |G|^2$.  As many reasoned correctly, we must have $K$ have two generators.  The reason $\ZZ^2$ does not work is because although it is generated by two elements $(1, 0)$ and $(0, 1)$, this group is abelian.  Now, the number of homomorphisms $n(\ZZ^2, G)$, is
+  \[
+    n(\ZZ^2, G) = |\left\{ (g, h) | g\in G, h \in G, gh = hg \right\}| \leq |G|^2.
+  \]
+
+  (Mentioning $\ZZ^2$ and arguing why it is wrong is much better than turning in a ``false'' proof that $\ZZ^2$ works.)
+
+  Now, we want to build some $K = F_2$, defined as the ``free group on two generators.''  (Free, here is a semi-technical term, see the idea of a ``free module.'')  We want:
+
+  \begin{itemize}
+    \item $F_2$ is generated by two elements.
+    \item $a$ and $b$ don't satisfy any relations except those that are forced by the group axioms.
+  \end{itemize}
+
+  Now, how do we turn this vague desire into an actual group?  The challenge, as it turns out, is mainly in establishing associativity.
+
+  Let $F_2 = \langle a, b \rangle$; this is what we hope to be able to write.  
+ 
+  \begin{itemize}
+    \item First try, let $F_2$ be the set of finite strings on the alphabet $\left\{ a, b, \ol{a}, \ol{b} \right\}$, with the operation = concatenation.  (Similar to Kleene closure.)  Problem: there is no inverses, since $(ab) BA = ab BA$.
+    \item Second possibility: define an equivalence relation on $\left\{ a, b, A, B \right\}^{*}$, where $waAu \sim wu$, $wAau \sim wu$, $wbBu \sim wu$, $wBbu \sim wu$, and if $w \sim w'$ and $u \sim u'$, then $wu \sim w'u'$.
+
+      {\it Possible problem.} How to show that we haven't identified too many things together?
+
+    \item Third possibility: define a string to be ``reduced'' if it has no $aA, Aa, bB, Bb$ substrings.  Define our $F_2$ to be the set of all reduced words $w \in \left\{ a, b, A, B \right\}^{*}$.  The operation here is 
+
+      \begin{itemize}
+        \item Concatenate, then
+        \item Delete $aA, Aa, bB, Bb$ substrings until the string is reduced.
+      \end{itemize}
+
+      {\it Issue 1.} Need to show this operation results in a unique reduced string.
+
+      {\it Issue 2.} This assumes you have associativity.
+
+      Question: can you just define the operation from left to right?  Answer: yes, this gives you uniqueness, but you have to show associativity.
+  \end{itemize}
+
+  Comment on this --- you have to do a decent amount of work to rigorously show that you have $aba^{-1} \neq baab$.  The idea of ``conservation of difficulty.'
+
+  This is covered in section 6.3.  Note that all the future homeworks will be hard (won't depend on chapters 1-6).
+
+  Consider $\ZZ = \langle x \rangle$.  We also saw $\ZZ_5 = \langle x | x^{5} = 1 \rangle$.  Now, we can write $F_2 = \langle r, s \rangle$.  
+  
+  Note that we can write $D_{10} = \langle r, s | r^5 = 1, s^2 = 1, srs^{-1} = r^{-1} \rangle$.  It is easy to check that all of these equalities hold, but the important take-away here is that all elements in $D_{10}$ is a consequence of these three elements.  Note that this fact implies that 
+  \[
+  n(D_{10}, G) = \left\{ (x, y) | x, y \in G, x^{5} = 1, y^{2} = 1, yxy^{-1} = x^{-1} \right\}
+  \]
+
+  \section{Lecture 11}
+
+  Isomorphism theorems and quotient groups.  Suppose you have a homomorphism
+\[
+  \alpha: G / N \to H.
+\]
+Then you can get a homomorphism
+\[
+  a : G \to H
+\]
+with $a(g) = \alpha(\ol{g})$.
+
+Concretely, there is a bijection between homomorphisms $\alpha: G/N \to H$ and homomorphisms $a: T \to H$ with $N < \ker(a)$.
+
+Suppose we have a group $G$, let $\ol{G} = G / N$.  So we can define a projection $\pi$ from $G \to G/N$.  Suppose we have some subgroup $M < \ol{G}$.  Claim: let $B = \pi^{-1}(M)$ be a subgroup of $\ol{G}$. Schematically, we can represent this as follows:
+
+
+This implies that subgroups $\ol{B} \leq \ol{G}$ are in bijection with subgroups $N \leq B \leq G$.  Additionally, we have $\ol{B} \cong B / N$.
+
+If we have $N < B < C$ and $B \triangleleft C$, then we have that $\ol{C} / \ol{B} \cong C / B$.  
+
+This is a statement of the second / fourth isomorphism theorems $(- \epsilon)$.
+
+Other way to write this isomorphism is to say $(C/N) / (B/N) \cong C/B$.  One other thing we can check is that $\ol{A} \triangleleft \ol{G} \Leftrightarrow A \triangleleft G$.
+
+\subsection{Conjugation / conjugacy classes}
+
+Remember that we say that $a$ is conjugate to $b$ in $G$ if there exists some $g$ so that $b = g a g^{-1}$.
+
+Note that we can think of conjugation as a group action of the group $G$ on the set $X = G$.  Our definition here is
+\[
+  g * x := g x g^{-1}.
+\]
+
+To check this is an action, we just need to check
+\begin{itemize}
+  \item $g * (h * x) = (gh) * x$.
+  \item $g * (h x h^{-1}) = (gh) * (gh)^{-1}$.
+\end{itemize}
+
+Key thing we gain from thinking of this as a group action is that the conjugacy class of $x$ is an orbit of $x$.
+
+{\it Corollary.} The size of the conjugacy class of $X$ divides $|G|$.  More explicitly, the size of this conjugacy class equals the size of $|G| / |\text{stabilizer of $x$}|$.  Definition: the stabilizer in this setting is called the ``centralizer'' subgroup (notation is $C_G(x)$).  
+
+\begin{itemize}
+  \item The definition of stabilizer: $\left\{ g \in G | g * x = x \right\}$.
+  \item The definition of orbit:  $\{g \cdot x | g \in G\}$.
+\end{itemize}
+
+We are often interested in the size of some orbit.  But instead, we can compute the fixed points.  Note that each element $x$ will have different centralizers.
+
+This ends up implying the class equation.  Let $G$ be a finite group.  Then we can write:
+
+\begin{itemize}
+  \item $|G| = \sum \text{size of each conjugacy class}$
+  \item If there are $k$ conjugacy classes in $G$, pick representatives $1, g_2, g_3, \dots, g_k$.  Then we can write
+    \[
+      |G| = \sum_{i=1}^{k} [G:C_G(g_i)].
+    \]
+  \item If there are $r$ conjugacy classes of size > 1, say $g_1, \dots, g_r$, then
+    \[
+      |G| = \underbrace{|Z(G)|}_{\text{conjugacy classes of size $1$}} + \sum_{i=1}^{r}  [G: C_g(g_i)].
+    \]
+\end{itemize}
+
+
+
+\section{Lecture 12: Automorphisms and Sylow's Theorems}
+
+5B.  Show that the commutator subgroup is not finitely generated.  Call $L$ the commutator subgroup of $F_2$, so that
+\[
+  L = \left\{ a^{k_1} b^{l_1} \dots a^{k_n} b^{l_n} | \sum k_n = 0, \sum l_n = 0 \right\}.
+  \]
+
+  The reason we call this $L$ is to think about languages in computer sciences.  Indeed, there is a notion of regular language (meaning it can be recognized by a finite state machine).  This is a classic example of a language that is not regular.
+
+  Suppose $L$ were finitely generated by a set, e.g. $\left\{ aba^{-1} b^{-1}, aaba^{-1} \right\}$\dots
+
+  The idea is that you can build a finite state automaton.  This is not a DFA (but you can convert a non-deterministic automaton to a deterministic automaton.
+
+    {\it Pumping Lemma.} Idea: if you can produce longer and longer words, then it can't be regular.  Importantly, to work on higher level math, you need to be able to ``chunk'' simple systems and apply ``sub''-theorems.
+
+    \begin{definition}
+      An automorphism of a group $G$ is an isomorphism $f: G \to G$.
+    \end{definition}
+
+    Intuitively, we can think of the analogy bijection : permutation :: isomorphism : automorphism.
+
+    \begin{definition}
+      $\Aut(G)$ is the group of automorphisms of $G$ under composition. \\
+    \end{definition}
+
+  \begin{prop}
+    Let $G$ be a group.  Then $G / Z(G) \cong$ a subgroup of $\Aut(G)$.
+  \end{prop}
+
+  This is a strange statement, but it tells you a lot about how to prove it.  When you see $G/N$ is isomorphic to a subgroup $H$, immediately, you should think --- I should produce a homomorphism $f: G \to H$ with $\ker (f) = N$.  Since the first isomorphism theorem says that
+  \[
+    G / \ker(f) \cong \im (f) \leq H.
+    \]
+
+    Back to the proposition --- we are looking for some homomorphism $\alpha$ with
+    \[
+      \alpha: G \to \Aut(G)
+    \]
+    with kernel $Z(G)$.  You can think of this homomorphism as a group action.  Since its kernel is $Z(G)$, we can write
+    \[
+      Z(G)=  \left\{ zgz^{-1} = g \forall g \right\}.
+    \]
+    So we can think of $G$ acting on itself by conjugation, with $\alpha_g: G \to G$ with
+    \[
+      \alpha_g (h) = ghg^{-1}
+    \]
+    and
+    \[
+      \ker(\alpha) = \left\{ z \in G | \alpha_z = id \right\} = \left\{ z | zhz^{-1} = h \forall h \right\} = Z(G).
+    \]
+    Then, by the 1st isomorphism theorem
+    \[
+      G / Z(G) = G / \ker(\alpha) \cong \im(\alpha) \leq \Aut(G).
+    \]
+
+    Recall Euler's totient function, defined as
+    \[
+      \phi(n) = \text{# of $1 \leq k \leq n$ that are relatively prime to $n$}
+    \]
+
+    \begin{prop}
+      \Aut(Z_n) \cong (\ZZ / n \ZZ)^{\times}.
+    \end{prop}
+
+    Recall $(\ZZ / n \ZZ)^{\times} = \left\{ \ol{k} \in \ZZ / n \ZZ | \ol{k} \text{ relatively prime to $n$} \right\}$, under multiplication.
+
+    For example,
+    \[
+      \Aut(Z_8) \cong (\left\{ \ol{1}, \ol{3}, \ol{5}, \ol{7} \right\}, \times).
+    \]
+
+    And here, we have
+    \[
+      \Aut(Z_8) = \left\{ f_1: x^k \mapsto x^{k}, f_2: x^{k} \mapsto x^{3k}, f_3: x^{k} \mapsto x^{5k}, f_4: x^{k} \mapsto x^{7k} \right\}.
+      \]
+
+  \begin{theorem}
+    (Non-obvious) Let $p$ be an odd prime.  Then $\Aut(Z_{p^k})$ is cyclic of order $\phi(p^k) = p^k - p^{k-1}$.
+  \end{theorem}
+
+  \begin{theorem}
+    (Non-obvious) For $p = 2$, note that $\Aut(Z_{2^k})$ is not cyclic, but its ``almost cyclic'':
+    \[
+      \Aut(Z_{2^{k}}) \cong Z_2 \times Z_{2^{k-2}}.
+    \]
+  \end{theorem}
+
+  We will now change gears and discuss Sylow's theorem.  We may not get to motivate why this is important, but it is very powerful.
+
+  Before class, for $G = S_4$, Church worked out the number of subgroups of $S_4$ of size $k$.
+
+  \begin{itemize}
+    \item $k = 1$, number of subgroups $N = 1$.
+    \item $k=2$, $N = 9$.
+    \item $k=3$, $N=4$.
+    \item $k=4$, $N = 4$
+    \item $k=6$, $N = 0$.
+    \item $k=8$, $N=3$
+    \item $k=12$, $N=1$
+    \item $k=24$, $N=1$.
+  \end{itemize}
+
+  The Sylow theorem is concerned with $k=3$ and $k=8$, since $|S_4| = 24 = 8 \cdot 3 = 2^{3} \cdot 3$.  Also, note the definition:
+
+  \begin{definition}
+    A group $P$ is called a $p$-group if $|P| = p^k$ for some $k \geq 0$. \\
+  \end{definition}
+
+  \begin{definition}
+    Given a group $G$ and a prime $p$, write $|G| = p^a \cdot m$ with $p \not | m$.  A subgroup $P \geq G$ is called a Sylow $p$-subgroup if $|P| = p^a$. \\
+  \end{definition}
+
+  \begin{definition}
+    Let $\Syl_p(G)$ denote the set of Sylow $p$-subgroups of $G$.  Let $n_p(G)$ denote the number of Sylow $p$-subgroups of $G$. \\
+  \end{definition}
+
+  \begin{theorem} (Sylow's Theorem).  Fix $G$ and $P$.
+
+    \begin{description}
+      \item[(1)] $G$ has at least one Sylow $p$-subgroup (i.e. $n_p(G) \geq 1$).
+      \item[(2a)] Any two Sylow $p$-subgroups are conjugate.  If $P_1 \leq G, P_2 \leq G$, with $|P_1| = |P_2| = p^a$, then there exist $g$ such that $P_2 = g P_1 g^{-1}$.  In particular, they are all isomorphic to the others!
+      
+      \item[(2b)] Any $p$-subgroup is contained in some Sylow subgroup.  If $Q \leq G$ and $|Q| = p^b$, there exists some $P \leq G$ with $|P| = p^a$ and $Q \leq P$.
+
+      \item[(3)] We know that $n_p(G) \equiv 1 \pmod{p}$ and $n_p(G)$ divides $m$.
+    \end{description}
+  \end{theorem}
+
+  For example, if $|G| = 11 \cdot 5^{100}$.  Then the number $n_p(G) \equiv 1 \pmod{5}$ and divides $11$.  This tells us $n_5(G) = 1$ or $11$.
+
+  If $|G| = 7 \cdot 5^{100}$.  This tells us $n_5(G) \equiv 1 \pmod{5}$ and it divides 7, so $n_5(G) = 1$.
+
+  {\it Corollary.} $G$ has a unique Sylow $p$-subgroup if and only if $G$ has a normal Sylow $p$-subgroup if and only if $n_p(G) = 1$.
+
+  Why are these equivalent?  If there is only one subgroup that that size, then imagine conjugating it.  Clearly $|P| = p^k$, and $|g P g^{-1}| = p^k$, which implies that they are the same subgroup, and that it is normal.  (The converse is straightforward too).
+
+
+  \section{Lecture 14}
+
+  {\it Lemma A.} For any $G$ with $|G| = p^k m > 1$ ($p \not | m$), either
+  \begin{itemize}
+    \item $G$ has a subgroup $H \not \leq G$ with $|H| = p^k l < p^k m - |G|$.
+    \item $G$ has a quotient $G \to \ol{G}$ with $\ol{G} = p^b m < p^k m = |G|$.
+  \end{itemize}
+
+
+  For any $H \leq G$, we can consider action of $H$ on the set of subsets of $G$ by conjugation.
+
+  That is,
+  \[
+    S \mapsto hSh^{-1} = \left\{ h s h^{-1} | s \in S \right\}.
+  \]
+  Write $\Theta_H(S) = $ orbit of $S$, $\Theta_H(S) = \left\{ h S h^{-1} | h \in H \right\}$.
+
+  \begin{prop}(B.)
+  Let $R$ be a $p$ subgroup of $G$.  Then let $Q$ be any $p$ subgroup of $G$.
+  \begin{itemize}
+    \item $|\Theta_Q(R)| = 1$, if and only if $Q \subseteq R$.
+    \item Otherwise, $|\Theta_Q(R)| \equiv 0 \pmod{p}$.
+  \end{itemize}
+\end{prop}
+
+From this, we are going to prove Sylow's Theorem.
+
+\begin{proof}
+  (Proof of Sylow (i) using Lemma A.)
+
+  By induction on $|G|$. Base case $|G| = 1$.  Inductive step, consider Lemma A.
+
+  \begin{itemize}
+    \item If there exists $H \leq G$, with $|H| = p^k l < p^k m = |G|$.  By induction, $H$ has a $p$ subgroup with $|P| = p^k$, so there exists a $p$-Sylow subgroup.
+    \item If $\pi: G \to G$ with $|\ol{G}| = p^b m < p^k m = |G|$.  Let $N = \ker(\pi)$, and set $\ol{G} \cong G / N$.  Then $|\ol{G}| = |G| / |N|$, and we can write $p^k m  = p^k m / |N|$.
+
+      By induction, $\ol{G}$ has a $p$-Sylow subgroup $\ol{P}$.  Set $P = \pi^{-1}(\ol{P})$.  Then
+      \[
+        |P| = |\ol{P}| |N| = p^b \cdot p^{k-b} = p^k.
+      \]
+  \end{itemize}
+\end{proof}
+
+We now proceed to prove Sylow (3) using Prop $B$:
+
+\begin{proof}
+  Let $P_1, P_2, \dots, P_{n_p}$ be all the $p$-Sylow subgroups of $G$, and suppose $P$ is a $p$-Sylow.
+
+  Consider the $p$-orbits on $P_1, \dots, P_{n_p}$ acting by conjugation.  Apply Proposition $B$ with $Q = P$ and $R = P_i$.   Now, 
+  \begin{itemize}
+    \item $| \Theta_p (P_i)| = 1$ if and only if $P \subseteq P_i$ but $P = P_i$ b/c $|P| = |P_1| = p^k$.
+  \end{itemize}
+
+  Now, we just need to know that $n_p$ divides $|G|$.  Because then we have $n_p | p^{k} m$ and $p \not | n_p$, which implies that $n_p | m$.  Then $n_p | |G|$ follows from Sylow 2(a), since given 2(a), $n_p = $ size of the orbit under conjugation by $G$.
+\end{proof}
+
+We now proceed to prove Sylow (2b):
+
+\begin{proof}
+  Let $Q$ be any $p$-subgroup of $G$.  Suppose for a contradiction that $Q$ is not contained in any $p$-Sylow subgroup.
+
+  Consider the $Q$-orbits on $P_1, \dots, P_{n_p}$.  By proposition $B$, this assumption implies that all of the orbits have size $\equiv 0 \pmod{p}$.
+
+  Examining the list, we can break this into
+  \[
+    \left\{ P_1, \dots, P_k \right\}, \dots, \left\{ P_k, \dots, P_{n_p} \right\},
+  \]
+  which implies that $n_p = 0 + \dots + 0 \pmod{p}$, which contradicts $n_p \equiv 1 \pmod{p}$.
+\end{proof}
+
+Note that we can also get a corollary (``2b + $\epsilon$'').  In fact, the number of $p$-subgroups contained in $Q$ is $\equiv 1 \pmod{p}$.
+
+We now will prove (2a) using Proposition $B$.
+
+\begin{proof}
+  Let $c = $ # of conjugates of $P$, and let $P_1, P_2, \dots, P_c$ be the $G$-conjugates of $P$, with $P = P_1$.  Similarly, we can look at any group acting on the list $P_1, \dots, P_c$.
+
+  If we first consider $P$ acting on this list by conjugation, then we get that it splits up into something like:
+  \[
+    \left\{ P_1 \right\}, \left\{ \dots \right\}, \dots, \left\{ \dots, P_k \right\},
+  \]
+  where $c = 1 + 0 + \dots + 0 \pmod{p}$.
+
+  Now, asume for contradiction that $L$ is a $p$-Sylow that is not conjugate to $P$.  Then $L$ is not in this list.  Look at the $L$-orbits; the only possible size 1 orbits would be if e.g. $L = P_7$ ($L$ has to be equal some element in this list).  But we just assumed that $L$ is not in this list, so there is no size $1$ orbits, but this gives $c \equiv 0 \pmod{p}$, which is a contradiction.
+\end{proof}
+
+Aside: we can use this to show that every matrix mod $p$ whose order is a power of $p$ has an eigenvector with eigenvalue 1.
+
+\section{Lecture 15}
+
+{\it Lemma C.} If $R$ is a $p$-Sylow subgroup of $G$, with $G = p^k m$, and $q \in G$ has $|q| = p^b$, then $qRq^{-1} = R$ iff $q \in R$ (conjugation is the trivial map).
+
+{\it Proposition B.} Let $R$ be a $p$-Sylow subgroup of $G$, and let $Q$ be any $p$-subgroup of $G$.  Then $||\Theta_Q(R)| = 1$ iff $Q \subseteq R$, otherwise $|\Theta_Q(R)| \equiv 0 \pmod{p}$, and $|\Theta_Q (R)| = \text{number of $Q$ conjugates of $R$}.$
+
+Note that Lemma C implies Proposition B.  (This is not that hard of a proof).
+
+{\it Lemma D.} For any $G$, and any $H \leq G$, if $gHg^{-1} = H$, then $K = \left\{ g^k h | k \in \ZZ, h \in H \right\}$ is a subgroup of $G$, and it's $\langle g, H \rangle$.
+
+{\it Proof that Lemma D implies Lemma C.} (In the case where $|q| = p$.) Set $K = \left\{ q^k r | k \in \ZZ, r \in R \right\}$.  Lemma $D$ tells us that this is a subgroup.  We now consider its size.  Now, since $|q| = r$, we can write
+
+\[
+  K = \left\{ q^k r | k \in \left\{ 0, \dots, p-1 \right\}, r \in R \right\}.
+\]
+
+Suppose that $q \not \in R$, for a contradiction.  This implies that $q^k \not \in R$ for $k \in \left\{ 1, \dots, p-1 \right\}$.  This implies that the cosets $R, qR, q^2 R, \dots, q^{p-1} R$ are all disjoint (this statement requires some thought, think about it).  This implies that the size of the set $K = p \cdot |R| = p^{k+1}$.  No subgroup of $b$ has size $p^{k+1}$, since it does not divide the order of the group.
+
+{\it Proof of Lemma D.} We just need to check that this set is closed under multiplication / inverses.  Choose two elements $a, b \in K$.  We can write $a = q^k h_1$, $b = q^l h_2$.  Then we can write $a b = q^k h_1 q^l h_2$.  Now, $h_3 = q^{-l} h_1 q^l \in H$.  Some substitution / algebra gives us $ab = q^{k +l} h_2 h_3 \in K$, so that $K$ is closed under multiplication. 
+
+{\it Broader point of Lemma D.} For all $h_1 \in H, g$, there exists some $h_3$ such that $g h_1 = h_3 q$.
+
+{\it 2nd Isomorphism Theorem} Now, suppose $A \leq G, B \leq G$, and suppose $aBa^{-1} = B$ for all $a \in A$.  Then the set
+\[
+  AB = \left\{ ab | a \in A, b \in B \right\}
+\]
+is a subgroup and it's $\langle A, B \rangle$.  Note that the proof ends up being exactly the same as before.
+
+And furthermore:
+\begin{itemize}
+  \item $B \trianglelefteq AB$
+  \item $A \cap B \trianglelefteq A$
+  \item $AB / B \cong A / A \cap B$.
+\end{itemize}
+
+Note: $|AB| = \frac{|A| |B|}{ |A \cap B|}$.  \footnote{Note that this is true even without the assumption that $aBa^{-1} = B$ for all $a$, i.e. even when $AB$ is not a subgroup, it still has this size.}
+
+We can write down a helpful definition:
+
+\begin{definition}
+  For any subset $H \leq G$, the normalizer $N_G(H)$ is $N_G(H) = \left\{ g \in G | gHg^{-1} = H \right\}.$
+\end{definition}
+
+{\it Proposition. (5.4.9)}  Suppose you have two normal subgroups $N \triangleleft G$, $H \trianglelefteq G$, $N \cap H = 1$.  Then $NH \cong N \times H$.
+
+{\it Corollary.} If $|G| = 15$, then $G \cong Z_3 \times Z_5$.
+
+{\it Proof sketch.} We know that there's a bijection between $NH$ and $N \times H$, just by writing $\left\{ nh \right\} \mapsto (n, h)$.  Need to show: for all $n \in N$ and $h \in H$, we need to show that $n$ and $h$ commute (implies that this bijection is an isomorphism).
+
+We know this because $hn = nh$ is the same as $n^{-1} h^{-1} nh = 1$.  We can write
+\[
+  \underbrace{n^{-1}}_{\in N} \underbrace{h^{-1} nh}_{\in N}  = \underbrace{n^{-1} h^{-1} n}_{\in H}\underbrace{h}_{h \in H} \in \left\{ 1 \right\}.
+\]
+
+Now, suppose $N \trianglelefteq G$, $H \leq G$, $N \cap H = \left\{ 1 \right\}$.  Then every $g \in G = NH$ uniuqely written as
+\[
+  g = nh
+\]
+where 
+\[
+  G = NH \text{ is a bijection with } N \times H
+\]
+but it is not an isomorphism because $n \maps hnh^{-1}$ can be viewed as $H \to \Aut(N)$.
+
+This is the only infomration that is necessary to remember what $G$ is.
+
+Question 7 can be rephrased as: suppose you have some action from $H \to \Aut(N)$, you can define a group $G$ whose elements are pairs $(n, h)$ with 
+\[
+  (n_1, h_1) (n_2, h_2) = (n_1 (h_1 * n_2), h_1 h_2),
+\]
+where we are thinking of $*$ as the action.  This is the semi direct product of $N$ and $H$.
+
+
+\section{Lecture 18}
+
+In this lecture, we'll discuss examples of rings to have in mind.  Note that the operations can in principle be ``strange'' and not be usual addition / multiplication (see Question 0 on homework), but typically the operations will be canonical.  ``Main'' examples of rings are like: $\QQ, \ZZ, \ZZ / 3 \ZZ, \ZZ / 10 \ZZ$.
+
+\begin{itemize}
+  \item Fields, $\QQ, \RR, \CC, \QQ(\sqrt{2})\footnote{Subfield of $\RR$ generated by $\QQ$ and $\sqrt{2}$}$, $\FF_p$
+  \item Integers
+  \item Modular stuff: $\ZZ / n \ZZ$ (won't write $Z_n$).
+  \item Polynomials.  We can write
+    \[
+      \ZZ[x] = \left\{ a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 | a_i \in \ZZ, n \geq 0 \right\}
+    \]
+\end{itemize}
+
+More examples: we can write
+
+\begin{align*}
+  \ZZ [\sqrt{2}] &= \left\{ a + b \sqrt{2} | a, b \in \ZZ \right\} \\
+  \ZZ [ \sqrt[3]{2}] &= \left\{ a + b \sqrt[3]{2} + c (\sqrt[3]{2})^2 | a, b, c \in \ZZ \right\}.
+\end{align*}
+
+Note that if $A$ and $B$ are rings, $A \times B$ is a ring with
+\begin{align*}
+  (a_1, b_1) + (a_2, b_2) &= (a_1 + a_2, b_1 + b_2) \\
+  (a_1, b_1) \times (a_2, b_2) &= (a_1 a_2, b_1 b_2).
+\end{align*}
+
+Consider the ring of ``functions of something.''  For example, 
+\[
+  C([0, 1]) = \left\{ \text{continuous functions } f: [0, 1] \to R \right\}.
+\]
+Can consider various extensions of this theme:
+\begin{align*}
+  C([2, 7]) &= \left\{ \text{continuous functions } f: [2, 7] \to R \right\} \\
+  \dots &= \left\{ \text{infinitely differentiable functions } f: [0, 1] \to R \right\} \\
+  \dots &= \left\{ \text{continuous functions } f: [0, 1] \to \CC \right\} \\
+  \dots &= \left\{ \text{functions } f: [0, 1] \to R \right\}
+\end{align*}
+
+It turns out that these examples are the ``most canonical'' in some sense (but this requires theory to explain).  One important idea is to consider rings that are restrictions of larger rings.  For example, let $f \in \CC([0, 10])$.  We can consider the ring of functions restricted to $[4, 6]$.  It turns out that
+\[
+  r: C([0, 10]) \to C([4, 6])
+  \]
+
+  is a ring homomorphism.
+
+  Grothendieck won a Fields medal for constructing a ``something'' so you can consider any ring as functions on ``something.'' \\
+
+  \begin{definition}
+    We say $r \in R$ is a unit if it has a multiplicative inverse.  We write
+    \[
+      R^{\times} = \left\{ \text{units } r \in R \right\}.
+    \]
+  \end{definition}
+
+  \begin{definition}
+    A ring $R$ is a field if $0 \neq 1$ and $R^{\times} = R - \left\{ 0 \right\}$, i.e. every nonzero element is a unit.
+  \end{definition}
+
+  Recall key idea from linear algebra.  Suppose you have an equation $ax+by = 0$, where $a \neq 0$.  In a field, this would imply that $x + a^{-1}b y = 0.$  This is useful, but it isn't possible in general (even in the integers).
+
+  Now, over the integers, suppose we had the equation $2x + 3y = 0$.  We could not write $x + \frac{3}{2} y = 0$.  However, we can divide in certain cases; if $10x = 10y$, then $x = y$.
+
+  \begin{definition}
+    We say $r \in R$ is a zero-division if $r \neq 0$ and there exists $s \neq 0 \in R$ such that $r \cdot s = 0$.
+ \end{definition}
+
+ \begin{example}
+   If $\ZZ / 10 \ZZ$, $r = 4$, $s = 5$, so that $rs = 20 = 0 \in \ZZ / 10 \ZZ$. \\
+ \end{example}
+
+ \begin{definition}
+   A commutative ring $R$ is a domain if $0 \neq 1$ and it has no zero-divisors. \\
+ \end{definition}
+
+ \begin{prop}
+   If $R$ is a domain, if $a \neq 0$, then $ax = ay$ implies $x = y$.
+ \end{prop}
+
+ In the examples we described, all the fields are domains.  Also, a given $r \in R$ can't be both a unit and a zero-divisor.  To see this, suppose we had $rs = 0$, with $s \neq 0$, but also $r^{-1} r = 1$.  Then left multiplying by $r^{-1}$, we get $r^{-1} rs = 0$, implying $s = 0$, which is a contradiction.
+
+ We now turn to the definition of a ring homomorphism.
+
+ \begin{definition}
+ If $A, B$ are rings, a function $f: A \to B$ is a (ring) homomorphism if:
+ \begin{itemize}
+   \item $f(1) = 1$
+    \item $f(a+b) = f(a) + f(b)$
+    \item $f(ab) = f(a) f(b)$.
+ \end{itemize}
+ \end{definition}
+
+ \begin{definition}
+   Let $R$ be a ring, and suppose $A \subseteq R$ is a subset of $R$.  We say $A$ is a subring of $R$ if
+   \begin{itemize}
+     \item $1 \in A$
+      \item $A$ is a subgroup under addition
+      \item $A$ is closed under multiplication
+   \end{itemize}
+ \end{definition}
+
+ Caution: the book lies.  (About point 1 of the previous two definitions).  E.g. the book will say $2 \ZZ$ is a subring, but it is not, because it doesn't contain 1.
+
+
+
+ \section{Lecture 20}
+
+ We start be discussing the isomorphism theorems for rings.
+
+ \begin{enumerate}
+   \item Recall the first isomorphism theorem for rings from last lecture that says
+     \[
+       \im(f) \cong R / \Ker(f); \quad f : R \to S.
+       \]
+     \item Suppose $A$ is a subring of $R$, and $I$ is an ideal of $R$.  Then
+       \[
+         A + I = \left\{ a + i | a \in A, i \in I \right\} \text{ is a subring }
+         \]
+         \[
+           A \cap I \text{ is an ideal of } A
+           \]
+           \[
+             \frac{A+I}{I} \cong \frac{A}{A \cap I}.
+           \]
+
+           This basically parallels the second isomorphism theorem for groups, except that they call it $N$ instead of $I$.  Don't worry too much about the raw intuition of this one, focus on seeing lots of examples.\footnote{When do we see the second isomorphism theorem?  We used the group analog a lot with identities like $|HN| = \frac{|H| |N|}{|H \cap N|}$.  Say we were thinking about vector spaces.  We would say something like $\frac{V+W}{W} \cong \frac{V}{V \cap W}$, where $V, W$ are subspaces of $X$.  Suppose we had some $f: X \to Y$ with $\ker(f) = W$, then both sides are isomorphic to $f(V)$.  In particular, we can obtain $f(V+W) = f(V)$.  Check out https://math.stackexchange.com/questions/1738334/intuition-about-the-second-isomorphism-theorem}
+
+         \item (3rd + 4th) Fix $I \subseteq R$ an ideal.  We saw last time that we have this map $R \to R/I = \ol{R}$.  We claim that there is a correspondence between ideals $J \subseteq R$ containing $I$ and ideals $\ol{J} \subseteq \ol{R}$. In particular, we can write 
+           \[
+             R / J \cong \ol{R} / \ol{J} = (R/I) / (J/I).
+           \]
+
+           It's also true that subrings $S \subseteq R$ containing $I$ are in bijection with subrings $\ol{S} \subseteq \ol{R}$, where $\ol{S} = S / I$.
+\end{enumerate}
+
+Here's another (easier) way to keep track of what this is saying.  Suppose you want to define some homomorphism $\ol{f} : R / I \to C$.  What would be great is if there was some function $f: R \to C$, so we can just write $\ol{f}(\ol{r}) = f(r)$.  The question is: when is this actually well defined?  We need that $\ol{f}$ needs to be equal for all representatives mod $I$.  In particular, we need $0 = \ol{f}(0) = \ol{f}(\ol{i}) = f(i)$.  The theorem is saying in particular that this is all you need!  In particular:
+
+\[
+  \left\{ \text{homomorphisms } \ol{f} : R / I \to C \right\} \Leftrightarrow \left\{ \text{homomorphisms } f: R \to C, f(I) = 0 \right\}
+  \]
+
+  The rest of today will be spent on definitions, which will help to make a lot of this concrete.  \footnote{``Comment that is maybe too enlightened'': even if we hadn't defined this previous bijection, you could take this bijection as the definition of $R/I$; and the answer is that you don't {\it need} to know exactly which set it is, just need to know where things map.}
+
+  Let's now talk about generators.  \\
+
+  \begin{definition}
+    Suppose you have a subset $X \subseteq R$.  We write $(X)$ to denote the ideal of $R$ generated by $X$.  If $X$ is finite, with $X = \left\{ x_1, \dots, x_k \right\}$, write
+    \[
+      (X) = (x_1, \dots, x_k).
+    \]
+
+    There are two definitions here that we can state:
+    \begin{itemize}
+      \item $(X)$ is the smallest ideal containing $X$, namely
+        \[
+          X = \bigcap_{\text{ideal } I, X \subseteq I} I
+          \]
+      \item $(X)$ is the set of all linear combinations of arbitrary length:
+        \[
+          (X) = \left\{ r_1 x_1 + \dots + r_n x_n | n \in \NN, r_i \in R, x_i \in X \right\}.
+        \]
+    \end{itemize}
+  \end{definition}
+
+  \begin{definition}
+    Consider the subring $S$ of $R$ generated of $X$.  We can write
+
+    \begin{itemize}
+      \item $S$ is the smallest subring of $R$ containing $X$:
+        \[
+          S = \bigcap_{\text{\subring } A, X \leq A} A.
+        \]
+      \item You can also write
+        \[
+          S = \left\{  \sum_{i=1}^{n} \prod_{j=0}^{m_i} x_{ij} \mid x_{ij} \in X, m_i \geq 0 \right\}.
+        \]
+        In particular, we can take the empty product to that $1$ is in the subring $S$..
+    \end{itemize}
+  \end{definition}
+
+
+  Further, note that if $I$ is generated by some subset $X$, so that $I = (X)$, we can define an equality
+
+  \[
+    \left\{ \text{homomorphisms } f: R \to C, f(X) = 0 \right\} 
+    \]
+    \[
+  = \left\{ \text{homomorphisms } \ol{f} : R / I \to C \right\} \Leftrightarrow \left\{ \text{homomorphisms } f: R \to C, f(I) = 0 \right\}
+      \]
+
+      {\it Example.} Consider the following ring.  Let $R = \QQ[x, y]$, that is linear combinations of $x^i y^j$.  We say that $I$ is a principal ideal if it is generated by one element.  In particular, let $I = (x^2 + y^2 - 1)$, and $A = R/I$.  Question: how many homomorphisms $\phi: A \to \QQ$ are there?  Note that $\QQ \subset A$ are the constrant polynomials, so that $\phi(x) = x$ for any $x \in \QQ$ (since you have to take $1 \to 1$).  
+      
+      This is a great advertisements for the bijections mentioned previously!  It is really hard to write up an explicit homomorphism from first principles.  But it turns out that the answer is
+      \[
+        \left\{ \text{# of pairs of numbers } a, b \in \QQ \text{ with } a^2 + b^2 = 1 \right\}.
+        \]
+
+        This hints at why rings are useful.  It means that we can encode solutions to polynomial equations in terms of homomorphisms from sonme ring.  Just like group theory in some sense is based on understanding symmetric groups, ring theory is based on understanding solutions to equations.
+
+        Question: can you apply this argument to encode solutions to equations over other fields?  Yes.  One caveat is that if you are working over $F_n$ for some composite $n$, you have to specify the constant mapping explicitly, i.e.
+        \[
+          \phi: \FF_n [x, y] / (I) \to \FF_n; \qquad \phi(c) = c; \forall c \in \FF_n.
+        \]
+
+
+        This starts to hint at why algebraic geometry, number theory, and ring theory are fundamentally intertwined.  Note that there's a fantastic theorem proved by Hasse.
+
+        {\it Hasse Local-Global Primes.}  Let's say you have a function $f(x, y, z, w) = \text{quadratic in the inputs}$.  Hasse says that $f(x, y, z, w) = 0$ has a solution in the integers if and only if $f(x, y, z, w) = 0$ has a solution in $\ZZ / p \ZZ$, $\ZZ / p^2 \ZZ \dots $ for all primes $p$, and has a solution in the reals.  Check out Keith Conrad's article on this\footnote{http://www.math.uconn.edu/~kconrad/blurbs/gradnumthy/localglobal.pdf}.
+
+        We continue to some basic definitions.
+
+        \begin{definition}
+          An ideal $P \not \subseteq R$ is a prime ideal if $a \cdot b \in P$ implies $a \in P$ or $b \in P$.\footnote{Note that this is a property of prime numbers.  $p = (5)$ is prime, since if $ab \equiv 0 \pmod{5}$ then $a \equiv 0 \pmod{5}$ or $b \equiv 0 \pmod{5}$. Note that this isn't the same as not having factors other than 1 and $p$.}
+        \end{definition}
+
+        \begin{definition}
+          Let $M \subseteq R$  with $M \neq R$ is a maximal ideal if it's maximal.  That is, there doesn't exist $I$ with $M \not \subseteq I \not \subseteq I$.  Note that maximal ideals are prime.
+        \end{definition}
+
+
+  \newpage 
+
+  \section{Lecture 23}
+
+  Fix a field $F$ and let $R = F[x]$.  Claim: $R$ is a PID.  Given ideal $I \subseteq R$, let $m_I \in I$ be the monic polynomial in $I$ of smallest degree.  Then $I$ is generated by $m_I$, i.e. $I = (m_I)$.
+
+
+  \section{Lecture 29}
+
+  Today, we'll discuss: what is $i \in \ZZ / 5^{\infty} \ZZ$?  Recall that:
+
+  \[
+    (\ZZ / 5^k \ZZ)^{\times} \equiv \ZZ_{5^k - 5^{k-1}} \equiv \ZZ_{4 \cdot 5^{k-1}},
+  \]
+
+  so there exists four solutions to $x^4 = 1$ in $\ZZ / 5^k \ZZ$, that is, $1, -1, a \equiv 2 \pmod{5}, a \equiv 3 \pmod{5}$.
+
+  We want: an algorithm / procedure to compute $a$.  Question: how would Newton compute $\sqrt{2} \in R$?  One application of his calculus is an algorithm to compute roots of polynomials.  Suppose we are trying to find the roots of $f(x) = 0$.
+
+  \begin{itemize}
+    \item Start with an initial guess, e.g. $a_1 = 10$.
+    \item Take a linear approximation to the function $f(x)$.  This is a line through $(a_1, f(a_1))$, with slope $f'(a_1)$.  Set the next guess to the be $x$-intercept, $a_2 = a_1 - \frac{f(a_1)}{f'(a_1)}$.
+    \item Repeat the update rule $a_k = a_{k-1} - \frac{f(a_{k-1})}{f'(a_{k-1})}$ until convergence.
+  \end{itemize}
+
+  Coming back to the infinite integers, we try to find solutions of $x^2 = -1$.
+
+  \begin{itemize}
+    \item Initial guess $a_1 = 2$.
+    \item $a_2 = a_1 - \frac{f(a_1)}{f'(a_1)} = 2 - \frac{5}{4} = \dots 1112$.
+  \end{itemize}
+
+  Note, we can write
+
+  \[
+    - \frac{1}{4} = \dots 1111
+  \]
+  \[
+    - \frac{5}{4} = \dots 1110
+    \]
+    \[
+      2 + (- \frac{5}{4}) = \dots 1112
+    \]
+
+    Similarly, we can write
+    \[
+      \frac{1}{7} = \dots 1033
+    \]
+    \[
+      \frac{25}{7} = \dots 103300
+    \]
+    \[
+      - \frac{25}{7} = \dots 341200
+    \]
+    \[
+      7 - \frac{25}{7} = \dots 341212.
+    \]
+
+    To show that this converges, we just need to argue that this will give us one more digit each time.
+
+    Suppose $f(x) \in (\ZZ / 5^{\infty} \ZZ)[x]$.  Take the initial guess $a_1$ such that $f(a_1) \equiv 0 \pmod{5}$ and $f'(a_1) \not \equiv 0 \pmod{5}$.  Claim: if you define $a_{k+1} = a_k - \frac{f(a_k)}{f'(a_k)}$, then
+
+    $f(a_k) \equiv 0 \pmod{5^k}$ (i.e. the last $k$ digits are 0).
+
+    Note: this implies $a_{k+1}$ and $a_k$ have the same last $k$ digits.  In the context of convergence, this is like saying that the difference between two successive terms is getting smaller and smaller.
+
+    The convergence test for a series is just: do the terms go to 0?  But this isn't true in calculus, since the harmonic series diverges.
+
+    Let's do what Newton would do and plug in $f(a_{k+1})$.  We are hoping that $f(a_{k+1}) \equiv 0 \pmod{5^{k+1}}$.  We can write
+
+    \begin{align*}
+      f(a_{k+1}) = f(a_k - \frac{f(a_k)}{f'(a_k)}) = f(a_k + h) = f(a_k) + h f'(a_k) + O(h^2).
+    \end{align*}
+
+    We know here that $h \equiv 0 \pmod{5^k}$, so $h^2 \equiv 0 \pmod{5^{2k}}$, and certainly $h^2 \equiv 0 \pmod{5^{2k+1}}$.
+
+    Therefore, 
+    \[
+      f(a_{k+1}) \equiv f(a_k + h) \equiv f(a_k) + h f'(a_k) \pmod{5^{k+1}}
+    \]
+    \[
+      f(a_k) - \frac{f(a_k)}{f'(a_k)} f'(a_k) \equiv 0 \pmod{5^{k+1}}.
+      \]
+
+      Note that this argument works for any prime $p$, not just $5$.
+
+      And furthermore, this implies that $a_k$ is a well defined element $a_{\infty} \in \ZZ / p^{\infty} \ZZ$ with $f(a_{\infty}) = 0$.  This is called Hensel's Lemma.
+
+      Here's another formulation of Hensel's Lemma (which happens to be a bit stronger).  Consider some $f(x) \in (\ZZ / 5^{\infty} \ZZ)[x]$.  Something we could do is to drop everything after the last coefficient.  There's a ring homomorphism from $(\ZZ / 5^{\infty} \ZZ)[x] \to (\ZZ / 5 \ZZ)[x]$.
+
+      If there exists $a_1$ such that $\ol{f}(\ol{a_1}) = 0$ and $\ol{f}'(\ol{a_1}) \neq 0$, then we can write
+
+      \[
+        \ol{f}(x) \text{ factors as } \ol{f}(x) = (x - \ol{a_1}) \ol{g}(x)
+        \]
+        \[
+          \ol{g}(x) \text{ not divisible by } $x - \ol{a_1}$.
+        \]
+
+        \begin{theorem}[Strong Hensel's Lemma]
+          Given a monic polynomial $f(x) \in \ZZ / 5^{\infty} \ZZ[x]$, if $\ol{f}(x)$ factors into monic coprime $\ol{g_i}(x)$, $\ol{f}(x) = \ol{g}_1(x) \dots \ol{g}_k(x)$, then there exists monic coprime $g_i(x) \in (\ZZ / 5^{\infty} \ZZ)[x]$ such that $f(x) = g_1(x) \dots g_k(x)$.
+        \end{theorem}
+
+
+  \section{Notes on Group Actions}
+
+  Let $G$ be a group acting on a nonempty set $A$.  Recall that a group action must satisfy the following properties: 
+
+  \begin{itemize}
+    \item $g_1 \cdot (g_2 \cdot a)$ for all $g_1, g_2 \in G$, $a \in A$ and
+    \item $1 \cdot a = a$ for all $a \in A$.
+  \end{itemize}
+  
+  Note that for each $g \in G$, the map $\sigma_g : A \to A$ defined by $a \mapsto g \cdot a$ is a permutation of $A$.  To see this, note that $\sigma_g$ has a two sided inverse (follows from the first condition above).  Note also that there is a homomorphism associated to an action of $G$ on $A$:
+
+  \[
+    \varphi: G \to S_A; \qquad \text{ defined by } \varphi(g) = \sigma_g,
+  \]
+  called the permutation representation associated to the given action.  We note some basic definitions:
+
+  \begin{enumerate}
+    \item The {\it kernel} of an action is $\left\{ g \in G | g \cdot a = a \right\}$.
+    \item The {\it stabilizer} on $a$ in $G$ is $\left\{ g \in G | g \cdot a = a \right\}$, denoted by $G_a$.
+    \item An action is {\it faithful} if its kernel is the identity.
+  \end{enumerate}
+
+  The kernel of an action is a normal subgroup of $G$.  An action of $G$ on $A$ may also be viewed as a faithful action of the quotient group $G / \ker \varphi$ on $A$.
+
+  \section{Notes on Irreducibility}
+
+  {\it Eisenstein's.} Let $p$ be a prime in $\Z$ and let $f(x) = x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0$.  Suppose $p | a_i$ for $i \in \left\{ 0, 1, \dots, n-1 \right\}$ but $p^2 \not | a_0$.  Then $f(x)$ is irreducible in both $\Z[x]$ and $\Q[x]$.
+
+  {\it Generalized Eisenstein's.}  Let $P$ be a prime ideal of the integral domain $R$ and let $f(x) = x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0$ be a polynomial in $R[x]$.  Suppose $a_{n-1}, \dots, a_1, a_0$ are elements of $P$ and suppose $a_0$ is not an element of $P^2$.  Then $f(x)$ is irreducible in $R[x]$.
+
+  (p 312).  $x^{n-1} + \dots + x + 1$ is irreducible if and only if $n$ is prime. 
+
+  (p 315). $x^n - p$ is irreducible over $\ZZ[i]$.
+
+
+  \section{Notes on Free Groups}
+
+
+
+
+
+
+
+\section{Key Ideas}
+
+
+\subsection{Definitions}
+
+\begin{definition}
+  A binary operation $*$ on a set $G$ is a function $*: G \times G \to G$. \\
+\end{definition}
+
+\begin{definition}
+  A group is an ordered pair $(G, \star)$ where $G$ is a set and $\star$ is a binary operation on $G$ satisfying the following axioms:
+
+  \begin{enumerate}
+    \item $\star$ is associative
+    \item There exists an element $e$ in $G$, such that $a \star e = e \star a = a$ for all $a\in G$.
+    \item For all $a \in G$, there exists an element $a^{-1} \in G$ such that $a \star a^{-1} = a^{-1} \star a = e$. \\
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  A group $(G, \star)$ is called abelian if $a \star b = b \star a$ for all $a, b \in G$. \\
+\end{definition}
+
+\begin{definition}
+  Let $F$ be a field.  Then $GL_n(F)$ is
+  \[
+    GL_n(F) = \left\{ A | A \text{ is an } n \times n \text{ matrix with entries from } F \text{ and } \det(A) \neq 0 \right\}.
+  \]
+\end{definition}
+
+\begin{definition}
+  Let $(G, *)$ and $(H, \circ)$ be groups.  A map $\psi: G \to H$ such that
+  \[
+    \psi(x * y) = \psi(x) \circ \psi(y) \text{ for all $x, y \in G$}
+  \]
+  is called a homomorphism. \\
+\end{definition}
+
+\begin{definition}
+  The map $\psi: G \to H$ is called an isomorphism if
+  \begin{enumerate}
+    \item $\psi$ is a homomorphism
+    \item $\psi$ is a bijection \\
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  A group $H$ is cyclic if $H$ can be generated by a single element.
+  \\
+\end{definition}
+
+\begin{definition}
+  A function $f: A \to B$ is injective if $f(x) = f(y)$ implies $x=y$.  $f$ is surjective if for all $b \in B$, there exists some $a \in A$ with $f(a) = b$. \\
+\end{definition}
+
+\begin{definition}
+  A subgroup $N$ is called {\it normal} if it is invariant under conjugation.  In other words:
+  \begin{itemize}
+    \item For all $g$, $gH = Hg$.
+    \item For all $g$, $gNg^{-1} = N$.
+    \item There is some homomorphism on $G$ for which $N$ is the kernel.  Intuition: consider the map $\pi(g) = gN$ for all $g$a  This homomorphism is called the ``natural projection'' of $G$ onto $G/N$.
+  \end{itemize}
+\end{definition}
+
+
+\subsection{Propositions and Theorems}
+
+\begin{prop}
+  A subset $H$ of a group $G$ is a subgroup if and only if:
+  \begin{enumerate}
+    \item $H \neq \emptyset$ and
+    \item for all $x, y \in H$, we have $xy^{-1} \in H$.
+  \end{enumerate}
+\end{prop}
+
+
+\subsection{Examples}
+
+\begin{example}
+  The number of homomorphisms from $\ZZ_m \to \ZZ_n$ is $\gcd(m, n)$.
+\end{example}
+
+\subsection{Ideas}
+
+\begin{enumerate}
+  \item To show a mapping is a homomorphism, first show that the mapping is well-defined ($b_1 = b_2$ implies $f(b_1) = f(b_2)$).  Then, show that $f$ is a homomorphism, that is $f(g_1 g_2) = f(g_1) f(g_2)$.
+  \item Studying quotient groups of $G$ is equivalent to the study of the homomorphisms of $G$.
+\end{enumerate}
+
+
+\section{Things to review}
+
+\begin{enumerate}
+  \item Proof of Sylow's theorem.
+  \item More intuition for conjugation.
+  \item Book sections.
+\end{enumerate}
+
+
+
+\end{document}

@@ -1,0 +1,473 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{todonotes}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage[margin=1.0in]{geometry}
+
+\usepackage{minted}
+
+\newcommand{\bc}{\binom}
+\newcommand{\bx}{\boxed}
+\newcommand{\EE}{\mathbb{E}}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Poi}{Poi}
+\DeclareMathOperator{\Beta}{Beta}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\Geo}{Geo}
+\DeclareMathOperator{\Cov}{Cov}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Adithya Ganesh}
+\rhead{CS 109 --- Final Exam Review}
+\cfoot{\thepage}
+
+\title{CS 109 --- Final Exam Review}
+\author{Adithya Ganesh}
+
+\begin{document}
+\maketitle
+\section{Key Topics}
+
+\begin{enumerate}
+  \item Balls and urns
+    \begin{enumerate}
+      \item $k$ distinguishable objects to $n$ distinguishable buckets:
+        \[
+          n^k.
+        \]
+      \item $k$ indistinguishable objects to $n$ distinguishable buckets. If each bucket gets a positive number of objects:
+        \[
+          \bc{k-1}{n-1}.
+        \]
+
+      \item If each bucket gets a nonnegative number of objects:
+        \[
+          \bc{n-1+k}{n-1}.
+        \]
+      \end{enumerate}
+
+  \item Balls and urns: Ordered vs. unordered set
+    \begin{enumerate}
+      \item Unordered interpretation: $k$ people each get a set of objects
+      \item Ordered interpretation: $1$ person gets a series of sets of objects
+    \end{enumerate}
+
+
+  \item Bayes Theorem
+        \[
+          P(B|A) = \frac{P(A|B)P(B)}{P(A)} = \frac{P(A|B)P(B)}{P(A|B)P(B) + P(A | \neg B)P( \neg B)}.
+      \]
+      
+      Typically use the second version for computation.
+  \item Principle of inclusion - exclusion
+    \[
+      \left | \bigcup_{i=1}^{n} A_i \right | =  \sum_{k=1}^{n} (-1)^{k+1}\left(  \sum_{1 \leq i_1 < \dots < i_k \leq n} |A_{i_1} \cap \dots \cap A_{i_k} | \right).
+    \]
+
+  \item Computing CDF in terms of $\Phi$:
+    \[
+      P(X \leq x) =  P(\frac{X-\mu}{\sigma} \leq \frac{x - \mu}{\sigma}) = P(Z \leq \frac{x- \mu}{\sigma}) = \Phi(\frac{x- \mu}{\sigma}).
+    \]
+
+  \item Expectation properties
+    \begin{enumerate}
+      \item Definition
+        \[
+          \EE[X] = \sum_{x} x p_X(x).
+        \]
+        \[
+          \EE[X] = \int_{x} x p(x) dx.
+        \]
+        More generally, you can compute
+        \[
+          \EE[g(x)] = \int_{-\infty}^{\infty} g(x) p(x) dx.
+        \]
+      \item Linearity
+        \[
+          \EE[f(X) + g(X)] = \EE[f(X)] + \EE[g(X)].
+        \]
+    \end{enumerate}
+  \item Variance properties
+    \begin{enumerate}
+      \item Definition
+          \[
+            \Var(X) = \EE[(X - \mu)^2]
+          \]
+      \item Key identity
+          \[
+            \Var(X) = \EE[X^2] - (\EE[X])^2
+          \]
+      \item Linear combinations
+          \[
+            \Var(aX + b) = a^2 \Var(X)
+          \]
+      \item Sums
+        \[
+          \Var(X + Y) = \Var(X) + \Var(Y) + 2 \Cov(X, Y).
+        \]
+      \item Standard deviation
+        \[
+          \text{SD}(X) = \sqrt{\Var(X)}.
+        \]
+    \end{enumerate}
+  \item Covariance properties
+    \begin{enumerate}
+      \item Definition
+        \[
+          \Cov(X, Y) = \EE[(X - \mu_X) (Y - \mu_Y)] = \EE[XY] - \EE[X] \EE[Y].
+        \]
+      \item Sum of variance
+        \[
+          \Var(X+Y) = \Var(X) + \Var(Y) + 2 \Cov(X, Y).
+        \]
+      \item If $X, Y$ independent, then $\Cov(X, Y) = 0$.
+      \item If $X, Y$ independent, then
+        \[
+          \EE[f(X) g(Y)] = \EE[f(X)] \EE[g(Y)].
+        \]
+    \end{enumerate}
+  \item Correlation of $X$ and $Y$:
+    \[
+      \rho(X, Y) = \frac{\Cov(X, Y)}{\sqrt{\Var(X) \Var(Y)}}
+    \]
+  \item Key distributions
+
+    Discrete: 
+
+    \begin{enumerate}
+      \item $X \sim Bernoulli(p)$, $0 \leq p \leq 1$.  1 if coin with heads probability $p$ comes up heads, zero otherwise.
+        \[
+          p(x) = 
+          \begin{cases}
+            p; \qquad x = 1; \\
+            1-p; \qquad x = 0.
+          \end{cases}
+        \]
+
+        \[
+          \EE[X] = p; \qquad \Var(X) = p(1-p).
+        \]
+      \item $X \sim Binomial(n, p)$, $0 \leq p \leq 1$.  The number of heads in $n$ independent flips of a coinw ith heads probability $p$.
+        \[
+          p(x) = \bc{n}{x} p^x (1-p)^{n-x}
+        \]
+        \[
+          \EE[X] = np; \qquad \Var(X) = np(1-p).
+        \]
+      \item $X \sim Geometric(p)$, $p > 0$.  The number of flips of a coin with heads probability $p$ until the first heads.
+        \[
+          p(x) = p (1-p)^{x-1}.
+        \]
+        \[
+          \EE[X] = \frac{1}{p}; \qquad \Var(X) = \frac{1-p}{p^2}.
+        \]
+      \item $X \sim Poisson(\lambda)$, $\lambda > 0$.  A probability distribution over the nonnegative integers used for the modeling the frequency of rare events.
+        \[
+          p(x) = e^{-\lambda} \frac{\lambda^x}{x!}.
+        \]
+        \[
+          \EE[X] = \lambda; \qquad \Var(X) = \lambda.
+        \]
+
+        Intuition: let $n \to \infty, p \to 0$, and let $np = \lambda$ stay constant.  Binomial distribution will converge to this density function.
+
+          The binomial in the limit, with $\lambda = np$, when $n$ is large, $p$ is small, and $\lambda$ is ``moderate''
+
+          Let $X$ be binomial.  Then if $p = \lambda / n$, we obtain
+      \[
+        P(X =i) = \frac{n!}{i! (n-i)!} p^i (1-p)^{n-i} = \frac{n!}{i! (n-i)!} \left( \frac{\lambda}{n} \right)^i \left( 1 - \frac{\lambda}{n} \right)^{n-i}
+    \]
+    \[
+      = \frac{n(n-1) \dots (n-i+1)}{n^i} \frac{\lambda^i}{i!} \frac{(1-\lambda/n)^n}{(1 - \lambda/n)^i}.
+    \]
+    When $n$ is large, $p$ is small, and $\lambda$ is moderate, we obtain
+    \[
+      \frac{n(n-1) \dots (n-i+1)}{n^i} \approx 1; \qquad  (1-\lambda/n)^n \approx e^{-\lambda}; \qquad (1 - \lambda/n)^i \approx 1.
+    \]
+    \todo{Understand how this derivation works with the exponential term}
+    Recall that the definition of $e$ is
+    \[
+      e = \lim_{n \to \infty} (1 + 1/n)^n.
+    \]
+    It follows that
+    \[
+      P(X=i) \approx \frac{\lambda^i}{i!} e^{-\lambda}.
+    \]
+    \end{enumerate}
+
+    Continuous:
+
+    \begin{enumerate}
+      \item $X \sim Uniform(a, b)$, $a<b$.  Equal probability density to every value between $a$ and $b$ on the real line.
+
+        \[
+          f(x) =
+          \begin{cases}
+            \frac{1}{b-a}; \qquad a \leq x \leq b \\
+            0; \qquad \text{else}.
+          \end{cases}
+        \]
+        \[
+          \EE[X] = \frac{a+b}{2}; \qquad \Var(X) = \frac{(b-a)^2}{12}.
+        \]
+      \item $X \sim Exponential(\lambda)$, $\lambda >0$.  Decaying probability density over the nonnegative reals.
+        \[
+          f(x) =
+          \begin{cases}
+            \lambda e^{-\lambda x}; \qquad x \geq 0 \\
+            0; \qquad \text{else}.
+          \end{cases}
+        \]
+        \[
+          \EE[X] = \frac{1}{\lambda}; \qquad \Var(X) = \frac{1}{\lambda^2}.
+        \]
+
+      \item $X \sim Normal(\mu, \sigma^2)$.  Gaussian distribution.
+        \[
+          f(x) = \frac{1}{\sqrt{2\pi} \sigma} \exp\left(  - \frac{1}{2\sigma^2} (x-\mu)^2 \right).
+        \]
+        \[
+          \EE[X] = \mu; \qquad \Var(X) = \sigma^2.
+        \]
+    \end{enumerate}
+
+  \item Moment generating function (MGF) of $X$:
+    \[
+      M(t) = \EE[e^{tX}].
+    \]
+
+    Intuition: uniquely determines the distribution.  Can differentiate to compute useful quantities
+
+  \item Joint MGF of $X_1, X_2, \dots, X_n$:
+    \[
+      M(t_1, t_2, \dots, t_n) = \EE[e^{t_1X_1 + t_2X_2 + \dots + t_n X_n}]
+    \]
+
+    % Inequalities
+
+  \item Markov's inequality.  Let $X$ be non-negative RV:
+    \[
+      P(X \geq a) \leq \frac{\EE[X]}{a}; \qquad \text{ for all } a > 0.
+    \]
+
+    Proof - indicator random variables.
+
+  \item Chebyshev's Inequality.  Let $X$ be an RV with $\EE[X] = \mu, \Var(X) = \sigma^2$.  Then
+    \[
+      P(|X - \mu| \geq  k) \leq \frac{\sigma^2}{k^2}; \qquad \text{ for all } k > 0.
+    \]
+
+    Proof, apply Markov's Inequality with $a = k^2$.
+
+  \item One-sided Chebyshev's Inequality.  Let $X$ be an RV with $\EE[X] = 0, \Var(X) = \sigma^2$.  Then
+    \[
+      P(X \geq a) \leq \frac{\sigma^2}{\sigma^2 + a^2}.
+    \]
+
+    {\it Proof.} Note that $P(X\geq a) = P(X + b \geq a+b)$, and apply Markov's inequality.  Minimize the resulting quadratic as a function of offset $b$.
+
+    Or, if $\EE[Y] = \mu$, and $\Var(Y) = \sigma^2$, we obtain
+    \[
+      P(Y \geq \EE[Y] + a) \leq \frac{\sigma^2}{\sigma^2 + a^2}; \qquad \text{ for any } a > 0
+    \]
+    \[
+      P(Y \leq \EE[Y] - a) \leq \frac{\sigma^2}{\sigma^2 + a^2} \qquad \text{ for any } a > 0.
+    \]
+
+  \item Chernoff bound.  Let $M(t)$ be an MGF of RV $X$.  Then
+    \[
+      P(X \geq a) \leq e^{-ta} M(t); \qquad \text{ for all } t > 0.
+    \]
+    \[
+      P(X \leq a) \leq e^{-ta} M(t); \qquad \text{ for all } t < 0.
+    \]
+    Bounds hold for $t \neq 0$, so use $t$ that minimizes $e^{-ta} M(t)$ (i.e. makes bound strictest).
+
+    Proof: $P(X \geq a) = P(e^{tX} \geq e^{ta})$, and then apply Markov's inequality.
+
+  \item Jensen's Inequality.  If $f(x)$ is convex, then
+    \[
+      \EE[f(X)] \geq f(\EE[X]).
+    \]
+
+    Equality when $f''(x) = 0$.  Proof: Taylor series of $f(x)$ about $\mu$.
+
+  \item Law of Large Numbers.  Consider I.I.D. random variables $X_1, X_2, \dots $.  Suppose $\EE[X_i] = \mu$ and $\Var(X_i) = \sigma^2$.  Let $\overline{X} = \frac{1}{n} \sum_{i=1}^{n} X_i$.  For any $\epsilon > 0$:
+
+    \[
+      P(|\overline{X} - \mu| \geq \epsilon) \to 0. 
+    \]
+
+
+    Proof: Apply Chebyshev's inequality on $\overline{X}$. $\EE[\overline{X}] = \mu, \Var(\overline{X}) = \frac{\sigma^2}{n}$.
+    \[
+      P(|\overline{X} - \mu| \geq \epsilon) \leq \frac{\sigma^2}{n \epsilon^2} \to 0.
+    \]
+    
+  \item Strong Law of Large Numbers.  Consider I.I.D. random variables $X_1, X_2, \dots$.  Suppose $X_i$ has distribution $F$ with $\EE[X_i] = \mu$.
+
+    Then
+    \[
+      P\left(  \lim_{n \to \infty}\left[ \frac{X_1 + X_2 + \dots + X_n}{n} = \mu  \right] \right) = 1.
+    \]
+
+  \item Central Limit Theorem (CLT).  Consider I.I.D. random variables $X_1, X_2, \dots$.  Suppose $\EE[X_i] = \mu$, and $\Var(X_i) = \sigma^2$.  Then
+    \[
+      \frac{X_1 + X_2 + \dots + X_n - n \mu}{ \sigma \sqrt{n} } \to \mathcal{N}(0, 1); \qquad \text{ as } n \to \infty.
+    \]
+
+    Intuition -- the $n \mu$ is for mean normalization, the $\sigma \sqrt{n}$ is for variance normalization. This is why many real world distributions look normally distributed.
+
+  \item Method of moments.
+    Let $\hat{m}_k = \frac{1}{n} \sum_{i=1}^{n} X_i^k$ (sample moments).  Set each of these sample moments equal to the "true" moments.
+
+  \item Estimator Bias.  Defined as
+    \[
+      \EE[\hat{\theta}] - \theta.
+    \]
+    When bias = 0, estimator is unbiased.
+
+  \item Estimator Consistency.  Defined as
+    \[
+      \lim_{n \to \infty} P(|\hat{\theta} - \theta| < \epsilon) = 1; \qquad \text{ for } \epsilon > 0.
+    \]
+
+  \item Maximum Likelihood Estimation.  Define the likelihood function as
+    \[
+      L(\theta) = \prod_{i=1}^{n} f(X_i | \theta),
+    \]
+    where this is a product since the $X_i$ are IID.  Then
+    \[
+      \theta_{MLE} = \argmax_{\theta} L(\theta).
+    \]
+
+  \item Log-likelihood
+    \[
+      LL(\theta) = \log L(\theta) = \sum_{i=1}^{n} \log f(X_i | \theta).
+    \]
+
+  \item Bayesian Estimation.  Let $\theta = \text{model parameters}$, $D = \text{data}$.  Then
+    \[
+      P(\theta | D) = \frac{P(D|\theta) P(\theta)}{P(D)}.
+    \]
+
+    We have prior $P(\theta)$ and can compute likelihood $P(D|\theta)$.  Posterior $P(\theta | D)$ is assumed to have same parameter form as prior.  The term $P(D)$ is a constant that can be ignored (just for integration).
+
+    Example: Let $\theta \sim \Beta(a, b)$, $D = \{n \text{ heads}, m \text{ tails}\}$.  Then maximum a posteriori will give you $\Beta(a+n, b+m)$.
+
+  \item Maximum A Posteriori (MAP) estimator of $\theta$:
+    \[
+      \theta_{MAP} = \argmax_{\theta} f(\theta | X_1, X_2, \dots, X_n) = \argmax_{\theta} \frac{f(X_1, X_2, \dots, X_n | \theta) g(\theta)}{h(X_1, X_2, \dots, X_n)}
+    \]
+    \[
+      = \argmax_{\theta} \frac{\left(  \prod_{i=1}^{n} f(X_i | \theta) \right) g(\theta)}{h(X_1, X_2, \dots, X_n)} = \argmax_{\theta} g(\theta) \prod_{i=1}^{n} f(X_i | \theta).
+    \]
+
+  \item Log a posteriori
+    \[
+      \theta_{MAP} = \argmax_{\theta}\left(  \log (g(\theta)) + \sum_{i=1}^{n} \log (f(X_i | \theta)) \right).
+    \]
+
+
+  \item Naive Bayes.  Estimate probabilities $P(Y)$ and each $P(X_i | Y)$ for all $i$.  Classify as spam or not using $\hat{Y} = \argmax_{y} \hat{P} (\mathbf{X} | Y) \hat{P}(Y)$.
+
+    Employ conditional independence assumption:
+    \[
+      \hat{P}(\mathbf{X} | Y) = \prod_{i=1}^{m} \hat{P}(X_i | Y).
+    \]
+
+  \item Laplace estimate, Naive Bayes.
+    \[
+      P(X_i = 1 | Y = \text{spam}) = \frac{(\text{# spam emails with word } i) + 1}{\text{total # spam emails} + 2}.
+    \]
+
+  \item Logistic regression.  Learn weights $\beta_i$ to estimate 
+    \[
+      P(Y = 1 | \mathbf{X}) = \frac{1}{1 + e^{-z}}; \qquad z = \beta^T x.
+    \]
+    Learn weights $\beta_i$ from gradient descent.
+  
+  \item Linear congruential generator.  Start with seed number $X_0$.  Next random number is given by 
+    \[
+      X_{n+1} = (a X_n + c) \pmod{m}.
+    \]
+
+  \item Bayesian network.  Graphical representation of joint probability distribution.  Each node $X$ has a conditional probability $P(X | parents(X))$.  Graph has no cycles (directed acylic graph).
+
+  \item Showing two distributions are independent.  If
+    \[
+      P(x, y) = P(x) P(y); \qquad \forall x,y.
+    \]
+    then the two random variables are independent.
+  \end{enumerate}
+
+\section{Theory}
+
+\begin{enumerate}
+  \item 
+\end{enumerate}
+
+\section{Problems to Review}
+
+\subsection{Problem Set 1}
+\begin{enumerate}
+  \item Classical combinatorics.
+  \item Balls and urns, and variations.
+  \item 1.13 - Unordered vs. ordered ways of counting a set for probability.
+\end{enumerate}
+\subsection{Problem Set 2}
+\begin{enumerate}
+  \item Basic applications of Bayes' Theorem.
+  \item Principle of inclusion - exclusion.
+  \item Classical combinatorics.
+\end{enumerate}
+\subsection{Problem Set 3}
+\begin{enumerate}
+  \item Infinite summations to compute expectation (typically, arithmetico-geomtric series).
+  \item CDF of normal in terms of $\Phi$.
+  \item Binary random variable + sum of expectations.
+\end{enumerate}
+\subsection{Problem Set 4}
+\begin{enumerate}
+  \item Multiple integrals of a density function
+  \item Independence of two distributions + joint density
+\end{enumerate}
+\subsection{Problem Set 5}
+\begin{enumerate}
+  \item Recursive expectation calculation
+  \item MGF calculation
+\end{enumerate}
+\subsection{Problem Set 6}
+\begin{enumerate}
+  \item 6.1 - Confidence intervals
+  \item 6.2 - Maximum likelihood estimation + Jensen for bias
+\end{enumerate}
+
+\end{enumerate}
+
+
+\section{Practice Problems 3-20-17}
+
+\begin{enumerate}
+  \item (See notebook), went through all problems from final review document.
+  \item PS5.1(a)
+  \item PS5.4 -- the relationship between independence, correlation, and covariance
+  \item PS5.8, using MGFs to obtain the distribution
+  \item PS3.3(a)
+  \item Problem from midterm that uses infinite series
+\end{enumerate}
+
+\section{Practice Final 3-21-17}
+\begin{enumerate}
+  \item Remember to take $\sqrt{\sigma^2}$ when doing $\Phi$ transformation.
+  \item Review continuity correction
+\end{enumerate}
+
+\end{document}

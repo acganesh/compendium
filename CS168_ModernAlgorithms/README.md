@@ -1,0 +1,1 @@
+Notes: a good chunk of the second page of 168-notes.pdf is sourced from open source repositories.

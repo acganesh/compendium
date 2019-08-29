@@ -1,0 +1,64 @@
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{todonotes}
+\usepackage{amsthm}
+\usepackage{amsopn}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{graphicx}
+
+% Fonts.
+% https://tex.stackexchange.com/questions/228053/how-to-set-the-default-typewriter-font
+% https://tex.stackexchange.com/questions/215482/how-do-i-get-texttt-with-bold-face-in-latex
+\usepackage[T1]{fontenc}
+\usepackage{libertine}
+
+% \renewcommand\ttdefault{cmvtt} % selects CM typewriter proportional font
+%\renewcommand\ttdefault{pcr} % selects CM typewriter proportional font
+\usepackage[scaled=0.85]{beramono}
+
+\usepackage{hyperref}
+
+% Enable support for https://github.com/gillescastel/inkscape-figures
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\newcommand{\incfig}[1]{%
+    \def\svgwidth{\columnwidth}
+    \import{/figures/}{#1.pdf_tex}
+}
+\pdfsuppresswarningpagegroup=1
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{prop}{Proposition}
+\newtheorem*{sol}{Solution}
+
+\usepackage[parfill]{parskip}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{minted}
+\setminted[haskell]{
+            mathescape,
+            linenos,
+            numbersep=5pt,
+            frame=lines,
+            framesep=2mm}
+
+\usepackage{todonotes}
+
+\newcommand{\T}{\texttt}
+\newcommand{\t}{\text}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\mbf}{\mathbf}
+
+\DeclareMathOperator{\argmax}{argmax}
+
+

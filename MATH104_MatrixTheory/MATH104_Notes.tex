@@ -1,0 +1,2520 @@
+\documentclass{article}
+\usepackage{adi}
+\usepackage{amsmath}
+
+\newcommand{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\ol}{\overline}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\sgn}{sgn}
+
+
+\title{MATH104 Notes}
+\author{Adithya C. Ganesh \\ Instructor: Katerina Velcheva}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Lecture 4: 6-27-19}
+
+Last time, we defined a field, and a vector space.  Today, we will define what a vector subspace is.  Intuitively, it is a ``smaller'' vector space inside a bigger vector space.
+
+We will also discuss properties of a vector space.
+
+Recall that if you have a vector space $V$ and a field $\mathbb{F}$, you can define two operations, vector addition and scalar multiplication as follows:
+
+\begin{itemize}
+  \item $+ : V \times V \to V$
+  \item $\times: \mathbb{F} \times V \to V$.
+\end{itemize}
+
+{\bf Definition.} A vector space $W \subset V$ is a subspace of $V$ if and only if for all $w_1, w_2 \in W$ and $\alpha, \beta \in \mathbb{F}$, we have
+\begin{align*}
+  \alpha w_1 + \beta w_2 \in W.
+\end{align*}
+
+{\bf Example.} Note that $\mathbb{R}^2$ is a subspace of $\mathbb{R}^3$.
+
+{\bf Example.} Note that $\mathbb{R}^{n \times n}$ is a vector space over the field $\mathbb{R}$.
+
+Let $W$ be the space of all $n \times n$ symmetric matrices.  Note that $W$ is a subspace of $\mathbb{R}^{n \times n}$.
+
+Let $A, B$ be symmetric.  Clearly, $\alpha A + \beta B$ is symmetric by linearity.
+
+{\bf Example.} Let $V = \mathbb{R}^{n \times n}, F = \mathbb{R}, W = \left\{ A | A_{ij} = - A_{ji} \right\}$, the set of skew-symmetric matrices.
+
+Let $A, B$ be two matrices in $W$, and consider $\alpha, \beta \in \mathbb{R}$.
+
+We would like to show that
+\begin{align*}
+  (\alpha A + \beta B)_{ij} = - (\alpha A + \beta B)_{ji}.
+\end{align*}
+
+And this follows from the same logic as before.
+
+{\bf Example.} Let's consider the vector space $V = \mathbb{R}^2$.  Let $W = \left\{ \mat{1 \\ 0} + c \mat{1 \\ 1} \right\}$.
+
+So show that this isn't a subspace, let
+\begin{align*}
+  w_1 &= \mat{1 \\ 0} + c_1 \mat{1 \\ 1} \\
+  w_2 &= \mat{1 \\ 0} + c_2 \mat{1 \\ 1}.
+\end{align*}
+
+And furthermore,
+\begin{align*}
+  \alpha w_1 + \beta w_2 = (\alpha + \beta) \mat{1 \\ 0} + (\alpha c_1 + \beta c_2) \mat{1 \\ 1},
+\end{align*}
+
+and we see that $a w_1 + b w_2 \not \in W$.  Furthermore, there isn't a zero vector in this subspace (if we look at it geometrically).
+
+{\bf Definition.} Let $v_1, \cdots, v_k$ be vectors.  We say that the vectors are linearly dependent if there exists $\alpha_1, \dots, a_k$ not all 0 such that
+
+\begin{align*}
+  \alpha_1 v_1 + \alpha_2 v_2 + \cdots + \alpha_k v_k = 0.
+\end{align*}
+
+We say that vectors are linearly independent if they are not linearly independent.
+
+{\bf Example.} What does it mean for a matrix to be linearly independent?
+
+Let $V$ be a matrix.  We want to solve:
+\begin{align*}
+  V = \mat{v_1 & v_2 & \dots & v_k} \mat{\alpha_1 \\ \alpha_2 \\ \cdots \\ \alpha_k} = 0
+\end{align*}
+
+If the columns of $V$ are linearly independent, then we can conclude that $a$ is the zero vector.
+
+If the columns are linearly dependent, you can find a nontrivial solution $a$ to this problem.
+
+{\bf Definition.} We define the rank of a matrix $V$ to be the maximum number of linearly independent columns.
+
+{\bf Definition.} We define the {\it span} of a set of vectors $v_1, \dots, v_k$ to be the set
+
+\begin{align*}
+  \left\{ V | V = \alpha_1 v_1 + \dots + \alpha_k v_k, \alpha_1, \dots, a_k \in \mathbb{F} \right\}
+\end{align*}
+
+{\bf Example.} Let $V = \mathbb{R}^2$.  What is the span of the vector $\mat{1 \\ 0}$?  You get $V = \mat{\alpha_1 \\ 0}$.  Geometrically, this is just the $x$-axis.
+
+{\bf Example.} What is the span of the vector $\mat{1 \\ 1}$?  You get $V = \mat{\alpha_1 \\ \alpha_1}$, which is the linear $y = x$.
+
+{\bf Example.} What is the span of $\mat{1 \\ 0}, \mat{0 \\ 1}$?  This is the whole plane.
+
+{\bf Example.} What is the span of $\mat{1 \\ 0}, \mat{5 \\ 0}$?  Just the $x$-axis.
+
+{\bf Definition.} Given a vector space $V$ and a set of vectors $ \left\{ v_1, \dots, v_n \right\}$, we say that the set is a basis if two conditions hold:
+
+\begin{itemize}
+  \item $v_1, \dots, v_n$ are linearly independent.
+  \item $\Span \left\{ v_1, \dots, v_n \right\} = V$.
+\end{itemize}
+
+{\bf Example.} The vectors $\mat{1 \\ 1}$, $\mat{1 \\ 0}$ are a basis of the plane $\mathbb{R}^2$.
+
+{\bf Definition.} The {\it dimension} of a vector space $V$ is the number of vectors in a basis.
+
+If $v_1, \dots, v_n$ form a basis, then for any vector $v \in V$, we can choose constants $c_1, \dots, c_n$ such that $V = c_1 v_1 + c_2 v_2 + \cdots + c_n v_n$; note that these must be unique.  Otherwise, we can get a contradiction by obtaining different constants $b_1, \cdots, b_n$ such that $V = b_1 v_1 + \dots + b_n v_n$.
+
+\section{Lecture 5: 7-1-19}
+
+Recall the definition of linear dependence.  If $v_1, \cdots, v_k$ are linearly dependent, there exists $c_1, \cdots, c_k$ not all 0 such that
+
+\begin{align*}
+  c_1 v_1 + \dots + c_k v_k = 0.
+\end{align*}
+
+The vectors are linearly independent if the opposite is true.
+
+Recall that the span of $v_1, \dots, v_k$ is defined as follows:
+\begin{align*}
+  \Span \left\{ v_1, \dots, v_k \right\} = \left\{ c_1 v_1 + \dots + c_k v_k | c_i \in \RR \right\}.
+\end{align*}
+
+Recall that $v_1, \dots, v_n$ is a basis for $V$ if the $v_i$ are linearly independent, and the $v_i$ span $V$.
+
+{\bf Theorem.} If $v_1, \dots, v_m$ form a basis, then any $v \in V$ can be expressed uniquely as
+\begin{align*}
+  v = c_1 v_1 + \dots + c_n v_n, c_i \in \mathbb{F}.
+\end{align*}
+
+{\bf Definition.} $c_1, c_2, \cdots, c_n$ are the coefficients of $v$ with respect to the basis $v_1, \dots, v_n$.
+
+{\bf Example.} Let $V = \mathbb{R}^3$, $\mathbb{F} = \mathbb{R}$.  We can define the standard basis as follows:
+\begin{align*}
+  \mbf{e}_1 = \mat{1 \\ 0 \\ 0}; \qquad \mbf{e}_2 = \mat{0 \\ 1 \\ 0}; \qquad \mbf{e}_3 = \mat{0 \\ 0 \\ 1}.
+\end{align*}
+
+Then
+\begin{align*}
+  v = 1 \mbf{e}_1 + 2 \mbf{e}_2 + 3\mbf{e}_3 = \mat{1 \\ 2 \\ 3}.
+\end{align*}
+
+Now, consider a new basis
+\begin{align*}
+  \mbf{v}_1 = \mat{1 \\ 1 \\ 0}; \qquad \mbf{v}_2 = \mat{0 \\ 1 \\ 0}; \qquad \mbf{v}_3 = \mat{0 \\ 0 \\ 1}.
+\end{align*}
+
+The same vector $v$ can be expressed as
+\begin{align*}
+  v = \mbf{v}_1 + \mbf{v}_2 + 3 \mbf{v}_3.
+\end{align*}
+
+Now we will talk a little bit about orthogonality, and sums and intersections of vector spaces.
+
+Given two vectors $x, y \in \mathbb{R}^n$, we can define the inner product between $x$ and $y$ as follows:
+\begin{align*}
+  \la x, y \ra = \sum_{i=1}^{n} x_i y_i = y^T x.
+\end{align*}
+
+If $x, y \in \mathbb{C}^n$, we define
+\begin{align*}
+  \la x, y \ra = \sum_{i=1}^{n} x_i \ol{y}_i = y^H x.
+\end{align*}
+
+{\bf Definition.} We say that $x, y$ are orthogonal if $\la x, y \ra = 0$.
+
+{\bf Definition.} We say that $v_1, \dots, v_n$ are mutually orthogonal if $\la v_i, v_j \ra = 0$ for any $i \neq j$.
+
+{\bf Definition.} We say that $v_1, \dots, v_n$ are orthonormal if the vectors are mutually orthogonal and $\la v_i, v_i \ra = 1$.
+
+{\bf Example.} The standard basis in $\mathbb{R}^n$ is an orthonormal set of vectors.
+
+{\bf Example.} (Nonexample).  The basis from before,
+\begin{align*}
+  \mbf{v}_1 = \mat{1 \\ 1 \\ 0}; \quad \mbf{v}_2 = \mat{0 \\ 1 \\ 0}; \quad \mbf{v}_3 = \mat{0 \\ 0 \\ 1},
+\end{align*}
+is not an orthonormal basis, since
+\begin{align*}
+  \la v_1, v_1 \ra &= 2 \neq 1; \\
+  \la v_1, v_2 \ra &= 1 \neq 0.
+\end{align*}
+
+{\bf Definition.} We say that a matrix $A$ is orthogonal if $A^T A = I$.  This is the same as requiring that the columns of $A$ are orthonormal vectors.
+
+{\bf Lemma.} Suppose that $v_1, \dots, v_n$ are mutually orthogonal in $\mathbb{R}^n$.  Then $v_1, \dots, v_n$ are linearly independent.
+
+{\bf Proof.} We want to show that if
+\begin{align*}
+  c_1 v_1 + \dots + c_n v_n = 0,
+\end{align*}
+we must have $c_i = 0$ for all $i$.
+
+Now, consider
+\begin{align*}
+  \la c_1 v_1 + \dots + c_n v_n, v_i \ra = \la 0, v_i \ra = 0.
+\end{align*}
+Now, applying the linearity of the inner product, this is equal to:
+\begin{align*}
+  c_1 \la v_1, v_i \ra + c_2 \la v_2, v_i \ra + \cdots + c_n \la v_n, v_i \ra = 0,
+\end{align*}
+which is equal to $c_i \la v_i, v_i \ra = 0$.  This implies that $c_i = 0$; and this is true for all $i$.
+
+We will now talk about sums and intersections of subspaces.
+
+Recall that if $W \subset V$, where $V$ is a vector space over $\mathbb{F}$, we have $W$ is a subspace of $V$ iff for all $w_1, w_2 \in W$, $\alpha, \beta \in \mathbb{F}$, we have
+\begin{align*}
+  \alpha w_1 + \beta w_2 \in W.
+\end{align*}
+
+Suppose that $S, R \subset V$ are subspaces.  We can define:
+
+\begin{enumerate}
+  \item $S + R = \left\{ s + r |  s \in S, r \in R \right\}$.
+  \item $S \cap R = \left\{ v | v \in S, v \in R \right\}$.
+\end{enumerate}
+
+{\bf Lemma.} $S+R$ and $S \cap R$ are subspaces.
+
+{\bf Proof.} Take $w_1, w_2 \in S+R$.  By definition, there exists $r_1, r_2, s_1, s_2$ such that $w_1 = r_1 + s_1$, and $w_2 = r_2 + s_2$.
+
+Now,
+\begin{align*}
+  w_1 + w_2 = (s_1 + s_2) + (r_1 + r_2).
+\end{align*}
+But $(s_1 + s_2) \in S$, and $(r_1 + r_2) \in R$, so $w_1 + w_2 \in S+R$ as claimed.
+
+Similarly,
+\begin{align*}
+  \alpha w_1 = \alpha (s_1 + r_1) = \alpha s_1 + \alpha r_1 \in S + R.
+\end{align*}
+
+{\it Exercise.} Show that $S \cap R$ is a subspace.
+
+{\it Remark.} Note that $S \cup R$ is not a subspace, the reason is that this isn't closed under addition.  For example, the $x$-axis is a subspace of $\mathbb{R}^2$, and the $y$-axis is a subspace of $\RR^2$.  But the union doesn't contain vectors in the interior of the plane.
+
+{\bf Definition.} We say that $T = S \oplus R$, i.e. $T$ is the direct sum of $S$ and $R$.
+
+\begin{enumerate}
+  \item We have $T = S+R$.
+  \item $S \cap R = \left\{ 0 \right\}$.
+\end{enumerate}
+
+{\bf Example.} In $\mathbb{R}^3$, we can take
+\begin{align*}
+  S = \Span \mat{1 \\ 0 \\ 0}.
+\end{align*}
+\begin{align*}
+  R = \Span \left\{ \mat{0 \\ 1 \\ 0}, \mat{0 \\ 0 \\ 1} \right\}.
+\end{align*}
+
+In this case, $\mathbb{R}^3 = S \oplus R$.
+
+{\bf Example.} Let $S_2 = \Span \mat{ 1 \\ 0 \\ 0}, R_2 = \Span \mat{ 0 \\ 1 \\ 0}$.  Here, $S_2 \cap R_2 = \left\{ 0 \right\}$, but $S_2 + R_2 \neq \mathbb{R}^3$.
+
+{\bf Example.} Let $S_3 = \Span \left( \mat{1 \\ 0 \\ 0}, \mat{0 \\ 1 \\ 0} \right)$, $R_3 = \Span \left( \mat{0 \\ 1 \\ 0}, \mat{0 \\ 0 \\ 1} \right)$.  Herein, $S_3 + R_3 = \mathbb{R}^3$, but $S_3 \cap R_3 \neq \left\{ 0 \right\}$.
+
+{\bf Theorem.} If $T = S \oplus R$, then every $t \in T$ can be expressed uniquely as $t = s+r$ for $s \in S, r \in R$.
+
+{\bf Proof.} Suppose for sake of contradiction, that $t = s_1 + r_1 = s_2 + r_2$.  Then $s_1 - s_2 = r_2 - r_1$, but this is a contradiction since we assumed the intersection was just the zero vector.
+
+{\bf Theorem.} If $T = S \oplus R$, then $\dim T = \dim S + \dim R$.
+
+{\bf Proof.} The idea is that you can obtain a basis of $T$ by choosing a basis of $S$, a basis of $R$, and combining them.
+
+{\bf Theorem.} We have $\dim S + \dim R = \dim S + \dim R - \dim S \cap R$. (Note that the direct sum theorem is a special case of this theorem.)
+
+Note: no lecture on Thursday July 4.
+
+\section{Lecture 7: 7-3-19}
+
+Suppose $V$ is a vector space over $\mathbb{R}$.  Further, suppose $V$ has dimension $n$, meaning that there exists a basis $v_1, \dots, v_n$.  Since this is a basis, for every $v \in V$, we can find constants $c_1, \dots, c_n$ such that
+\begin{align*}
+  V = c_1 v_1 + \dots + c_n v_n.
+\end{align*}
+
+Let $\varphi_B: V \to \RR^n$ be a map such that
+\begin{align*}
+  \varphi_B(v) = \mat{c_1 \\ \dots \\ c_n}.
+\end{align*}
+
+Now, let $V = P^n = \left\{ p | p(t) = a_0 + a_1 t + \dots + a_n t^n \right\}$.  Here, we can choose our basis to be the monomials, that is
+\begin{align*}
+  v_0 = 1 \\ 
+  v_1 = t \\
+  v_2 = t^2 \\
+  \dots \\
+  v_n = t^n.
+\end{align*}
+
+Here, we can define a map $\varphi_B : P^n \to \RR^{n+1}$, such that the map is defined as follows:
+\begin{align*}
+  a_0 + a_1 t + \dots + a_n t^n \to \mat{a_0 \\ a_1 \\ \dots \\ a_n}.
+\end{align*}
+
+A general fact.  Given two polynomials, if
+\begin{align*}
+  a_0 + a_1 t + \dots + a_n t^n = b_0 + b_1 t + \dots + b_n t^n,
+\end{align*}
+for all $t$, then $b_i = a_i$ for all $i$.
+
+{\bf A linear transformation is completely determined by where we send the basis vectors.}
+
+Suppose we have a map $L: V \to W$, where $V, W$ are vector spaces over $\RR$.  Further, suppose $\dim V = n$ and $\dim W = m$.
+\begin{itemize}
+  \item Let $v_1, \dots, v_n$ be a basis for $V$.
+  \item Let $w_1, \dots, w_m$ be a basis for $W$.
+\end{itemize}
+
+Now, let $v = c_1 v_1 + \dots + c_n v_n$, and write
+\begin{align*}
+  L(v) &= L(c_1 v_1 + \dots + c_n v_n) \\
+  &= c_1 L(v_1) + c_2 L(v_2) + \dots + c_n L(v_n).
+\end{align*}
+
+Now, suppose
+\begin{align*}
+  L(v_i) = a_1^i w_1 + a_2^i w_2 + \dots + a_m^i w_m
+\end{align*}
+
+{\bf Matrix of linear map.}
+
+Let $L: V \to W$ be a linear map.  We would like to find some $A_L$ such that $L(v) = A_L v$.  We can define the matrix as
+\begin{align*}
+  A_L = \mat{\phi_{BC}(L(v_2)) & \phi_{BC}(L(v_2)) & \dots & \phi_{BC}(L(v_n))}
+\end{align*}
+
+Diagramatically, we can make a sort of square (commutative diagram):
+
+\begin{align*}
+  L: V \to W \\
+  \phi_{BD}: V \to \RR^n \\
+  A_L: R_n \to R_m \\
+  \phi_{BCD}^{-1}: \RR^m \to W.
+\end{align*}
+
+Last time, we discussed the derivative map.  That is, given $p(t) = a_0 + a_1 t + \dots + a_n t^n \in P^n$, we can define a map $L: P^n \to P^{n-1}$ known as the derivative map.
+
+Note that we can compute the derivative matrix as follows:
+
+\begin{align*}
+  A_L = \mat{0 & 1 & 0 & \dots & 0 \\ 0 & 0 & 2 & \dots & 0 \\ \dots \\ 0 & 0 & 0 & \dots & n}
+\end{align*}
+
+{\bf Change of basis matrix.}
+
+Let $v_1, \dots, v_n$ be a basis for $V$.  Let
+\begin{align*}
+  B_1 = \mat{v_1 & v_2 & \dots & v_n}.
+\end{align*}
+And let
+\begin{align*}
+  B_2 = \mat{w_1 & w_2 & \dots & w_n}.
+\end{align*}
+
+We would like to define a linear transformation that takes a vector in $B_1$ to $B_2$.
+
+We get another diagram:
+\begin{itemize}
+  \item $I_d: V \to V$
+  \item $\phi_{B_2}: V \to R^n$
+  \item $\phi_{B_1}: V \to R^n$.
+  \item $M: \RR^n \to \RR^n$
+\end{itemize}
+Here, the change of basis $M$ will take the coordinates in one basis and produce the coordinates in another basis.
+
+If we have a linear transformation $L: V \to W$, we can compute the matrix $M_w A_L M_v^{-1}$, to obtain the change of basis matrix.  Try to visualize this using the commutative diagram.
+
+\section{Lecture 8: 7-8-19}
+
+We start with continued discussion of the notion of change of basis matrices.
+
+Suppose $S \in V$ is a subspace.  Here, let
+\begin{itemize}
+  \item $V$ be a vector space over $\RR$.
+  \item We define $S^{\perp} := \left\{ v \in V | \langle v, s \rangle = 0, \forall s \in S \right\}$.
+\end{itemize}
+
+For example, if $V = \RR^2$, and $S = \Span \mat{1 \\ 0}$, then $S^{\perp} = \Span \mat{0 \\ 1}$.  To prove this, we need to show $\Span \mat{0 \\ 1} \subseteq S^{\perp}$ and $S^{\perp} \subseteq \Span \mat{0 \\ 1}$.
+
+{\bf Properties of orthogonal complements.}
+
+\begin{itemize}
+  \item $S^{\perp}$ is a subspace of $V$.
+  \item $S \oplus S^{\perp} = V$.
+  \item $(S^{\perp})^{\perp} = S$.
+  \item $R \subseteq S$ is equivalent to $S^{\perp} \subseteq R^{\perp}$.
+  \item $(R+S)^{\perp} = R^{\perp} \cap S^{\perp}$.
+  \item $(S \cap R)^{\perp} = R^{\perp} + S^{\perp}$.
+\end{itemize}
+
+\section{Lecture 9: 7-9-19}
+
+Recall that if $S \subset V$, where $V$ is a vector space over $\mathbb{F}$, then
+\begin{align*}
+  S^{\perp} = \left\{ v \in V | v \perp s, s \in S \right\}.
+\end{align*}
+
+The most important fact is that we can write
+\begin{align*}
+  V = S \oplus S^{\perp}.
+\end{align*}
+
+(Think about the geometry in $\mathbb{R}^n$.)
+
+{\bf Definition.} Given a linear map $A: V \to W$, we can define two relevant spaces.
+
+\begin{itemize}
+  \item The kernel (or null space) of $A$ is defined as follows:
+    \begin{align*}
+      \Ker A = \left\{  v \in V | Av = 0 \right\}.
+    \end{align*}
+  \item The image of $A$ is defined as follows:
+    \begin{align*}
+      \Ima A = \left\{ Av | v \in V \right\}.
+    \end{align*}
+\end{itemize}
+
+{\bf Example.} Suppose that our linear transformation $A$ is the projection onto $e_1$ (the $x$-axis), that is $\text{Pr}_{e_1}: \RR^2 \to \RR^2$.
+
+Then:
+\begin{itemize}
+  \item $\Ker \text{Pr}_{e_1} = $ the $y$ axis.
+  \item $\Ima \text{Pr}_{e_1} = $ the $x$ axis.
+\end{itemize}
+
+We can also frame the kernel and the image in terms of the null-space and range.  If $A: \RR^n \to \RR^n$ defines the map $v \mapsto Av$, then
+
+\begin{itemize}
+  \item $\Ker A = \left\{ v \in \RR^n | Av = 0 \right\} = N(A)$.
+  \item $\Ima A = \left\{ Av \in \RR^m | v \in \RR^n \right\} = R(A)$.
+\end{itemize}
+
+For example, if our matrix is $A = \mat{0 & 1 \\ 0 & 0}$, then
+
+\begin{itemize}
+  \item $\Ima A = \Span \mat{1 \\ 0}$.
+  \item $\Ker A = \Span \mat{1 \\ 0}$.
+\end{itemize}
+
+{\bf Lemma.} If $A = \mat{\mbf{a}_1 & \mbf{a}_2 & \dots & \mbf{a}_n}$, then
+\begin{align*}
+  \Ima A = R(A) = \Span \left\{ \mbf{a}_1, \mbf{a}_2, \dots, \mbf{a}_n \right\}.
+\end{align*}
+
+\begin{proof}
+  To prove the lemma, we will show containment in both directions.  Suppose $v \in \Span \left\{ \mbf{a}_1, \mbf{a}_2, \dots, \mbf{a}_n \right\}$.  Then for $c_i \in \RR$, we have
+  \begin{align*}
+    v &= c_1 a_1 + \dots + c_n a_n \\
+    &= \mat{\mbf{a}_1 & \mbf{a}_2 & \dots & \mbf{a}_n} \mat{c_1 \\ \dots \\ c_n},
+  \end{align*}
+  which implies that $v \in \Ima A$.
+
+The opposite inclusion is equivalent; just reverse the steps.
+\end{proof}
+
+Now, given a matrix $A: V \to W$, we have four spaces associated with it.  We have:
+
+\begin{itemize}
+  \item $\Ima(A) \in W$
+  \item $\Ker(A) \in V$
+  \item $\Ima(A^T) \in V$
+  \item $\Ker(A^T) \in W$.
+\end{itemize}
+
+
+\begin{theorem}
+  Given a matrix $A$, we have the following important results relating the spaces associated with it.
+
+  \begin{itemize}
+    \item $\Ker(A) = \Ima(A^T)^{\perp}$
+    \item $\Ker(A^T) = \Ima (A)^{\perp}$.
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  We would like to show $\Ker(A) = (\Ima(A^T))^{\perp}$.  For all $v \in \Ker A$, we want to show that $v$ is orthogonal to all vectors in $\Ima A^T$.
+
+  Suppose that $x \in \Ker A$.  This implies $Ax = 0$.  Also, for any $y \in \RR^m$, we have $y^T A x = 0$, but also $(A^T y)^T x = 0$.  Further, $(A^T y) x = 0$ for all $y \in \RR^m$.
+
+  This implies $X$ is orthogonal to all vectors of the form $A^T y$ for all $y \in \RR^m$.  This means that $x \in \Ima(A^T)^{\perp}$.
+
+  For the opposite direction, suppose $x \in \Ima(A^T)^{\perp}$ for all $y \in \RR^m$.  Then $(A^T y)^T x = 0$, which implies $y^T A x = 0$, that is $Ax = 0$, or $x \in \Ker A$. 
+
+  Hence, $\Ima(A^T)^{\perp} = \Ker A$ as claimed.
+\end{proof}
+
+{\bf Corollary.} In other words, $\Ker(A)$ is perpendicular to $\Ima(A^T)$.  This implies that $\Ker(A) \oplus \Ima(A^T)^{\perp} = V$, so $\Ker(A)$ and $\Ima(A^T)$ partition the space $V$.
+
+\section{Lecture 10: 7-10-19}
+
+Let $A$ be a linear transformation taking $\RR^n \to \RR^m$.  Then
+\begin{align*}
+  \RR^n &= \Ker A \oplus (\Ker A)^{\perp} = \Ker A \oplus \Ima A^T \\
+  \RR^m &= \Ima A \oplus \Ker A^T.
+\end{align*}
+
+Let $S \subset V$ be a subspace.  If $V = S \oplus S^{\perp}$, then $\dim V = \dim S + \dim S^{\perp}$.
+
+\begin{theorem}
+  Let $A$ be a map from $\RR^n \to \RR^m$.  Further, suppose $A_{res}$ denotes the map from $\Ker A^{\perp} \to \Im A$.  Then $A_{res}$ is bijective.
+\end{theorem}
+
+\begin{proof}
+  We start by showing that $A_{res}$ is injective.  Suppose $A_{res} v_1 = A_{res} v_2$.  This implies $A_{res} (v_1 - v_2) = 0$.  Since $v_1, v_2 \in \Ker A^{\perp}$, this implies $v_1 - v_2 \in \Ker A^{\perp}$ and $v_1 - v_2 \in \Ker A$.  In particular, this means that $v_1 - v_2 = 0$, so $v_1 = v_2$.
+
+  Now, we show that $A_{res}$ is surjective.  For all $w \in \Ima A$, there exists some $v \in \RR^n$ such that $Av = w$.  Now, take $v_1 \in \Ker A$ and $v_2 \in \Ker A^{\perp}$ such that $v = v_1 + v_2$.  Now, we know that $w = Av = A(v_1 + v_2) = Av_1 + Av_2 = Av_2 = w$, so $v_2 \in \Ker A^{\perp}$, and $A_{res}$ is surjective.
+
+  This proves the desired result.
+\end{proof}
+
+\begin{definition}
+  We say that a map is a vector space isomorphism if it is bijective and a linear transformation.
+\end{definition}
+
+\begin{theorem}
+  Suppose that $L: V \to W$ is a vector space isomorphism.  Then:
+  \begin{itemize}
+    \item Given a basis $v_1, v_2, \dots, v_n$ for $V$, then $L(v_1), L(v_2), \dots, L(v_n)$ is a basis for $W$.
+    \item $\dim V = \dim W$.
+  \end{itemize}
+\end{theorem}
+
+Now, applying this result to the map between $\Ima A \to \Ima A^T$, we obtain the result that row rank is equal to column rank.
+
+Also, remarking that $\R^n = \Ker A \oplus \Ima A^T$, we can prove the rank nullity theorem (since dimensions add when you use direct sums).
+
+\begin{definition}
+Suppose $f: S \to R$ is a function.  We say that $f$ is invertible if there exists $y: R \to S$ such that
+
+\begin{itemize}
+  \item $f(y(r)) = r; \quad r \in R$
+  \item $g(f(s)) = s; \quad s \in S$.
+\end{itemize}
+\end{definition}
+
+{\bf Lemma.} If $f$ is bijective, then it is invertible.
+
+\begin{proof}
+  For all $r \in R$, there exists a unique $s \in S$ such that $f(s) = r$.  Define $g(r) = s$.
+\end{proof}
+
+Now, suppose $L: V \to W$, and we take $L^{-1}$.  Why is $L^{-1}$ a linear map?  Well, we can check it directly:
+
+If
+\begin{align*}
+  L^{-1} (\alpha w_1 + \beta w_2) = \alpha L^{-1} (w_1) + \beta L^{-1} (w_2),
+\end{align*}
+then we can show that if we apply $L$ to both sides, then we get equality, applying the linearity of $L$.  Now, since $L(LHS) = L(RHS)$, we must have $LHS = RHS$, because $L$ is injective.
+
+Next lecture, we will discuss pseudoinverses.  Given a linear transformation, if a linear transformation is invertible, we can write down the inverse pretty easily.  What would happen if the linear transformation is not invertible?  If we have a map from $\RR^n \to \RR^m$, we can redefine a notion of inverse that allows us to go back.
+
+If $w = w_1 + w_2$, where $w_1 \in \Ima A, w_2 \in \Ker A^T$, then $A^T w = A^{\dagger} w_1$, where $A^{\dagger}$ is known as the pseudoinverse.  Importantly, the pseudoinverse of a matrix exists always.
+
+Note that everything until tomorrow will be on the midterm (and everything starting on Monday will be on the final).
+
+\section{Lecture 11: 7-11-19}
+
+At this point, we're done with chapters 1, 2, and 3.  We'll start discussing the notion of Moore-Penrose pseudoinverses.
+
+Recall that $A \in \RR^{n \times n}$ is invertible if there exists $B \in R^{n \times n}$ if
+\begin{align*}
+  AB = BA = I.
+\end{align*}
+
+Problem:
+\begin{itemize}
+  \item There are matrices in $R^{n \times n}$ that are not invertible.
+  \item The $n \times m$ matrices are not invertible.
+\end{itemize}
+
+Recall that if $A \in R^{n \times m}$, there are four fundamental spaces related to this matrix.
+
+\begin{itemize}
+  \item $\Ima (A)$
+  \item $\Ker (A)$
+  \item $\Ima (A^T)$
+  \item $\Ker(A^T)$.
+\end{itemize}
+
+Recall that we showed that:
+
+\begin{itemize}
+  \item The orthogonal complement of the $\Ima A$ is $\Ker (A^T)$; the orthogonal complement of $\Ker(A)$ is $\Ima(A^T)$.
+  \item We have the results:
+    \begin{align*}
+      \RR^n &= \Ker A \oplus \Ima (A^T) \\
+      \RR^m &= \Ker A^T \oplus \Im A.
+    \end{align*}
+  \item Also,
+    \begin{align*}
+      \Ima A^T \cong \Ima A.
+    \end{align*}
+\end{itemize}
+
+Why is this useful?  We have that $\RR^n = \Ker A \oplus \Ima A^{\perp}$.
+
+This means that for every $v \in \RR^n$, we can find a unique $v_1 \in \Ker A, v_2 \in \Ima A^T$ such that $v = v_1 + v_2$.
+
+Similarly, since $\RR^m = \Ker A^T \oplus \Ima A$, we can find a unique $w_1 \in \Ker A^T, w_2 \in \Ima A$ such that $w = w_1 + w_2$.
+
+{\bf Definition.} Suppose we have a map $A: \RR^n \to \RR^m$; then the pseudoinverse is $A^{+} : \RR^m \to \RR^n$. Further, suppose $w = w_1 + w_2$, where $w_1 \in \Ker A^T; w_2 \in \Ima A$.  We define:
+\begin{align*}
+  A^{+}(w_1) &= 0 \\
+  A^{+}(w_2) &= v_2,
+\end{align*}
+
+where $v_2$ is the unique vector $\in \Ima A^T$ that satisfies $A v_2 = w_2$.
+
+We can draw a picture explaining this:
+
+\todo{Add img}
+
+{\bf Properties.}
+\begin{itemize}
+  \item If $A$ is invertible, then $A^{-1} = A^{+}$.
+  \item If $B$ is the pseudoinverse of $A$, then
+    \begin{align*}
+      A B A = A.
+    \end{align*}
+
+    \begin{proof}
+      Suppose we have some vector $v = v_1 + v_2$, with $v_1 \in \Ker A, v_2 \in \Ima A^{T}$.  Then
+      \begin{align*}
+        Av &= A(v_1 + v_2) \\
+        &= Av_2 \\
+        &= w_2.
+      \end{align*}
+
+      Now, note that 
+      \begin{align*}
+        BAv &= B w_2 \\
+        &= v_2.
+      \end{align*}
+      Now,
+      \begin{align*}
+        ABAv = A v_2 = w_2.
+      \end{align*}
+    \end{proof}
+
+    (Similarly, you can prove that $BAB = B$.)
+  \item $(AB)^{T} = AB$.
+  \item $(BA)^{T} = BA$.
+\end{itemize}
+
+In the homework, we will have to verify some of these properties.
+
+
+{\bf Example.} If $\alpha \in \RR$, then
+    \begin{align*}
+      a^{+} =
+      \begin{cases}
+        \frac{1}{a}; \qquad \alpha \neq 0 \\
+        0; \qquad; \alpha = 0.
+      \end{cases}
+    \end{align*} 
+
+    {\bf Example.} If $A$ is surjective, then $\Im A$ is $\left\{ 0 \right\}$, and
+    \begin{align*}
+      A A^{+} = I_{m \times m}.
+    \end{align*}
+    so $A^{+}$ is the right inverse.
+
+    In this setting, $A(v) = A(v_1 + v_2) = w_2$
+
+    {\bf Example.} If $A$ is injective, then $\Ker A = \left\{ 0 \right\}$, and
+    \begin{align*}
+      A^{+} A = I_{n \times n}.
+    \end{align*}
+
+    Computationally, if you want to verify that a matrix is the pseudo inverse, it suffices to check the properties from before, i.e.
+    \begin{itemize}
+      \item $ABA = A$
+      \item $BAB = B$
+      \item $(AB)^T = AB$
+      \item $(BA)^T = BA$.
+    \end{itemize}
+
+    {\bf Theorem.} The pseudoinverse satisfies this limit:
+    \begin{align*}
+      A^{+} &= \lim_{\delta \to 0} \left( A^T A + \delta^2 I \right)^{-1} A^T \\
+      &= \lim_{\delta \to 0} A^T (A A^T  +\delta^2 I)^{-1}.
+    \end{align*}
+
+    Midterm will have 3 problems:
+
+    \begin{itemize}
+      \item Problem from homework.
+      \item Problem from definition.
+      \item Easy computational problem.
+    \end{itemize}
+
+    \section{Lecture 12: 7-15-19}
+
+    The last topic to appear on the midterm will be pseudoinverses.  Recall HW4 is due Wednesday, and the exam is Thursday evening.  Recall the structure of the midterm:
+
+    \begin{itemize}
+      \item Homework problem.
+      \item Problem where you state a definition.
+      \item Relatively similar computational problem.
+    \end{itemize}
+
+Recall that if $A: \RR^n \to \RR^m$, we can decompose
+
+\begin{align*}
+  \RR^n &= \Ker A \oplus \Ima A^T \\
+  \RR^m &= \Ker A^T \oplus \Ima A.
+\end{align*}
+
+Recall the defintion of the pseudoinverse $A+: \RR^m \to \RR^n$ such that for all $w \in \Ima A$, we have
+
+\begin{itemize}
+  \item $A^{+}(w) = v$
+    where $v$ is the unique element in $\Ima A^T$ such that $Av = w$.
+  \item For all $w \in \Ker A^T$, we have $A^{+} (w) = 0$.
+\end{itemize}
+
+Also, $B$ is the pseudoinverse of $A$ iff
+\begin{enumerate}
+  \item $ABA = A$
+  \item $BAB = B$
+  \item $(AB)^T = AB$
+  \item $(BA)^T = BA$.
+\end{enumerate}
+
+The pseudoinverse limit definition is given by
+\begin{align*}
+  A^{+} &= \lim_{\delta \to 0} (A^T A + \delta^2 I)^{-1} A^T \\
+  &= \lim_{\delta \to 0} A (A A ^T + \delta^2 I)^{-1}
+\end{align*} 
+
+{\bf Property 1.} Recall that if we have a product $UAV$, where $U$ and $V$ are orthogonal, then
+
+\begin{align*}
+  U^H U = U U^H = I,
+\end{align*}
+and then
+
+\begin{align*}
+  (U A V)^{+} = V^{H} A^{+} U^{H}.
+\end{align*}
+
+{\bf Property 2.} Recall that for a special class of diagonalizable matrices, we can express $A = U O U^H$, and thus $A^{+} = U O^{+} U^{H}$.
+
+The proofs of many of these results are provided in section 4.3.
+
+{\bf Property 3.} Recall that $(A^{-1})^{T} = (A^{T})^{-1}$.  We claim that
+\begin{align*}
+  (A^{+})^{T} = (A^T)^{+}.
+\end{align*}
+
+To prove this, we will use the limit definition of the pseudoinverse.
+
+\begin{proof}
+  Note that
+  \begin{align*}
+    (A^T)^{+} &= \lim_{\delta \to 0} (A A^T + \delta^2 I)^{-1} A \\
+    &= \lim_{\delta \to 0} [A^T (A^T A + \delta^2 I)^{-1}]^{T} \\
+    &= [\lim_{\delta \to 0} A^T (A^T A + \delta^2 I)^{-1}]^T \\
+    &= (A^{+})^T.
+  \end{align*}
+\end{proof}
+
+Recall the definition of eigenvectors, if $A \in \mathbb{C}^{n \times n}$, we know that $\mbf{v}$ is a right eigenvector if there exists $\lambda \in \mathbb{C}$ such that
+\begin{align*}
+  A \mbf{v} = \lambda \mbf{v}.
+\end{align*}
+
+Similarly, $\mbf{w}$ is a left eigenvector if there exists $\mu \in \CC$ such that
+\begin{align*}
+  w^H A = u w^H.
+\end{align*}
+
+Recall that the eigenvalues of $A$ are the roots of the characteristic polynomial $\det (A - \lambda I)$.
+
+Also, note that for a $2 \times 2$ matrix, the characteristic polynomial is
+
+\begin{align*}
+  \pi_A(\lambda) = \lambda^2 - \text{Tr}(A) \lambda + \det A.
+\end{align*}
+
+Suppose that $\pi_A(\lambda)$ is the characteristic polynomial of an $n \times n$ matrix, it has exactly $n$ complex roots.
+
+{\bf Definition.} Note that we can write the characteristic polynomial as 
+
+\begin{align*}
+  \pi_A(\lambda) = (\lambda - \lambda_1)^{a_1} \dots (\lambda - \lambda_m)^{a_m}.
+\end{align*}
+
+The algebraic multiplicity of a root $\lambda_i$ is $a_i$, where $a_i$ is defined as in the equation above.
+
+A natural question might be what is the geometric multiplicity?  Based on these multiplicites, we get different Jordan canonical forms.
+
+{\bf Definition.} We can define the geometric multiplicity as
+
+Geometric multiplicity is defined as
+\begin{align*}
+  \dim \Ker (A - \lambda_i I)
+\end{align*}
+
+In general, the geometric multiplicity is not equal to the algebraic multiplicity.
+
+To compute the dimension of the kernel, use the rank nullity theorem.
+
+Note that the algebraic multiplicity is $\geq$ the geometric multiplicity, and the geometric multiplicity is equal to the number of linearly independent eigenvectors.
+
+{\bf Theorem.} If for all $\lambda_i$ eigenvalues of $A$, we have
+\begin{align*}
+  AM(\lambda_i) = GM (\lambda_i),
+\end{align*}
+then $A$ is diagonalizable, and there exists $V$ such that $V^H A V = D$, and thus $A = V D V^H$.
+
+In this case, we have $n$ linearly independent eigenvectors, and we can find a basis of $\RR^n$ of eigenvectors.  In other words, we can find a basis of $\RR^n$ where the matrix $A$ is diagonal with respect to the basis of eigenvectors.
+
+\section{Lecture 13: 7-16-19}
+
+Eastern european exams have a theoretical, oral component, and a practical component (problem solving).  Homework 4 is due tomorrow at midnight.
+
+Yesterday, given $A \in \mathbb{C}^{n \times n}$, we defined right eigenvectors in terms of the following equality:
+\begin{align*}
+  Ax = \lambda x; \lambda \in \CC;
+\end{align*}
+
+and similarly left eigenvectors satisfy
+\begin{align*}
+  y^H A = \mu y^H.
+\end{align*}
+
+\begin{itemize}
+  \item Step 1. Find the eigenvalues by finding the roots of the characteristic polynomials.
+  \item Step 2. Solve the linear system in each eigenvalue to obtain the eigenvectors.
+\end{itemize}
+
+Recall that if $A = \mat{a & b \\ c & d}$, then
+\begin{align*}
+  A - \lambda I = \mat{a - \lambda & b \\ c & d - \lambda},
+\end{align*}
+and
+\begin{align*}
+  \det (A - \lambda I) = (a - \lambda)(d - \lambda) - bc;
+\end{align*}
+and we can solve this system to obtain the eigenvalues.
+
+In general, if $A$ is $n \times n$
+\begin{align*}
+  \det (A - \lambda) = (- \lambda)^n + \Tr (A) (-\lambda)^{n-1} + \dots + \det (A).
+\end{align*}
+
+This is important because the product of the roots are equal to $\det A$, and the sum is equal to $\Tr(A)$.  If the matrix $A$ is singular, there exists $v \neq 0$ such that $A v = 0 =0 v$.
+
+{\bf Example.} Consider the matrix $A = \mat{5 & -4 \\ 2 & -1}$.  Then
+
+\begin{align*}
+  \det (A - \lambda I) &= (5 - \lambda)(-1 - \lambda) + 8 \\
+  &= (\lambda^2 - 4 \lambda + 3)\\
+  &= (\lambda - 3)(\lambda - 1) = 0.
+\end{align*}
+
+So the eigenvalues are $\lambda = 1, 3$.
+
+Now, to solve for the eigenvectors, we have to find a nontrivial element in the kernel of this matrix.
+
+{\bf Definition.} If $A \in \mathbb{C}^{n \times n}$, then the spectrum of $A$ is defined as the set of eigenvalues.
+
+{\bf Lemma.} Eigenvalues are either real or come in conjugate pairs.
+
+To see this, just note that $\lambda$ is a root of the characteristic polynomial.
+
+Also, note that all the eigenvectors are orthogonal (we will go over tomorrow).
+
+{\bf Definition.} Given $A \in \mathbb{R}^{n \times n}$, we say that $A$ is diagonalizable if there exists an orthogonal $Q$, diagonal $O$ such that
+\begin{align*}
+  A = Q O Q^H.
+\end{align*}
+
+If $A$ is not diagonalizable, we say that $A$ is defective.
+
+{\bf Theorem.} If $A$ has $n$ distinct eigenvectors, then $A$ is diagonalizable.
+
+To see this, take $D$ to be the diagonal matrix of eigenvalues, and $Q$ to be the matrix whose columns are the eigenvectors.
+
+{\bf Theorem.} $A$ is diagonalizable iff for all $\lambda_i \in \text{Spec}(A)$, we have $GM(\lambda_i) = AM(\lambda_i)$.
+
+
+
+\section{Lecture 14: 7-17-19}
+
+{\bf Proposition.} Suppose $v_1, \dots, v_n$ are eigenvectors for $A \in \RR^{n \times n}$ with different eigenvalues.  Then, the eigenvectors are linearly independent.
+
+\begin{proof}
+  We can prove this by induction.   If $n = 2$, the result is clear, since if $\lambda_1 \neq \lambda_2$, we can write
+  \begin{align*}
+    Av_1 &= \lambda_1 v_1 \\ 
+    A v_2 &= \lambda_2 v_2.
+  \end{align*}
+
+  Assume for sake of contradiction $v_1 = c v_2$, where $c \neq 0$.  Now, if $A v_1 = c A v_2 = c A_2 v_2$, this implies $A_1 v_1 = \lambda_1 c v_2$, which implies $\lambda_1 = \lambda_2$, which is a contradiction.
+
+  By induction, assume that $v_1, \dots, v_j$ are linearly independent with distinct eigenvalues $\lambda_1, \dots, \lambda_j$, for some $2 < j < n$. By contradiction, assume that for the next eigenvector $v_{j+1}, A v_{j+1} = \lambda_{j+1} v_{j+1}$, and $\lambda_{j+1} \neq \lambda_i, i \in \left\{ 1, \dots, j \right\}$.  Now, if
+  \begin{align*}
+    v_{j+1}  = \sum_{i=1}^{j} c_i v_i,
+  \end{align*}
+  we can write
+  \begin{align*}
+    \lambda_{j+1} \sum_{i=1}^{j} c_i v_i  = A v_{j+1} &= A \sum_{i=1}^{j} c_i v_i \\
+    &= \sum_{i=1}^{j} c_i A v_i \\ 
+    &= \sum_{i=1}^{j} c_i \lambda_i v_j.
+  \end{align*}
+
+  Now, term by term, this is equivalent to saying that
+  \begin{align*}
+    \sum_{i=1}^{j} c_i (\lambda_i - \lambda_{j+1}) v_j = 0.
+  \end{align*}
+
+  But since not all the $c_i$'s are 0, this implies that the $v_j$'s are linearly dependent, which is a contradiction.
+ \end{proof}
+
+ {\bf Theorem.} Let $A$ be a symmetric matrix, with $A^T = A$, with $A \in \RR^{n \times n}$, and $x, y$ are eigenvectors with different eigenvalues $\lambda, \mu$.  Then $\la x, \y \ra = 0$.
+
+ \begin{proof}
+   Note that
+   \begin{align*}
+     \la Ax, y \ra &= (Ax)^T y \\
+     &= x^T A^T y \\
+     &= \la x, A^T y \ra.
+   \end{align*}
+
+   Now,
+   \begin{align*}
+     \lambda \la x, y \ra &= \la \lambda x, y \ra \\
+     &= \la Ax, y \ra \\
+     &= \la x, A^T y \ra \\
+     &= \la x, A y \ra \\
+     &= \la x, \mu y \ra \\
+     &= \mu \la x, y \ra.
+   \end{align*}
+
+   Since $\lambda \neq \mu$, it follows that $\la x, y \ra = 0$.
+ \end{proof}
+
+ {\bf Theorem.} Let $A \in \RR^{n \times n}$.  If $x, y$ are right and left eigenvectors with $\lambda \neq \mu$, it turns out that $\la x, y \ra = 0$.
+
+ \begin{proof}
+   Note that
+   \begin{align*}
+     \mu \la x, y \ra &= \la \mu x, y \ra \\
+     &= \la Ax, y \ra \\
+     &= \la x, A^T y \ra \\
+     &= \la x, (y^T A)^T \ra \\
+     &= \la x, (\lambda y^T)^T \ra \\
+     &= \la x, \lambda a \ra \\
+     &= \lambda \la x, y \ra.
+   \end{align*}
+ \end{proof}
+
+ {\bf Theorem.} If $A \in \RR^{n \times n}$ matrix, then $A$ and $A^T$ have the same eigenvalues.
+
+ \begin{proof}
+ Clearly,
+ \begin{align*}
+   \pi_A(\lambda) &= \det (A - \lambda I) \\
+   &= \det ( ( A - \lambda I)^T ) \\
+   &= \det (A^T - \lambda I) \\
+   &= \pi_{A^T} (\lambda).
+ \end{align*}
+\end{proof}
+
+{\bf Corollary.} The left and right eigenvalues of $A$ are the same.
+
+{\bf Theorem.} Let $A \in \CC^{n \times n}$ with $\lambda_1, \dots, \lambda_n$ distinct and right eigenvectors $x_1, \dots, x_n$, and left eigenvectors $y_1, \dots, y_n$ such that $y_j^H x_i = \delta_{ij}$\footnote{$\delta_{ij} = 1$ if $i = j$, $0$ otherwise.}
+
+Let $D = \diag (\lambda_1, \dots, \lambda_n)$, $X = \mat{x_1 & \dots & x_n}$, $Y = \mat{y_1 & y_2 & \dots & y_n}$.  Then $A$ is diagonalizable as $A = X D^ X^{-1} = X D Y^H$.
+
+
+\begin{proof} 
+Then:
+
+\begin{itemize}
+  \item $AX = XD$
+  \item $y^H A = D Y^H$
+  \item $y^H X = I$
+  \item $A = X D X^{-1} = X D Y^H = \sum_{i=1}^{n} \lambda_i x_i y_i^H$.
+\end{itemize}
+\end{proof}
+
+{\bf Theorem.} (Spectral theorem).  If $A \in \RR^{n \times n}$ and $A^T = A$, then $A$ has $n$ eigenvectors that are orthonormal.  Then
+
+\begin{itemize}
+  \item $AQ = QD$
+  \item $A = QDQ^T \sum_{i=1}^{n} \lambda_i \mu_i \mu_i^H$.
+\end{itemize}
+
+The only thing we didn't show is that $n$ eigenvectors exist.  Once we get this result, we can show the fact that $A$ is diagonalizable.
+
+This turns out to be computationally useful in a lot of cases.
+
+For next time, we will continue with similar matrices and matrix exponential.
+
+\section{Lecture 15: 7-18-19}
+
+{\bf Definition.} We say that a matrix $A$ is similar to matrix $B$ if
+\begin{align*}
+  A = S B S^{-1},
+\end{align*}
+for some invertible matrix $S$.
+
+{\bf Example.} If $A$ has $n$ linearly independent eigenvectors, then
+\begin{align*}
+  AX = XD,
+\end{align*}
+where $X = \mat{x_1 & \dots & x_n}$, and $D = \text{diag}(\lambda_1, \dots, \lambda_n)$.  In this case, $A = X D X^{-1}$.
+
+{\bf Properties of similar matrices.}
+
+\begin{itemize}
+  \item If $A$ and $B$ are similar, then $\det (A) = \det (B)$.  This follows directly from the multiplicative property of the determinant.
+
+    \begin{proof}
+      \det (A) &= \det (S B S^{-1}) \\
+      &= \det (S) \det (B) \det (S^{-1}) \\
+      &= \det B.
+    \end{proof}
+
+  \item Similar matrices have the same eigenvalues.  To show, we can show that both matrices have the same characteristic polynomial.  
+
+    \begin{proof}
+      We have
+      \begin{align*}
+        \det(A - \lambda I) &= \det (S B S^{-1} - \lambda S I S^{-1}) \\
+        &= \det (S (B - \lambda I) S^{-1} ) \\
+        &= \det (S) \det (B - \lambda I) \det (S^{-1}) \\
+        &= \det (B - \lambda I).
+      \end{align*}
+    \end{proof}
+
+    This proves the result.  However, it is not true that similar matrices have the same eigenvectors.  For example, if $A = X D X^{-1}$, the eigenvectors of $D$ are the standard basis vectors; while the eigenvectors of $A$ are the columns of $X$.
+\end{itemize}
+
+
+   {\bf Theorem. (Cayley-Hamilton).} $\pi_{A} (A) = 0$. For example, $A = \mat{1 & 2 \\ 0 & 1}$, and $\pi_(A) = \lambda^2 - 2 \lambda + 1$.  Now, C-H states that $A^2 - 2A + I = \mat{0 & 0 \\ 0 & 0}$.
+
+We will now discuss matrix exponentials.  Recall that we define
+\begin{align*}
+  e^a = 1 + a + \frac{a^2}{2!} + \frac{a^3}{3!} + \dots.
+\end{align*}
+
+In the case of a matrix, we define
+\begin{align*}
+  e^{At} = I + At + \frac{A^2 t^2}{2!} + \frac{A^3 t^3}{3!} + 
+\end{align*}
+
+While there is no general algorithm to compute this, we can try diagonalizing.  For instance, if $D$ is diagonal, we can write
+\begin{align*}
+  e^{Dt} &= I + \diag(d_1t, \dots, d_n t) + \dots + \diag(\frac{d_1^n}{n!}, \dots, \frac{d_n^n}{n!}) + \dots \\
+  &= \diag(e^{d_1 t}, e^{d_2 t}, \dots, e^{d_n t}).
+\end{align*}
+
+{\bf Claim.} Now, if $A = X D X^{-1}$, then $e^{At} = X e^{Dt} X^{-1}$.
+
+\begin{proof}
+  We have
+  \begin{align*}
+    e^{At} &= I + \sum_{k=1}^{\infty} \frac{A^k t^k}{k!} = I + \sum_{k=1}^{\infty} X D^k X^{-1} \frac{t^k}{k!} \\
+    &= X \left[ I + \sum_{k=1}^{\infty} \frac{D^k t^k}{k!} \right] X^{-1}.
+  \end{align*}
+
+  This result follows.
+\end{proof}
+
+Later in the class, we will note that matrix exponentials are useful to solve systems of linear ODEs.
+
+If $A$ is diagonalizable, we can prove the following results:
+
+{\bf Claim.} $\det (e^A) = e^{\tr A}$. (HW)
+
+{\bf Claim.} $(e^A)^{-1} = e^{-A}$. (HW; follows immediately).
+
+Remember $A$ is not always diagonalizable.  Recall that we proved that any symmetric matrix is diagonalizable.  But we can show that any matrix is similar to a Jordan matrix.
+
+Now, we will discuss probability vectors are Markov matrices.
+
+{\it Motivation.} Often, you can have a system with many states.  And with some probability, you have users that transition from state $i$ to state $j$.
+
+For instance, suppose we have smartphone users that either have iPhones, Samsung, Huawei.  We can create a state transition matrix as follows:
+\begin{align*}
+ M = \mat{0.75 & 0.30 & 0.20 \\ 0.15 & 0.60 & 0.10 \\ 0.10 & 0.10 & 0.70}.
+\end{align*}
+
+{\bf Definition.} A vector $v \in \RR^n$ is a probability is $\sum_i v_i = 1$, with $v_i \geq 0$.
+
+{\bf Definition.} A matrix $M \in \RR^{m \times n}$ is a Markov matrix if the columns of $M$ are probability vectors.
+
+Often, we are interested in the long-term behavior of the system.
+
+Suppose we have an initial condition $v_0 = \mat{1000 \\ 1000 \\ 1000}$.  In $k$ years, the distribution will be $v_k = M^k v_0$.
+
+The question is whether this sequence converges to some vector.  That is, what is $\lim_{n \to \infty} M^n v_0$?  This happens to be related to the eigenvalues of the matrix.
+
+Let's now state a few properties of Markov matrices.
+
+{\bf Claim.} If $M, N$ are Markov matrices, then $M N$ is a Markov matrix.  (Homework).
+
+{\bf Claim.} If $M$ is a Markov matrix and $v$ is a probability vector, then $Mv$ is a probability vector. (Homework).
+
+{\bf Theorem.} For all $\lambda_i$ eigenvalues of a Markov matrix $M$, we have $|\lambda_i| \geq 1$.
+
+{\bf Claim.} Any Markov matrix has eigenvalue $1$.  This is called the principal eigenvalue. (Homework).  (Note: the corresponding eigenvector will be the limit.)
+
+Now, suppose that a Markov matrix $M$ is diagonalizable, so that $M = X D X^{-1}$.  Now, $M^n = X D^n X^{-1}$.  Then,
+\begin{align*}
+  \lim_{n \to \infty} M^n &= \lim_{n \to \infty} X D^n X^{-1} \\
+  &= X \lim_{n \to \infty} D^n X^{-1} \\
+  &= X \diag(1, 0, \dots, 0) X^{-1}.
+  &= v_1,
+\end{align*}
+where $v_1$ is the principal eigenvector.
+
+
+\section{Midterm review}
+
+\subsection{Definitions}
+
+\begin{enumerate}
+  \item D2.1, Field.
+ \item D2.3, Vector space.
+\item D2.6, subspace.
+ \item D2.10, linear dependence.
+
+ \item D2.12, span.
+
+ \item D2.14, basis.
+
+ \item  D2.19, dimension.
+
+ \item  D2.21, sum of subspaces.
+
+ \item  D2.24, direct sum.
+
+ \item  D3.1, linear maps.
+
+ \item  D3.3 (image and kernel)
+
+ \item  D3.9 (orthogonal complement)
+
+ \item  D3.15 (injective and surjective linear maps)
+
+ \item  3.23 (bijective linear maps)
+
+ \item  3.16 (columnn and row ranks)
+
+ \item  4.1 (pseudoinverse) and its correctness (the bijectivity of the restriction, as proven in 3.17)
+
+\end{enumerate}
+
+\subsection{Theorems}
+
+\begin{enumerate}
+  \item  E2.5 P1, 2.  Show that $(\RR^n, \RR)$ is a vector space.  Show that $(\RR^{m \times n}, \RR)$ is a vector space.
+
+  \item E2.8, P1, 2.  Show that $W$ (space of symmetric matrices) is a subspace of $\RR^{m \times n}$.
+
+    Let $W$ be the space of orthogonal matrices.  Then $W$ is not a subspace of $\RR^{m \times n}$ (just check scalar multiplication.
+
+    \item T2.22. Show that the sum of spaces is a subspace.
+
+    \item T2.26. Suppose $T = R \oplus S$.  Then every $t \in T$ can be written uniquely in the form $t = r+s$, with $r \in R, s \in S$.  Also, $\dim (T) = \dim R + \dim S$.
+
+    \item T3.4. Let $A: V \to W$ be a linear map.  Then $\Ima A, \Ker A$ are subspaces.
+
+    \item  T 3.11, P2, 3. Let $R, S \subseteq \RR^n$.  Then:
+
+      \begin{itemize}
+        \item $S \oplus S^{\perp} = \RR^n$.
+        \item $(S^{\perp})^{\perp} = S$.
+      \end{itemize}
+
+    \item T 3.12. Let $A: \RR^n \to \RR^n$.  Then:
+
+      \begin{itemize}
+        \item $\Ker(A)^{\perp} = \Im (A^T)$
+        \item $\Ima (A)^{\perp} = \Ker (A^T)$.
+      \end{itemize}
+
+    \item T3.17. Let $A: \RR^n \to \RR^m$. Then $\dim \Im A = \dim \Ker A^{\perp}$. (Restricting a linear mapping to a bijection on fundamental subspaces; row and column ranks are equal).
+
+    \item T3.19, P1. Let $A, B \in \RR^{n \times n}$.  Then
+      \begin{align*}
+        0 \leq \rank (A+B) \leq \rank A + \rank B.
+      \end{align*}
+
+    \item T3.20, P1, 2. Let $A \in \RR^{m \times n}, B \in \RR^{n \times p}$.  Then
+      \begin{align*}
+        \Ima (AB) \subseteq \Ima A \\
+        \Ker (AB) \supseteq \Ker (A) \\
+      \end{align*}
+
+    \item T3.21, P1, 3. Let $A \in \RR^{m \times n}$.  Then
+      \begin{align*}
+        \Ima (A) &= \Ima (A A^T) \\
+        \Ker (A) &= \Ker (A^T A).
+      \end{align*}
+
+    \item T4.11. Let $A \in \RR^{m \times n}$, and suppose $U \in \RR^{m \times m}, V \in \RR^{m \times n}$ are orthogonal.  Then:
+      \begin{align*}
+        (U A V)^{+} = V^T A^{+} U^T.
+      \end{align*}
+\end{enumerate}
+
+\subsection{Theoretical HW problems}
+
+\begin{enumerate}
+  \item (HW2.1) Determine whether the following are vector spaces over $\RR$:
+
+    \begin{itemize}
+      \item $\RR$, w.r.t. $+, \cdot$.
+      \item $\CC$, w.r.t. addition and multiplication.
+      \item $\QQ$, w.r.t. addition and multiplication.
+    \end{itemize}
+  \item (HW2.2)
+    \begin{itemize}
+      \item Show that $P_2$ is a vector space over $R$.
+      \item Let $1, t, 2t^2-1$ be the Chebyshev polynomials. Show they are a basis.
+      \item Find components of $P_2(t)$ w.r.t. $T_0, T_1, T_2$.
+    \end{itemize}
+
+
+  \item  (HW 2.3). Show that $M_n', M_n''$ are subspaces of $\RR^{n \times n}$.  Find dimension by finding a basis.
+
+    Show that $\RR^{n \times n}, i \RR^{n \times n}$ are not subspaces of $\CC^{n \times n}$.
+
+  \item (HW 2.4) Show that $L = \left\{ p: p(-t) = p(t) \right\}, M = \left\{ p: p(-t) = - p(t) \right\}$ are subspaces, and find their dimensions.
+
+  \item (HW 3.1) Show that $\RR^{n \times n} = M_n' + \oplus M_n''$.  Show that $P_2 = L \oplus M$.
+
+  \item (HW 3.4) Show that $M_n'' = (M_n')^{\perp}$, and that $M_n' = (M_n'')^{\perp}$.
+
+  \item (HW 3.6) Let $R, S$ be subspaces of $\RR^n$.  Show that $R \subseteq S$ iff $S^{\perp} \subseteq R^{\perp}$.
+
+  \item (HW 4.1) Let $v_1, \dots, v_n$ be orthonormal, and $A \in \RR^{n \times n}$.  Show that $Av_1, \dots, A v_n$ are orthonormal iff the matrix $A$ is orthogonal.
+
+  \item (HW 4.4) Let $A = \mat{2 & 4 \\ 3 & 6}$.  
+
+    \begin{itemize}
+      \item Calculate $B = \lim_{\delta \to 0} (A^T A + \delta I)^{-1} A^T$.
+      \item Find $\Ker A, \Ima A, \Ker A^T, \Ima A^T$.
+      \item Show that $B$ is the pseudoinverse of $A$ by erifying Definition 4.1.
+      \item Show that $B$ is the pseudoinverse of $A$ by verifying the condition of 4.2.
+    \end{itemize} 
+\end{enumerate}
+
+\subsection{Computational HW problems}
+
+\begin{enumerate}
+  \item (HW3.2) For each mapping, state whether it is linear or not.
+  \item (HW3.3) Find the matrix of $A$ with respect to the bases $U = (u_1, u_2, u_3)$ and $V =(v_1, v_2)$, where $u_i, v_i$ are given.
+  \item (E3.2, P2) Define $L: \RR^{m \times n} \to \RR^{m \times n}$ so that $LX = MX$, for some fixed matrix $M$.
+  \item (E 3.2, P3 + HW3 P5). Let $L$ be the differentiation operator w.r.t. the polnynomial $p$.  Is $L$ injective, surjective, bijective?
+
+  \item (HW 4.2) Find the four fundamental subspaces of the matrix $A = \mat{0 & 0 \\ 1 & 0}$ (change numbers).
+  \item (HW 4.4) (See above).
+\end{enumerate}
+
+\subsection{Subtest A}
+
+{\bf Definitions.}
+
+\begin{enumerate}
+  \item Define a field.
+  \item Define a vector space.
+  \item Define a subspace.
+  \item Define the pseudoinverse (and it's correctness, by bijectivity of the restriction).
+\end{enumerate}
+
+{\bf Theorems.}
+
+\begin{enumerate}
+    \item T2.26. Suppose $T = R \oplus S$.  Then every $t \in T$ can be written uniquely in the form $t = r+s$, with $r \in R, s \in S$.  Also, $\dim (T) = \dim R + \dim S$.
+
+    \item T3.4. Let $A: V \to W$ be a linear map.  Then $\Ima A, \Ker A$ are subspaces.
+
+    \item  T 3.11, P2, 3. Let $R, S \subseteq \RR^n$.  Then:
+
+      \begin{itemize}
+        \item $S \oplus S^{\perp} = \RR^n$.
+        \item $(S^{\perp})^{\perp} = S$.
+      \end{itemize}
+
+
+    \item T 3.12. Let $A: \RR^n \to \RR^n$.  Then:
+
+      \begin{itemize}
+        \item $\Ker(A)^{\perp} = \Im (A^T)$
+        \item $\Ima (A)^{\perp} = \Ker (A^T)$.
+      \end{itemize}
+
+    \item T3.17. Let $A: \RR^n \to \RR^m$. Then $\dim \Im A = \dim \Ker A^{\perp}$. (Restricting a linear mapping to a bijection on fundamental subspaces; row and column ranks are equal).
+
+    \item T3.19, P1. Let $A, B \in \RR^{n \times n}$.  Then
+      \begin{align*}
+        0 \leq \rank (A+B) \leq \rank A + \rank B.
+      \end{align*}
+
+    \item T4.11. Let $A \in \RR^{m \times n}$, and suppose $U \in \RR^{m \times m}, V \in \RR^{m \times n}$ are orthogonal.  Then:
+      \begin{align*}
+        (U A V)^{+} = V^T A^{+} U^T.
+      \end{align*}
+\end{enumerate}
+
+{\bf Theoretical HW.}
+
+\begin{enumerate}
+  \item  (HW 2.3). Show that $M_n', M_n''$ are subspaces of $\RR^{n \times n}$.  Find dimension by finding a basis.
+
+    Show that $\RR^{n \times n}, i \RR^{n \times n}$ are not subspaces of $\CC^{n \times n}$.
+
+
+  \item (HW 3.1) Show that $\RR^{n \times n} = M_n' + \oplus M_n''$.  Show that $P_2 = L \oplus M$.
+
+  \item (HW 3.4) Show that $M_n'' = (M_n')^{\perp}$, and that $M_n' = (M_n'')^{\perp}$.
+
+  \item (HW 3.6) Let $R, S$ be subspaces of $\RR^n$.  Show that $R \subseteq S$ iff $S^{\perp} \subseteq R^{\perp}$.
+
+  \item (HW 4.1) Let $v_1, \dots, v_n$ be orthonormal, and $A \in \RR^{n \times n}$.  Show that $Av_1, \dots, A v_n$ are orthonormal iff the matrix $A$ is orthogonal.
+
+  \item (HW 4.4) Let $A = \mat{2 & 4 \\ 3 & 6}$.  
+
+    \begin{itemize}
+      \item Calculate $B = \lim_{\delta \to 0} (A^T A + \delta I)^{-1} A^T$.
+      \item Find $\Ker A, \Ima A, \Ker A^T, \Ima A^T$.
+      \item Show that $B$ is the pseudoinverse of $A$ by erifying Definition 4.1.
+      \item Show that $B$ is the pseudoinverse of $A$ by verifying the condition of 4.2.
+    \end{itemize} 
+\end{enumerate}
+
+{\bf Computational HW.}
+
+\begin{enumerate}
+  \item (HW3.3) Find the matrix of $A$ with respect to the bases $U = (u_1, u_2, u_3)$ and $V =(v_1, v_2)$, where $u_i, v_i$ are given.
+
+  \item (HW 4.2) Find the four fundamental subspaces of the matrix $A = \mat{0 & 0 \\ 1 & 0}$ (change numbers).
+\end{enumerate}
+
+\subsection{Subtest A, Practice solve}
+
+{\bf Definitions.}
+
+\begin{enumerate}
+  \item Define a field.
+
+    A field is a set with $(+, *)$, where:
+
+    \begin{itemize}
+      \item $+$ is commutative, associative.
+      \item $-x$ exists.
+      \item $0$ exists, with $x+0 = x$.
+    \end{itemize}
+    Also, 
+    \begin{itemize}
+      \item $*$ is commutative, associative.
+      \item For nonzero $x$, $x^{-1}$ exists.
+      \item 1 exists, with $x \cdot 1 = x$.
+    \end{itemize}
+
+    Finally, $*$ distributes over addition.
+
+  \item Define a vector space.
+
+    A vector space is a set with $(+, *)$, addition, scalar multiplication, where addition is defined over the set, and scalar multiplication is defined over the field.
+
+    \begin{itemize}
+      \item $(V, +)$ is an abelian group.
+      \item $V$ is closed under addition, and scalar multiplication.
+      \item There is a 0 element.
+      \item Additive inverses exist.
+    \end{itemize}
+
+  \item Define a subspace. A subset of a vector space that is closed under addition and scalar multiplication.
+
+  \item Define the pseudoinverse (and it's correctness, by bijectivity of the restriction).
+
+    Defined as
+    \begin{align*}
+      \lim_{\delta \to 0} (A^T A + \delta I)^{-1} A^T.
+    \end{align*}
+
+    Alternatively, can verify properties from the book (verify).
+\end{enumerate}
+
+{\bf Theorems.}
+
+\begin{enumerate}
+    \item T2.26. Suppose $T = R \oplus S$.  Then every $t \in T$ can be written uniquely in the form $t = r+s$, with $r \in R, s \in S$.  Also, $\dim (T) = \dim R + \dim S$.
+
+      $T = R \oplus S$ means $R + S = T$ and $R \cap S = \left\{ 0 \right\}$.  Suppose some $t = r_1 + s_1 = r_2 + s_2$.  Then, $r-1 - r_2 = s_1 - s_2$, but this contradicts that fact that $R \cap S = \left\{ 0 \right\}$, since this forces $r_1 = r_2; s_1 = s_2$.
+
+    \item T3.4. Let $A: V \to W$ be a linear map.  Then $\Ima A, \Ker A$ are subspaces.  Easy.
+
+    \item  T 3.11, P2, 3. Let $R, S \subseteq \RR^n$.  Then:
+
+      \begin{itemize}
+        \item $S \oplus S^{\perp} = \RR^n$.
+        \item $(S^{\perp})^{\perp} = S$.
+      \end{itemize}
+
+      First property - show that intersection is just $0$, which is easy.  Then, show that they sum to $\RR^n$.  Can do this with
+
+      Note that $S^{\perp} = \left\{ t \in \RR^n | \la s, t \ra = 0, s \in S \right\}$.  Not super sure how to conclude.
+
+    \item T 3.12. Let $A: \RR^n \to \RR^n$.  Then:
+
+      \begin{itemize}
+        \item $\Ker(A)^{\perp} = \Ima (A^T)$
+        \item $\Ima (A)^{\perp} = \Ker (A^T)$.
+      \end{itemize}
+
+      If $w \cdot v = 0$, and $Av = 0$, then $A^T v = w$.  Not super sure how to conclude.
+
+    \item T3.17. Let $A: \RR^n \to \RR^m$. Then $\dim \Ima A = \dim \Ker A^{\perp}$. (Restricting a linear mapping to a bijection on fundamental subspaces; row and column ranks are equal).
+
+      Corollary of the previous part.
+
+    \item T3.19, P1. Let $A, B \in \RR^{n \times n}$.  Then
+      \begin{align*}
+        0 \leq \rank (A+B) \leq \rank A + \rank B.
+      \end{align*}
+
+      Not sure.
+
+    \item T4.11. Let $A \in \RR^{m \times n}$, and suppose $U \in \RR^{m \times m}, V \in \RR^{m \times n}$ are orthogonal.  Then:
+      \begin{align*}
+        (U A V)^{+} = V^T A^{+} U^T.
+      \end{align*}
+
+      Not sure.
+\end{enumerate}
+
+{\bf Theoretical HW.}
+
+\begin{enumerate}
+  \item  (HW 2.3). Show that $M_n', M_n''$ are subspaces of $\RR^{n \times n}$.  Find dimension by finding a basis.
+
+    Not sure, look at solutions.
+
+    Show that $\RR^{n \times n}, i \RR^{n \times n}$ are not subspaces of $\CC^{n \times n}$.
+
+    This part is easy.
+
+  \item (HW 3.1) Show that $\RR^{n \times n} = M_n' \oplus M_n''$.  Show that $P_2 = L \oplus M$.
+
+    To argue first part, just need to show that intersection is $0$, and that the sum sums to all possible matrices.
+
+  \item (HW 3.4) Show that $M_n'' = (M_n')^{\perp}$, and that $M_n' = (M_n'')^{\perp}$.
+
+    Requires analyzing the term structure.
+
+  \item (HW 3.6) Let $R, S$ be subspaces of $\RR^n$.  Show that $R \subseteq S$ iff $S^{\perp} \subseteq R^{\perp}$.
+
+    Not hard, but don't remember the full argument.
+
+  \item (HW 4.1) Let $v_1, \dots, v_n$ be orthonormal, and $A \in \RR^{n \times n}$.  Show that $Av_1, \dots, A v_n$ are orthonormal iff the matrix $A$ is orthogonal.
+
+  \item (HW 4.4) Let $A = \mat{2 & 4 \\ 3 & 6}$.  
+
+    \begin{itemize}
+      \item Calculate $B = \lim_{\delta \to 0} (A^T A + \delta I)^{-1} A^T$.
+
+        Easy calculation.
+
+      \item Find $\Ker A, \Ima A, \Ker A^T, \Ima A^T$.
+
+        Easy.
+
+      \item Show that $B$ is the pseudoinverse of $A$ by verifying Definition 4.1.
+
+        Easy, but annoying (need to recall definition).
+
+      \item Show that $B$ is the pseudoinverse of $A$ by verifying the condition of 4.2.
+
+        Easy but annoying (need to recall the criteria).
+    \end{itemize} 
+\end{enumerate}
+
+{\bf Computational HW.}
+
+\begin{enumerate}
+  \item (HW3.3) Find the matrix of $A$ with respect to the bases $U = (u_1, u_2, u_3)$ and $V =(v_1, v_2)$, where $u_i, v_i$ are given.
+
+    Easy, but annoying.  Need to remember matrix product form.
+
+  \item (HW 4.2) Find the four fundamental subspaces of the matrix $A = \mat{0 & 0 \\ 1 & 0}$ (change numbers).
+
+    Straightforward.  Need to calculate $\Ima A, \Ker A, \Ima A^T, \Ker A^T$.
+\end{enumerate}
+
+{\bf Review: subtest A.}
+
+{\bf Definitions.}
+\begin{enumerate}
+  \item Define a vector space.
+
+
+    A field $F$ with two operations $+: V \times V \to V$, $* : F \times V$ that satisfy:
+
+    \begin{itemize}
+      \item $(V, +)$ is an abelian group.
+      \item Associativity (mult) in field times vector.
+      \item Distributivity (both dirs).
+      \item $1 \cdot v = v$.
+    \end{itemize}
+
+
+  \item Define the pseudoinverse.  Defined as
+    \begin{align*}
+      \lim_{\delta \to 0} (A^T A + \delta^2 I)^{-1} A^T.
+    \end{align*}
+
+    $B: \Ker(A)^{\perp} \to \Ima A$ is bijective.  Need to prove this.
+\end{enumerate}
+
+{\bf Theorems.}
+
+\begin{enumerate}
+    \item  T 3.11, P2, 3. Let $R, S \subseteq \RR^n$.  Then:
+
+      \begin{itemize}
+        \item $S \oplus S^{\perp} = \RR^n$.
+        \item $(S^{\perp})^{\perp} = S$.
+      \end{itemize}
+
+      Easiest way to do this is to think about the geometry in $\RR^n$.  Let $v_i$ be orthonormal basis for $S$.  Then we can write
+      \begin{align*}
+        x_1 &= \sum_{i=1}^{k} (x^T v_i) v_i \\
+        x_2 &= x - x_1.
+      \end{align*}
+
+      Note that $x_2^T v_j =  x^T v_j - x_1^T v_j = x^T v_j - x^T v_j = 0$, so $x_2, v_j$ are orthogonal for any $j$, and thus to any linear combination of these vectors.  Thus, $x_2$ is orthogonal to $S$.
+
+     Note that $\dim S = \dim (S^{\perp})^{\perp}$.  Now, $W \subset W^{\perp \perp}$.  QED.
+
+    \item T 3.12. Let $A: \RR^n \to \RR^n$.  Then:
+
+      \begin{itemize}
+        \item $\Ker(A)^{\perp} = \Ima (A^T)$
+        \item $\Ima (A)^{\perp} = \Ker (A^T)$.
+      \end{itemize}
+
+      Take $v \in \Ker A$.  Then $Av = 0$.  Implies that $y^T A v$ for all $y$.  But this means $(A^T y)^T x = 0$ for all $y$, so we have orthogonality.
+
+    \item T3.17. Let $A: \RR^n \to \RR^m$. Then $\dim \Ima A = \dim \Ker A^{\perp}$. (Restricting a linear mapping to a bijection on fundamental subspaces; row and column ranks are equal).
+
+      Let $T: \Ker A^{\perp} \to \Ima A$.  Then $T$ is bijective (not too hard to see.)
+
+    \item T3.19, P1. Let $A, B \in \RR^{n \times n}$.  Then
+      \begin{align*}
+        0 \leq \rank (A+B) \leq \rank A + \rank B.
+      \end{align*}
+
+      Just concat the bases, and argue that every row of $(A+B)$ works as a linear combination of the respective bases.
+
+    \item T4.11. Let $A \in \RR^{m \times n}$, and suppose $U \in \RR^{m \times m}, V \in \RR^{m \times n}$ are orthogonal.  Then:
+      \begin{align*}
+        (U A V)^{+} = V^T A^{+} U^T.
+      \end{align*}
+
+      Just verify that it satisfies the four Penrose conditions, namely $ABA = A, BAB =  B, (AB)^T = AB, (BA)^T = BA$.
+
+\end{enumerate}
+
+{\bf Theoretical HW.}
+
+\begin{enumerate}
+  \item  (HW 2.3). Show that $M_n', M_n''$ are subspaces of $\RR^{n \times n}$.  Find dimension by finding a basis.
+
+    $n(n+1)/2$, just argue by decomposition.
+
+  \item (HW 3.4) Just analyze the term structure.  Not hard.
+
+  \item (HW 3.6) Let $s' \in S^{\perp}$.  We must have $\la s, s' \ra = 0$ for all $s \in S$.  Then $\la s, s' \ra = 0$ for all $s \in R$ in particular.   Hence $s' \in S^{\perp}$ implies $s' \in R^{\perp}$.  QED.
+
+  \item Suppose $v_1, \dots, v_n$ is orthonormal.  Show that $Av_1, \dots, Av_n$ are orthonormal if the matrix $A$ is orthogonal.
+
+    Consider $\la A v_i, A v_j \ra = v_i^T A^T A v_j$.  Argue each way. 
+
+\end{enumerate}
+
+{\bf Computational HW.}
+
+\begin{enumerate}
+  \item Just do $B = V^{-1} A U$, where $U$ is first basis, and $V$ is second basis.
+\end{enumerate}
+
+\subsection{Subtest B}
+
+Thms.
+\begin{enumerate}
+  \item T3.17. Let $A: \RR^n \to \RR^m$. Then $\dim \Ima A = \dim \Ker A^{\perp}$. (Restricting a linear mapping to a bijection on fundamental subspaces; row and column ranks are equal).
+\end{enumerate}
+
+HWT.
+
+\begin{enumerate}
+  \item Dimension of $M_n'$.
+  \item $v_1, \dots, v_n$ orthonormal, and $A \in \RR^{n \times n}$.  $Av_1, \dots, A v_n$ ortho if $A$ is ortho.
+\end{enumerate}
+
+HWC.
+
+\begin{itemize}
+  \item Find matrix of $A$ w.r.t. bases $U$ and $V$. $F = V^{-1} A U$.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+\section{Lecture 16: 7-22-19}
+
+Recall that if $v, w \in \RR^n$, we can define the standard inner product as
+\begin{align*}
+  \langle v, w\rangle = v^T w.
+\end{align*}
+
+{\bf Definition.} In general, an inner product is a map $V \times V \to \RR$.  It must satisfy:
+
+\begin{itemize}
+  \item Positive definite.  So that $\langle v, v\rangle \geq 0$, and $\langle v, v\rangle = 0$ iff $v = 0$.
+  \item Symmetry.  We must have $\langle v, w\rangle = \langle w, v\rangle$ for all $v, w \in V$.
+  \item Linearity.  We must have $\langle v, \alpha w_1 + \beta w_2\rangle = \alpha \langle v, w_1\rangle + \beta \langle v, w_2\rangle$ for all $v, w_1, w_2 \in V, \alpha, \beta \in \RR$.
+\end{itemize}
+
+{\bf Example.} Consider the vector space with $P^n$, where $P^n$ denotes the space of degree $n$ polynomials with real coefficients.  We can define an inner product as follows:
+\begin{align*}
+  \langle f, g\rangle = \int_{-1}^{1} f(x) g(x) \, dx.
+\end{align*}
+
+Here, we note that
+\begin{align*}
+  \langle f, f\rangle \geq 0,
+\end{align*}
+and it satisfies all the axioms:
+\begin{itemize}
+  \item $\int_{-1}^{1} f^2(x) \, dx = 0$.
+  \item $\int_{-1}^{1} f(x) g(x) = \int_{-1}^{1} g(x) f(x) \, dx$.
+  \item It satisfies linearity, since, 
+    \begin{align*}
+      \langle f, \alpha g_1 + \beta g_2\rangle &= \int_{-1}^{1} f(x) \left[ \alpha g_1(x) + \beta g_2(x) \right] \\
+      &= \alpha \int_{-1}^{1} f(x) g_1(x) \, dx + \beta \int_{-1}^{1} f(x) g_2(x) \, dx \\
+      &= \alpha \langle f, g_1\rangle + \beta \langle f, g_2\rangle.
+    \end{align*}
+\end{itemize}
+
+{\bf Definition.} We say that a map $V \times V \to \CC$ is a complex inner product if the following axioms hold:
+
+\begin{itemize}
+  \item {\it Positive definite.} That is, $\langle v, v\rangle \geq 0$ for all $v \in V$, and $\langle v, v \rangle = 0$ iff $v = 0$.
+  \item {\it Hermitian symmetry.}  For all $v, w$, we have $\langle v, w\rangle = \langle w, v\rangle$.
+  \item {\it Hermitian linearity.} We have
+    \begin{align*}
+      \langle v, \alpha w_1 + \beta w_2 \rangle = \ol{\alpha} \langle v_1, w\rangle + \ol{\beta} \langle v_2, w\rangle.
+    \end{align*}
+\end{itemize}
+
+For example, note that $\langle v, w\rangle = v^H w$ is a complex inner product.
+
+We now discuss vector norms.  Given a vector space $V$ over a field $\mathbb{F}$, a norm is a map $|| \cdot || : V \to \RR$ that satisfies the following properties:
+
+\begin{itemize}
+  \item {\it Positive definite.} We must have $|| v || \geq 0$ for all $v$, and $|| v ||  =0 $ iff $v = 0$.
+  \item {\it Linearity.} This means that $|| \alpha v || = | \alpha | || v || $ for all $ v \in V$, $\alpha \in \RR$.
+  \item {\it Triangle inequality.} We have that $|| v + w || \leq ||v || + ||w ||$.
+\end{itemize}
+
+Here are some examples of norms.  If $v \in \RR^n$, then
+\begin{itemize}
+  \item $||v||_2 = \left( \sum_{i=1}^{n} v_i^2 \right)^{\frac{1}{2}}$.
+  \item $||v||_p = \left( \sum_{i=1}^{n} v_i^p \right)^{\frac{1}{p}}$.
+  \item $||v||_1 = \left( \sum_{i=1}^{n} |v_i|  \right)$ (also known as the Manhattan norm).
+  \item $||v||_{\infty} = \max_{i} |v_i|$.
+\end{itemize}
+
+There are some important inequalities we can state related to these norms (the proofs can be found in the book).
+
+{\bf Theorem.} (H\"older's Inequality).  If $\frac{1}{p} + \frac{1}{q} = 1$, then
+\begin{align*}
+  | v^H w | \leq || v||_p ||w||_q.
+\end{align*}
+
+A special case of H\"older's Inequality is the Cauchy-Schwarz inequality.  That is, when $p = q = 2$.
+
+{\bf Theorem.} (Cauchy-Schwarz inequality).
+\begin{align*}
+  |v^H w| \leq ||v||_2 ||w||_2.
+\end{align*}
+
+Now, given a vector inner product, we can always define a norm induced by the inner product.  Suppose $\langle \cdot, \cdot \rangle$ is an inner product from $V \times V \to \RR$.  Then we can always define a norm induced by this inner product by
+\begin{align*}
+  ||v|| = \sqrt{\langle v, v\rangle}.
+\end{align*}
+
+But, it is not true that all inner products come from a norm.
+
+{\bf Definition.} Suppose that $| \cdot |_{\star}$ and $|| \cdot ||_{*}$ are norms of $V$.  We say that they are equivalent if there exists constants $c_1, c_2 > 0$ such that for any $v \in V$ we have
+\begin{align*}
+  c_1 || v ||_{\star} \leq || v||_{*} \leq c_2 || v||_{\star}.
+\end{align*}
+
+For motivation, we note that if norms are equivalent, then they will preserve topological properties in the space.  For example, if a function converges in the $1$ norm, it will converge in the $2$ norm.
+
+{\bf Example.} We have for $n$ dimensional vectors $v \in \RR^n$, we have
+\begin{align*}
+  ||v||_2 \leq ||v||_1 \leq \sqrt{n} ||v||_2,
+\end{align*}
+so the $||v||_1$ and $||v||_2$ are equivalent.
+
+We note that the right inequality is a consequence of Cauchy-Schwarz.
+
+{\bf Example.} We have for $n$ dimensional vectors $v \in \RR^n$, we have
+\begin{align*}
+  ||v||_{\infty} \leq ||v||_1 \leq n ||v||_{\infty}.
+\end{align*}
+
+\begin{proof}
+  We have
+  \begin{align*}
+    ||v||_1 = \sum_{i=1}^{n} |v_i| \leq \sum_{i=1}^{n} \max |v_i| = n ||v||_{\infty}.
+  \end{align*}
+
+  This constant is sharp because equality is achieved when $v = (1, 1, \dots, 1)$.  
+  The opposite inequality is obvious.  Clearly, $\max |v_i| \leq \sum_{i=1}^{n} |v_i|$.  This inequality is sharp by taking a vector $(1, 0, \dots, 0)$.
+\end{proof}
+
+Now, we continue to discuss matrix norms.  
+
+Suppose $A \in \RR^{m \times n}$.  Now, while thinking about the map $v \mapsto Av$, we can define a special type of matrix norm on it.
+
+{\bf Definition.} Suppose we have $|| \cdot ||_{*}$ on $\RR^n$; and $|| \cdot ||_{\star}$ on $\RR^m$.  Then, we can define an induced matrix norm as follows:
+\begin{align*}
+  ||A||_{*, \star} = \max_{v \neq 0} \frac{||A v||_{\star}}{||v||_{*}}.
+\end{align*}
+
+This is also known as the operator norm.
+
+{\bf Example.} Suppose $A = I_n$, and we consider the $2$-norms on both the domain and the co-domain.
+\begin{align*}
+  || I||_{2, 2} =  \max_{v \neq 0} \frac{||v||_{2}}{||v||_2} = 1.
+\end{align*}
+
+{\bf Example.} Suppose now $A = I_n$, and we use the infinity norm in the domain and the 1-norm in the co-domain.  That is,
+\begin{align*}
+  ||I||_{\infty, 1} = \max_{v \neq 0} \frac{||v||_1}{||v||_{\infty}} = n.
+\end{align*}
+
+This comes from the inequality $||v||_1 \leq n ||v||_{\infty}$ we proved earlier.
+
+\section{Lecture 17: 7-23-19}
+
+{\bf Definition.} Let $V$ be a vector space with $V = X \oplus Y$.  Define $P_{X, Y}: V \to X \subseteq V$ by
+\begin{align*}
+  P_{X, Y} v = x,
+\end{align*}
+for all $v \in V$.  Then $P_{X, Y}$ is called the (oblique) projection on $X$ along $Y$.
+
+{\bf Definition.} We say that $P$ is an orthogonal projection if $Y = X^{\perp}$.
+
+{\bf Theorem.} A linear transformation $P$ is a projection iff $P^2 = P$.
+
+{\bf Theorem.} $P$ is a projection iff $I - P$ is also a projection. 
+
+The reason we care about orthogonal projections is that the matrices associated with them are orthogonal.
+
+{\bf Theorem.} $P \in \RR^{n \times n}$ is the matrix for an orthogonal projection onto $\Ima (P)$ iff $P^2 = P = P^T$.  (In fact, $P$ is a little more than orthogonal, since we require $P^2 = P$).
+
+We will skip the proof.  The first part, that $P^2 = P$ follows from the previous result.  The trickiest part is the transpose condition (this is proven in the book, see 7.5).
+
+We will now discuss properties of projections.
+
+{\bf Theorem.} Let $P$ be a matrix for orthogonal projection.  Then
+
+\begin{align*}
+  || P v || \leq ||v||,
+\end{align*}
+where $|| \cdot ||$ is any vector name on $V$.
+
+%\begin{figure}[ht]
+    %\centering
+    %\incfig{projections}
+    %\caption{Projection of $u$ onto $v$}
+    %\label{fig:projections}
+%\end{figure}
+
+\begin{proof}
+  This follows from the Pythagorean theorem.  By this theorem, if $v \perp w$, then $||v + w||^2 = ||v||^2 + ||w||^2$ (this applies to any norm).  We know that $v = P v + (I - P) v$.  Now, $Pv \perp (I - P) v$, and so by this theorem
+  \begin{align*}
+    ||v||^2 = || P v||^2 + ||(I - P) v||^2,
+  \end{align*}
+  implying $||P v||^2 \leq ||v||^2$.
+\end{proof}
+
+{\bf Example.} Project onto the span of $v$ in $\RR^2$, so that $P_v : \RR^2 \to \RR^2$.  We can write
+\begin{align*}
+  P_v(u) = \frac{u \cdot v}{v \cdot v} + v.
+\end{align*}
+
+
+Suppose tha t$v_1, \dots, v_n$ are orthogonal, and $X = \Span \left\{ x_1, \dots, x_n \right\}$.  Then
+\begin{align*}
+  \Proj_{X}(u) = \sum_{i=1}^{n} \Proj_{v_i} (u) = \sum_{i=1}^{n} \frac{u \cdot v_i}{ v_i \cdot v_i} v_i.
+\end{align*}
+
+Suppose that $v_1, \dots, v_n$ in $\RR^m$, $m \geq n$ are orthonormal.  Suppose that $e_1, \dots, e_m$ is the standard basis.  Suppose that $P: \RR^m \to \RR^m$ is the linear map of orthogonal projections on $\Span \left\{ v_1, \dots, v_n \right\}$. 
+How do we find the projection matrix?  We just put the projection of the $i$-th basis vector in the $i$-th column of the matrix.
+
+Now, we discuss the Gram-Schmidt orthogonalization process.
+
+Suppose that $w_1, \dots, w_n$ are linearly independent.  Then we apply this process by following these steps:
+
+\begin{enumerate}
+  \item Normalize $w_1$, by writing
+    \begin{align*}
+      v_1 = \frac{w_1}{ ||w_1||}.
+    \end{align*}
+  \item $w_2$ is not in general orthogonal to $w_1$.  So, we set
+    \begin{align*}
+      q_2 = w_2 - \Proj_{v_1} w_2,
+    \end{align*}
+    and here $q_2$ is orthogonal to $w_1$.
+
+    Now, normalize, to obtain $v_2 = \frac{q_2}{||q_2||}$.
+  \item Keep going, so
+    \begin{align*}
+      q_3 = w_3 - \Proj_{v_1} w_3 - \Proj_{v_2} q_3.
+    \end{align*}
+    Now,
+    \begin{align*}
+      v_3 = \frac{q_3}{||q_3||}.
+    \end{align*}
+  \item In general, if we continue this process, we obtain
+    \begin{align*}
+      q_{k+1} &= w_{k+1} - \sum_{i=1}^{k} \Proj_{v_i} w_{k+1} \\
+      v_{k+1} &= \frac{q_{k+1}}{||q_{k+1}||}.
+    \end{align*}
+
+    And then, the resulting set of $v_i$ will have the same span of the $w_i$.  To see this, note that the $w_i$ are linearly independent and form a basis; similarly since the $v_i$ are orthogonal, they must span the space for dimensionality reasons.
+
+
+
+\end{enumerate}
+
+\section{Lecture 18: 7-24-19}
+
+We define the QR factorization as follows.  Given a matrix $A \in \RR^{m \times n}$, where $\rank(A) = n$, we can write $A = QR$, where $Q \in \RR^{m \times m}$, $R$ is an upper triangular $m \times n$ matrix.
+
+To compute the QR decomposition, we can use Gram Schmidt to compute $q_1, \dots, q_n \in \RR^m$ which are orthonormal.   And we can compute scalars $r_{ij} = \langle v_j, q_i \rangle$.  Suppose we define  $Q^1 = \mat{q_1 & q_2 & \dots q_n}, R^1_{ij} = \mat{r_{ij}}$.  Then we have that $A = Q^1 R^1$.
+
+Now, suppose that $q_{n+1}, \dots, q_m$ are orthonormal such that $q_1, \dots, q_m$ form an orthonormal basis for $\RR^m$.  Then we can write $Q = \mat{q_1 & q_2 & \dots & q_m}$.  So we can write 
+\begin{align*}
+  A = \mat{Q_1 & Q_2} \mat{R_1 \\ 0} = Q_1 R_1.
+\end{align*}
+
+One application of $QR$ decomposition is that they allow you to solve systems of equations.  Suppose we have $Ax = b$, this is equivalent to $QR x = b$, so $Rx = Q^{-1} b$.
+
+To compute $q_{n+1}, \dots, q_m$ - we can look at the Span of $\left\{ q_1, \dots, q_n  \right\}$ which is not equal to $\RR^m$.   To pick the rest of the vectors: pick $v_{n+1}$ such that $v_{n+1} \in \RR^m$, but $v_{n+1}$ is not in the span.  Then: just re-apply Gram-Schmidt to compute the rest of the $q_i$.
+
+We will now discuss least-squares problems, which are used when we cannot solve a system explicitly.  For instance, we might have a system $Ax = b$ that cannot be solved explicitly.  The most standard case is linear regression - when we want to minimize the $L_2$ error of the predictions vs. the data.  For example, if we are trying to find a function that takes heights to weights, we might have the dataset,
+\begin{align*}
+  \mat{h = 175 & w = 50 \\ 180 & 70 \\ 164 \\ 55}.
+\end{align*}
+and we want to take $h(w) = aw + b$, and learn constants $a, b$.
+
+Pictorially, if the blue dots are the data points, we want to find a line that minimizes the sum of the $d_i^2$.
+%\begin{figure}[ht]
+    %\centering
+    %\incfig{linreg}
+    %\caption{Linear regression}
+    %\label{fig:linreg}
+%\end{figure}
+
+{\bf Definition.} The solution of the least squares problem is $x_0$ such that $||A x_0 - v||^2$ is minimized.
+
+We can use projections to relate $Ax_0$ are $v$.  We note that $Ax_0 \in \Ima (A)$.  We want to pick $v$ where $v$ is the orthogonal projection onto $\Ima A$.    Namely, $A x_0 = \Proj_{\Ima A} v$.
+
+The key point is that the vector $v - A x_0$ is orthogonal to $\Ima A$.  This means that $(v - A x_0) \in \Ker A^T$, so $A^T (v - A x_0) = 0$.  Thus, $A^T V = A^T A x_0$.
+
+Now, suppose that $A$ has linearly independent columns.  Then $A^T A$ is invertible.  Givne the equation $A^T v = A^T A x_0$, we can find $x_0 = (A^T A)^{-1} A^T v$.
+
+{\bf Example (linear regression).} Suppose we have a set of points $\left( x_i, y_i \right)$ for $1 \leq i \leq N$, and we want to solve $y = \alpha x + \beta$.  And we can build a matrix $A = \mat{x_1 & 1 \\ \dots \\ x_n & 1} \mat{\alpha \\ \beta} = \mat{y_1 \\ \dots \\ y_n}$.
+
+{\bf Example (polynomial regression).} Suppose we have $y = \alpha_k x^k + \alpha_{k-1} x^{k-1} + \dots + \alpha_0$.  In this case, the system of equations looks like
+\begin{align*}
+  y_i = \alpha_k x^k + \alpha_{k-1} x^{k-1} + \dots + \alpha_0.
+\end{align*}
+In this case, the unknowns are the $\alpha_i$'s.  Here, we can build a bigger matrix, where
+\begin{align*}
+  \mat{x_1^k & x_1^{k-1} & \dots & 1 \\ x_2^k & x_2^{k-1} & \dots & 1 \\ \dots \\ x_n^k & x_n^{k-1} & \dots & 1} \mat{\alpha_k \\ \alpha_{k-1} \\ \dots \\ \alpha_0} = \mat{y_1 \\ y_2 \\ \dots \\ y_n}.
+\end{align*}
+
+Now, this is a system $Ax = v$, you want to find the solution that minimizes the squared error - so this is equivalent to the setting from before.
+
+
+
+
+\section{Lecture 21: 7-26-19}
+
+End of last week, we were doing last least squares problems, and yesterday we discussed SVDs.
+
+Recall that the SVD is like a generalization of the eigenvector / eigenvalue decomposition (since not every matrix has an eigenvector / eigenvalue decomposition).
+
+Remember that we can write $A = U D V^T$, where $U, V$ are orthogonal, and $D$ is diagonal (with added zeros as needed).
+
+To obtain the SVD, we perform the following algorithm:
+
+\begin{itemize}
+  \item Compute eigenvalues for $A^T A$.  We are guaranteed to find $n$ eigenvalues; exactly $r$ are nonzero.
+  \item Compute eigenvectors $v_1, \dots, v_n$ (require orthonormal).  The spectral theorem allows us to obtain a full basis of eigenvectors, since $A^T A$ is a symmetric matrix.
+  \item Look at the vectors $Av_1, \dots, Av_n$.  Then $||A v_i|| = \lambda_i$, so exactly $r$ of $Av_i$ are not zero.  We proved yesterday that the $Av_i$ are orthogonal.
+\end{itemize}
+
+This allows us to compute the SVD matrices.  We obtain:
+
+\begin{align*}
+ V &= \mat{v_1 & v_2 & \dots & v_n} \\
+ D &= \diag(\sqrt{\lambda_1}, \sqrt{\lambda_2}, \dots, \sqrt{\lambda_r}, 0, \dots, 0) \\
+ U &= \mat{\frac{Av_1}{\sqrt{\lambda_1}} & \frac{A v_2}{\sqrt{\lambda_2}} & \dots & \frac{A v_r}{\sqrt{\lambda_r}} & u_{r+1} & \dots & u_n}.
+\end{align*}
+
+Now, the $u_{r+1}, \dots, u_{n}$ are redundant (because the the right portion of the matrix gets zeroed out be the zero entries in $D$).
+
+If we write
+\begin{align*}
+  U = \mat{U_1 & U_2}, D = \mat{D_1 & 0 \\ 0 & 0}, V = \mat{V_1^T \\ V_2^T},
+\end{align*}
+we can compute a reduced SVD as $A = U_1 D_1 V_1^T$.
+
+Importantly, here $D$ is unique; but $U$ and $V$ are not unique.  However, the eigenspaces associated with $U$ and $V$ are unique.
+
+Geometrically, this is really cool, because it means that you can express any matrix $A$ as the product of an isometry ($V^T$), a scaling with $D$, and another isometry $(U)$.  These isometries can be reflections, rotations, or rotoreflection.
+
+{\it Properties of vector norms.} Recall that $|| \cdot || : V \to \RR$ is a function that satisfies the following properties:
+
+\begin{itemize}
+  \item {\it Positive definite.} $\langle v, v\rangle \geq 0$ for all $v$, with equality iff $v = 0$.
+  \item {\it Linearity.} $|| a v || = |a| ||v||$ for all $v \in V, a \in \RR$.
+  \item {\it Triangle inequality.} We have that $||v + w || \leq ||v|| + ||w||$.
+\end{itemize}
+
+{\bf Definition.} We say that a matrix norm is a norm on the vector space $\RR^{m \times n}$.
+
+Let's consider a few examples.
+
+\begin{itemize}
+  \item Frobenius norm, defined as
+    \begin{align*}
+      ||A||_F = \left( \sum_{i=1}^{m} \sum_{j=1}^{n} a_{ij}^2 \right)^{\frac{1}{2}} = ( \sum_{k=1}^{r} \sigma_k^2 )^{1/2}.
+    \end{align*}
+  \item Induced $p$-norm. We can define: 
+    \begin{align*}
+      ||A||_p = \max_{x \neq 0} \frac{||A x ||_p}{||x||_p}.
+    \end{align*}
+  \item Induced $pq$-norm.  We can define
+    \begin{align*}
+      ||A||_{p, q} = \max_{x \neq 0} \frac{||A x||_q}{||A x||_p}.
+    \end{align*}
+\end{itemize}
+
+For homework, we will show that
+\begin{align*}
+  ||A||_2 = \sigma_1(A),
+\end{align*}
+i.e. the largest singular value.
+
+Now, we can prove that different norms are equivalent with matrix norms as well.
+
+{\bf Definition.} We say that $|| \cdot ||_{\alpha}, || \cdot ||_{\beta}$ on $\RR^{m \times n}$ are equivalent if there exists $c_1, c_2 > 0$ such that for all matrices $A \in \RR^{m \times n}$, we have
+\begin{align*}
+  c_1 ||A||_{\alpha} \leq ||A||_{\beta} \leq c_2 ||A||_{\alpha}.
+\end{align*}
+
+To prove matrix norms are equivalent, we can make heavy use of the equivalence of vector norms.
+
+
+
+\section{Lecture 22: 7-31-19}
+
+Note that
+\begin{align*}
+  || \lambda \cdot x ||_{\star} = |\lambda| || x||_{\star}.
+\end{align*}
+
+Now, we note that we can compute matrix norms over the unit ball instead of the whole vector space, since:
+\begin{align*}
+  \max_{x \neq 0} \frac{||A x||_{\star}}{||x||_{\star}} = \max_{||y||_{\star} = 1} ||A y||_{\star}.
+\end{align*}
+
+Now, if $||A||_1 = \max_{||x|| \neq 0} \frac{||A x||_1}{||x||_1} = \max_{||x||=1} ||A x||$.  This latter problem is maximizing a continuous function on a compact set - so there must be a maximum.
+
+{\it Claim.} We have
+\begin{align*}
+  ||A||_1 = \sum_{1 \leq j \leq m} \sum_{i=1}^{n} |a_{ij}|; \qquad \text{max col sum.}
+\end{align*}
+
+\begin{proof}
+  Suppose $A_1, \dots, A_m$ are the column of $A$.  We want to look at
+  \begin{align*}
+    ||A x||_1 &= \max_{||x||=1} \sum_{j=1}^{m} x_j A_j \\
+    & \leq \sum_{j=1}^{m} |x_j A_j|_1 \\
+    & = \sum_{j=1}^{m} |x_j| ||A_j||_1 \\
+    & \leq \sum_{j=1}^{m} |x_j| \left( \max_{1 \leq k \leq m} ||A_k|_1 \right) \\
+    &= \left( \max_{1 \leq k \leq m} ||A_k ||_1 \right) ||x||_1.
+  \end{align*}
+  This shows that for all $x$, we have:
+  \begin{align*}
+    \frac{||A x||_1}{||x||_1} \leq \max_{1 \leq k \leq n} ||A_k||_1.
+  \end{align*}
+  Since this is true for all $x$, it must be true for the maximum $x$, that is:
+  \begin{align*}
+    ||A||_1 \leq \max_{1 \leq k \leq m} ||A_k||_1.
+  \end{align*}
+
+  Now, note that for any $x_0$ fixed, we have
+  \begin{align*}
+    \frac{||A x_0||_1}{||x_1||_1} \leq ||A||_1.
+  \end{align*}
+
+  Let $l$ be such that $||A_l||_1 \leq ||A_k||$ for all $1 \leq k \leq m$.
+
+  Now, take $x_0 = e_l$, the $l$-ith basis vector.  Then:
+  \begin{align*}
+    \frac{||A x_0||_1}{||x_0||_1} = \frac{||A l||_1}{||l||_1} = \max_{1 \leq k \leq n} ||A_k||_1 = ||A_l||_1.
+  \end{align*}
+\end{proof}
+
+{\it Claim.} We have
+\begin{align*}
+  ||A||_{\infty} &= \text{maximum row sum} \\
+  ||A||_2 &= \sigma_1(A); \qquad \text{maximum singular value} \\
+  ||A||_{pq} &= \left( \sum_{j=1}^{n}  \left( \sum_{i=1}^{m} |a_{ij}|^{p} \right)^{q/p}\right)^{1/q}.
+\end{align*}
+
+{\bf Definition.} We say that a matrix norm is consistent if
+\begin{align*}
+  ||A B|| \leq ||A|| ||B||.
+\end{align*}
+
+{\it Claim.} All induced norms are consistent.
+
+\begin{proof}
+  To show this, we need to prove a bunch of triangle inequalities.  We have:
+  \begin{align*}
+    \frac{||A x||}{||x||} \leq \max_{y \neq 0} \frac{||A y||}{||y||} = ||A||.
+  \end{align*}
+  Now,  this implies that $||A x|| \leq ||A|| \cdot ||x||$.  To continue, we note that
+  \begin{align*}
+    ||A B x|| \leq ||A|| ||B x|| \leq ||A|| ||B|| ||x||.
+  \end{align*}
+  Now, dividing both sides by the norm of $x$, we obtain for $x \neq 0$,
+  \begin{align*}
+    \frac{||ABx||}{||x||} \leq ||A|| ||B||,
+  \end{align*}
+  thus,
+  \begin{align*}
+    \max_{x \neq 0} \frac{||A B x||}{||x||} = ||AB|| \leq ||A || ||B||.
+  \end{align*}
+
+\end{proof}
+
+In the HW - problem asks whether Frobenius norm is induced by a vector norm.  Hint: show that Frobenius norm is not consistent, therefore it is not induced.
+
+Note that all $p$-norms are equivalent.  This is easy to show, if we just note that
+\begin{align*}
+  \left( \sum |x_i|^p \right)^{1/p} \leq \left( \sum \max |x_i|^p \right)^{1/p} = \left( n ||x||_{\infty}^{p} \right)^{1/p}
+\end{align*}
+Also,
+\begin{align*}
+  ||x||_{\infty}^{p} = \max |x_i|^p \leq \sum_{i=1}^{n} |x_i|^p = ||x||_p^p.
+\end{align*}
+The result follows.
+
+Tomorrow, we will discuss the equivalence of matrix norms.
+
+\section{Lecture 23: 8-1-19}
+
+Yesterday, we showed that
+\begin{align*}
+  ||A||_1 = \max_{x \neq 0} \frac{||A x||_1}{||x||_1} = \text{max col sum}.
+\end{align*}
+
+Today, we note that
+\begin{align*}
+  ||A||_{\infty} = \max_{x \neq 0} \frac{||A x||_{\infty}}{||x||_{\infty}} = \text{max row sum}.
+\end{align*}
+
+\begin{proof}
+  If $A_i$ is the $i$-th row of $A$, we have
+\begin{align*}
+  ||A x||_{\infty} &= \max_{1 \leq i \leq n} \langle A_i, x\rangle \\
+&= \max_{1 \leq i \leq n} \left | \sum_{j=1}^{m} A_{ij} x_j \right | \\
+&\leq \max_{1 \leq i \leq n} \sum_{j=1}^{m} |A_{ij}| |x_j| \\
+& \leq  \max_{1 \leq i \leq n} \sum_{j=1}^{m} |A_{ij}| ||x||_{\infty}.
+\end{align*}
+
+Then,
+\begin{align*}
+  ||A||_{\infty} \leq \max_{1 \leq i \leq n} \sum_{j=1}^{n} |A_{ij}|.
+\end{align*}
+And this is achieved if you take $x$ to be $\sgn(A_m)$, where $A_m$ is the maximum row.
+
+(Note: this is part of the homework).
+\end{proof}
+
+Now, we will show that
+\begin{align*}
+  ||A||_F = \left( \sum_{i=1}^{m} \sum_{j=1}^{n} |A_{ij}|^2 \right)^{1/2} = \left[ \sum_{i=1}^{r} \sigma_i(A) \right]^{1/2}.
+\end{align*}
+
+\begin{proof}
+  Note that if $P$ is orthogonal, we have $||PA||_F = ||A||_F$.  This follows since orthogonal matrices preserve 2-norms.
+
+  Now, suppose $A = VDQ^H$ is an SVD.  By SVD, we know that $V$ and $Q^H$ are orthogonal.  So, $||A||_F = ||D||_F = \left [ \sum_{i=1}^{r} \sigma_i(A)^2 \right ]^{1/2}$.
+\end{proof}
+
+We will prove that the infinity norm is equivalent to the 1 norm.  
+\begin{proof}
+  Using the results for vectors that
+  \begin{itemize}
+    \item $||x||_{\infty} \leq ||x||_1$
+    \item $||x||_{1} \leq n ||x||_{\infty}$.
+  \end{itemize}
+
+  Now, for a fixed vector $x$, we have that:
+\begin{align*}
+  \frac{||A x||_{\infty}}{||x||_{\infty}} \leq \frac{||A x||_1}{\frac{1}{n} ||x||_1}.
+\end{align*}
+
+  Now, we have that
+  \begin{align*}
+    \frac{||A x||_{\infty}}{||x||_{\infty}} \leq \frac{n ||A x||_1}{||x||_1} \leq n \cdot \max_{y \neq 0} \frac{||A y||_1}{||y||_1} = n \cdot ||A||_1.
+  \end{align*}
+  Now, we have equality when $A = \mat{1 & 1 & \dots & 1 \\ 0}$, i.e. the matrix with the first row all 1s, and the rest of the matrix 0.
+
+  Now, we can similarly prove that $||A||_1 \leq m ||A||_{\infty}$, where equality is achieved when $A = \mat{1 & 0 & \dots & 0 \\ 1 & 0 & \dots \\ \vdots \\ 1 & 0 & \dots & 0}$, that is, the first column is all 1s, and the rest is 0s.
+
+  In the homework, we need to show that 2 norms of matrices are equivalent to infinity norms of matrices.
+\end{proof}
+\section{Lecture 24: 8-6-19}
+
+{\bf Definition.} We define a Jordan block of size $n$ for eigenvalue $\lambda$ as
+\begin{align*}
+  J_n(\lambda) = \begin{bmatrix}
+\lambda_i & 1            & \;     & \;  \\
+\;        & \lambda_i    & \ddots & \;  \\
+\;        & \;           & \ddots & 1   \\
+\;        & \;           & \;     & \lambda_i       
+\end{bmatrix}.
+\end{align*}
+
+{\bf Theorem.} For any complex valued matrix $A$, there exist $X$ where $A = X J X^{-1}$, where $J$ is a Jordan matrix.
+
+We will discuss an algorithm to compute the JCF.
+
+{\bf Example.} Suppose $A = \mat{4 & 1 \\ -1 & 6}$.  To diagonalize this, we perform the following steps.
+
+First, we compute the eigenvalues: we get
+\begin{align*}
+  \det (A - \lambda I) = \lambda^2 - 10 \lambda + 25 = (\lambda - 5)^2 = 0,
+\end{align*}
+so $\lambda = 5$ with multiplicity 2.
+
+Next, we find eigenvectors by solving $Av = \lambda v$, that is $v \in \Ker (A - \lambda I)$.  Solving, we get the eigenvector $v = \mat{1 \\ 1}$.
+
+If we look at the product
+\begin{align*}
+  A \mat{v_1 & v_2 }  = \mat{v_1 & v_2} = \mat{5 & 1 \\ 0 & 5}.
+\end{align*}
+Equating columns, we obtain
+\begin{align*}
+  A v_1 &= 5 v_1 \\
+  A v_2 &= v_1 + 5 v_2,
+\end{align*}
+where the second equality reduces to $(A - 5I) v_2 = v_1$.  Here, $v_2$ is called a generalized eigenvector (or a principal vector) for $v_1$.
+
+Solving $(A - 5I) v_2 = v_1$, we obtain $v_2 = \mat{-1 \\ 0}$.  Then $X = \mat{1 & -1 \\ 1 & 0}$.
+
+Note that there is a theorem that states that eigenvectors and principal eigenvectors are linearly independent, so we know that $X$ will be linearly independent.
+
+{\bf Definition.} We define the right principal eigenvectors of degree $k$ associated with $\lambda \in \Lambda(A)$ is a vector such that
+\begin{align*}
+  (A - \lambda I)^k & = 0 \\
+  (A - \lambda I)^{k-1} & \neq 0.
+\end{align*}
+
+{\bf Example.} Suppose $A \in \CC^{3 \times 3}$, and suppose there is one eigenvalue $\lambda$ with algebraic multiplicity 3, with only one eigenvector.  Then, if we look at 
+\begin{align*}
+  A \mat{v_1 & v_2 & v_3}  = \mat{v_1 & v_2 & v_3 }  \mat{\lambda & 1 & 0 \\ 0 & \lambda & 1 \\ 0 & 0 & \lambda},
+\end{align*}
+we can get the following equations:
+\begin{align*}
+  A v_1 &= \lambda v_1 \\
+  A v_2 &= v_1 + \lambda v_2 \\
+  A v_3 &= v_2 + \lambda v_3.
+\end{align*}
+This means that $v_1$ is an eigenvector, $(A - \lambda I) v_2 = v_1$, so $v_2$ is a generalized eigenvector of degree 2.  Lastly, we have $(A - \lambda I) v_3 = v_2$ so $v_3$ is a generalized eigenvector of degree 3.
+
+{\bf Algorithm for computing JCF.}
+
+\begin{itemize}
+  \item Find the eigenvalues.
+  \item For each eigenvalues, find the eigenvectors.
+  \item Now:
+    \begin{itemize}
+      \item If we have $n$ eigenvectors, we are done.
+      \item If not: for each linearly independent eigenvector with eigenvalue $\lambda$ such that $AM(\lambda) \geq GM(\lambda)$, we compute degree 2 generalized eigenvectors.
+    \end{itemize}
+  \item If \# of eigenvectors + \# of generalized eigenvectors of degree 2 $= n$, we are done.  If the sum is $< n$:
+    \begin{itemize}
+      \item Continue: for each generalized eigenvector of degree 2, find (if possible), principle vectors of degree 3.
+      \item Recurse.
+    \end{itemize}
+\end{itemize}
+
+To compute $X$, just put the generalized eigenvectors in order of increasing degree, and set
+\begin{align*}
+  J = \diag(J_{l_1}(\lambda_1), J_{l_2} (\lambda_2), \dots, J_{l_k}(\lambda_k)).
+\end{align*}
+
+
+\section{Lecture 26: 8-8-19}
+
+{\bf Theorem.} If we have the system $x' = A x$, $x(t_0) = x_0$, the solution to the IVP is given by
+\begin{align*}
+  x(t) = e^{A(t - t_0)} \cdot x_0.
+\end{align*}
+
+{\it Lemma.} We have that $\frac{d}{dt} e^{At} = A e^{At} = e^{At} A$.
+
+\begin{proof} (Sketch).  Note that
+\begin{align*}
+  \frac{d}{dt} \left[ I + At + \frac{A^2 t^2}{2!} + \frac{A^3 t^3}{3!} + \dots \right] &= A + A^2 t + \frac{A^3 t^2}{2!} + \frac{A^4 t^3}{3!} + \dots \\
+  &= A \left[ I + A t + \frac{A^2 t^2}{2!} + \dots \right] \\
+  &= A e^{At}.
+\end{align*}
+
+(Note that here, we're assuming that we can differentiate term by term, which is not always true.\footnote{For more on this, see https://www.dpmms.cam.ac.uk/~agk22/uniform.pdf}.)
+\end{proof}
+
+Now, we will verify the theorem.  We know that
+\begin{align*}
+  \frac{d x(t)}{d t} &= A e^{A (t - t_0)} \cdot x_0 = A x(t) \\
+  X(t_0) &= e^{A \cdot 0} \cdot x_0 = x_0.
+\end{align*}
+
+This verifies the conditions of the theorem.
+
+To solve this problem:
+\begin{itemize}
+  \item First, compute the JCF of the matrix $A$.
+  \item Use the JCF to compute $e^{At}$.
+  \item Use the initial condition to the get the solution of the IVP.
+\end{itemize}
+
+{\bf Example.} Consider the matrix  $A = \mat{-4 & 4 \\ -1 & 0}$, and consider the system
+\begin{align*}
+  x_1' = -4 x_1 + 4 x_2 \\ 
+  x_2' = -x_1,
+\end{align*}
+with initial conditions
+\begin{align*}
+  x_1(2) &= 2 \\
+  x_2(2) &= 4.
+\end{align*}
+To solve this, we need to compute the matrix exponential of this.  We can compute that
+\begin{align*}
+  A &= X J X^{-1} \\
+  X = \mat{2 & 1 \\ 1 & 1}; \qquad J = \mat{-2 & 1 \\ 0 & -2}.
+\end{align*}
+And we found that
+\begin{align*}
+  e^{At} &= X e^{Jt} X^{-1} = \mat{2 & 1 \\ 1 & 1} \mat{e^{-2t} & t e^{-2t} \\ 0 & e^{-2t}} \mat{1 & -1 \\ -1 & 2}  \\
+  &= \mat{e^{-2t} -2t e^{-2t} & 4t e^{-2t} \\ -t e^{-2t} & e^{-2t} + 2t e^{-2t}}.
+\end{align*}
+
+And to find the solution, we can compute:
+\begin{align*}
+  x(t) = e^{A(t - t_0)} \cdot x_0,
+\end{align*}
+(we will skip this computation for now because it is tedious).
+
+Next week, we will discuss LU decomposition.  It's an important idea, but it will not appear on the final.
+\section{Lecture 27: 8-12-19}
+
+The idea of LU decomposition is to solve equations of the form $Ax = b$, where $A \in \RR^{m \times n}$, $b$ is a vector, and $x$ is a vector of unknowns.
+
+\begin{itemize}
+  \item {\bf Case 1.} The easiest case is when $A$ is upper triangular.
+  \item {\bf Case 2.} When we have an equation like this:
+    \begin{align*}
+      A = \mat{1 & 1 & 1 \\ 3 & 4 & 5 \\ 1 & 2 & 4},
+    \end{align*}
+    we can just use elementary operations to reduce this to case 1.
+  \item {\bf Case 3.} Things can a bit more subtle when we have 0s in the coefficients, e.g.
+    \begin{align*}
+      A = \mat{3 & 2 & 7 & 4 \\ -6 & -4 & -14 & -16 \\ 9 & 6 & 23 & 10 \\ 0 & 0 & -2 & - 2}.
+    \end{align*}
+    But we can continue as before, and we end up with
+    \begin{align*}
+      A' = \mat{3 & 2 & 7 & 4 \\ 0 & 0 & 0 & -8 \\ 0 & 0 & 2 & -2 \\ 0 & 0 & -2 & -2}.
+    \end{align*}
+    The idea is to switch rows and columns to ensure that $A'_{2, 2}$ is no longer 0s.  In this case, we will interchange $R_2$ and $R_3$, and $C_2$ and $C_3$.  Note that we have to be a bit careful, since this will change the order of the solutions.
+\end{itemize}
+
+{\bf Definition.} The $LU$-decomposition of $A$ consists of $2$ matrices $L$ and $U$, where $L$ is an invertible lower triangular matrix, and $U$ is an upper triangular matrix.
+
+{\bf Definition.} We say that a matrix is $k$-upper triangular if the first $k$ columns are upper triangular.
+
+{\bf Definition.} We say that the $k$-step LU decomposition of $A$ is $A = L_k U_k$, where $L_k$ is an invertible $k$-lower triangular matrix, and $U$ is a $k$-upper triangular matrix.
+
+\todo{Add an overview of LU decomposition algorithm}
+
+\section{Lecture 28: 8-13-19}
+
+Recall that given $A \in \mathbb{C}^{m \times n}$, the LU decomposition of $A$ is matrices $L$ and $M$ such that:
+\begin{itemize}
+  \item $L$ is a lower triangular matrix with determinant 1 $(L \in \CC^{m \times m}$).
+  \item $U$ is an upper triangular matrix with no zero on the diagonal $(U \in \CC^{m \times n})$,
+  \item such that $A = LU$.
+\end{itemize}
+
+{\bf Definition.} We described the $r$-step LU decomposition were $A = L_r U_r$, where we have \todo{fill in block matrices stuffj}.
+
+Algorithmically, we might have something as follows:
+
+\begin{itemize}
+  \item \textbf{(Input.)} $A \in \CC^{m \times n}$, $m, n, r$.
+  \item \textbf{(Output.)} $L_k, U_k$, the $k$ step $LU$ factorization where $k$ is the max number $\leq r$ such that the algorithm can continue.\footnote{This is necessary since we are doing the algorithm without pivoting.}
+\end{itemize}
+
+\begin{verbatim}
+  U = A;
+  L = I_m;
+  if m = 1 # we are done, nothing to eliminate.
+    return L, U
+    for k = 1, ..., r do
+      (step k of Gaussian elimination)
+    for i = k+1, ..., m do
+    \dots
+\end{verbatim}
+
+Source: page 57 of Kazeev's notes.
+
+
+\section{Final review}
+
+{\bf Definitions.}
+
+\begin{itemize}
+  \item Field (ACID)^2 roughly
+  \item Vector space  (ACID, AID)
+  \item SVD definition, and existence
+  \item  projection (square, ortho)
+  \item pseudoinverse (briefly)
+  \item norms, induced norms
+  \item 7.29 part 1 (defn of $p$-norms)
+  \item Holder's inequality  For complex vectors - we have
+    \begin{align*}
+      | <x, y> | \leq ||x||_p ||y||_q,
+    \end{align*}
+    where $\frac{1}{p} + \frac{1}{q} = 1$.
+
+  \item Unitary invariance of 2-norms.  If $U$ is unitary invariant, then $||U x||_2 = ||x||_2$.  Unitary: $U U^H = I$.
+
+  \item Pythag
+  \item  7.46 - 7.47 (operator matrix norm)
+
+    Operator norm:
+    \begin{align*}
+      || \cdot ||_{1, \infty} = \max_{x \neq 0} \frac{||A x||_1}{||x||_{\infty}} 
+    \end{align*}
+
+    \begin{align*}
+      ||A||_{p, q} = \max_{||X||_q \neq 0} \frac{||A x||_p}{||x||_q}.
+    \end{align*}
+
+
+  \item First equation, defn. of Frobenius
+
+    It's just $L^2$ of all entries.
+
+  \item Least squares problem
+  \item Spectrum (set of all EVs).
+  \item Solution of linear / ODE
+\end{itemize}
+
+{\bf Theorems.}
+
+\begin{itemize}
+  \item 3.19, P1  If $A, B$ in $R^{n \times n}$, then
+
+    \begin{itemize}
+      \item $0 \leq \rank(A+B) \leq \rank(A) + \rank(B)$.
+    \end{itemize}
+
+  \item 4.11 (pseudoinverse under change of basis)  $(U A V)^{+} = V^T A^{+} U^T$.  Suppose $U, V$ are orthogonal.  
+  \item 5.11 (properties of SVD)
+    \begin{itemize}
+      \item Rank A is R, count of SVs.
+      \item dyadic outer prod.
+      \item eigenvector relations $A v_i = \sgima_i u_i$
+      \item $R(U_1) = R(A) = N(A^T)^{\perp}$
+    \end{itemize}<++>
+
+  \item 7.5 $P$ is the matrix of an orthogonal projection onto $R(P)$ iff $P^2 = P = P^T$.  sym + square.
+
+  \item 9.12 (spectrum of a Hermitian matrix)  Recall hermitian : $A = A^H$.  All eigenvalues must be real.  Take hermitian TP and conclude $\ol{\lambda} = \lambda$.
+
+  \item 9.13 (orthogonality of the eigenspaces of a Hermitian) If $\lambda, \mu$ are distinct eigenvalues of $A$ with $x, z$ right EVs, then $x, z$ are orthogonal.
+  \item 9.14 (linear independence of eigenvectors - distinct eigenvalues).  If $\lambda_i$ are distict, then right / left eigenvectors are LI.
+\end{itemize}
+
+brief:
+\begin{itemize}
+  \item Row / column ranks are equal.  Follows from $N(A)^{\perp} = R(A^T)$.
+  \item 3.21, P1, 3 (brief) $R(A) = R(A A^T)$.  $N(A) = N(A^T A)$.
+
+  \item 7.12 / 7.18 (brief) $\langle x, y\rangle_Q = x^T Q y$, weighted inner product.  Works for complex case.
+  \item 8.1 (linear least squares problem)
+
+    Let $A \in R^{m \times n}, B^{m \times k}$.  Then, the gneeral solution to
+    \begin{align*}
+      \min_{X} ||A X - B||_2
+    \end{align*}
+    is of the form
+    \begin{align*}
+      X = A^{+}B + (I - A^{+}A)Y,
+    \end{align*}
+    where $Y$ is arbitrary.  Key idea: if $x$ is full rank, then $x = (A^T A)^{-1} A^T b$.
+
+    It's $(A^T A)^{-1}  A^T b$.  $(A^T A)^{-1} A^T b$.
+
+  \item 9.20 Matrix exponential under similarity
+
+    If $X^{-1}AX = \Lambda$, where $\lambda$ is diag, we have
+    \begin{align*}
+      e^{tA} = X \diag(e^{\lambda_1 t}, \dots, e^{\lambda_n t}) X^{-1}.
+    \end{align*}
+
+  \item 9.25 determinant of a matrix is product of eigenvalues (counted w multiplicity). [x]
+\end{itemize}
+
+{\bf Homework 1.}
+
+\begin{itemize}
+  \item 3.1 Note any element $A$ can be writte nas $A = A' + A''$.  Not hard.  Show that the intersection is triv.
+
+  \item 3.4.  We have $M_n'' = (M_n')^{\perp}$ and $M_n' = (M_n'')^{\perp}$.  Orthogonality of matrix subspaces.  Just show orthogonality.
+  \item 3.6.  $R \subseteq S$ iff $S^{\perp} \subseteq R^{\perp}$.  Makes sense.
+  \item 4.1 did this.
+  \item 4.4 fine.
+  \item 5.3.  If $A, B$ have the same right EVs, then $A = C D C^{-1}, B = C E C^{-1}$.  Change of basis.  Then using the prev expressions and commutativity,
+    \begin{align*}
+      AB = (CDC^{-1})(CEC^{-1}) = CDEC^{-1} = CEDC^{-1} =  (C EC ^{-1})(CDC^{-1}) = BA.
+    \end{align*}
+    makes sense.
+
+  \item 5.4.  Take conj. transposes - show that $- \lambda = \lambda$.
+  \item 5.5.  Diagonalize and go.
+  \item 6.1.  Verify axioms -  $<A, A> \geq 0$ with $0$ iff $A = 0$.  Linearity
+  \item 7.1  Use normalize unit vectors / scalar.
+  \item 7.3a.  Use conj. transpostition.
+  \item 7.4.  Max row sum.   Show upper / lower bound.
+    $||A||_2$ is $\sigma_1$ is harder.  Note: 2-norms are unitarily invariant. $||S||_2 = \sigma_1$.  Consider various vectors, then you get something that works.
+
+  \item 8.1a.  just use det = prod of diagonal.
+\end{itemize}
+
+{\bf Homework 2.}
+
+\begin{itemize}
+  \item 4.1.  $A A^T = A^T A = I$.  Since $v_i \in \RR^n$ are orthonormal, $\langle A v_i, A v_j\rangle = v_i^T A^T A v_j$, then use $A$ is orthogonal and get orthogonality.
+
+    Then ineer product of $Av_i, Av_j$ is $v_i^T A^T A v_j$, $0$ if $i \neq j$, $1$ otherwise.  Since $v_i^T (A^T A v_j) = 1$.  The $v_i$ are $n$ orthonormal vectors in $\RR^n$, so they form a basis.
+  \item 4.4.  Compute lim / PE.  Conditions (MP): $ABA = A, BAB = B, (AB)^T = AB, (BA)^T = BA$.
+  \item 5.1. CH to compute $A^{-1}$.  Multiply by $A^{-1}$
+  \item 5.2.  Char poly of $A$ is $\det (A - x I) = x^3 + 5x^2 - 8 x + 4$.  Consider each eigenspace / basis.  Defective - does not have a complete basis of EVs (not diagonalizable).
+  \item 6.2 $\infty$ and $2$ is easy. $ \infty \leq 2$, but $v = [1, 0, \dots]$  And  $2^2 \leq n \infty^2$.  Makes sense.
+  \item 6.3  Need to show $P^2 = P = P^T$ (symmetric and $P^2 = P$, maybe idempotent?  not sure).
+  \item 7.5. matrix norms of $2, \infty$ are equiv. \todo{maybe just recall vector case, and try to generalize}
+  \item 8.3 See below.
+  \item 8.4 JNF.  The possible JNF blocks correspond to the partitions.  Consider diag matrices with 1 on superd.  And then just partition stuff.
+
+    Don't need to compute eigenvectors to get JNF.
+
+\end{itemize}
+
+\end{document}

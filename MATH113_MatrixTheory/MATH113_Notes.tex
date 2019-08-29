@@ -1,0 +1,481 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{todonotes}
+\usepackage{amsthm}
+\usepackage{amsopn}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{libertine}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem*{definition}{Definition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{claim}{Claim}
+\newtheorem*{example}{Example}
+\newtheorem*{lemma}{Lemma}
+\newtheorem*{prop}{Proposition}
+
+\usepackage{latexsym}
+\usepackage{bbm}
+\usepackage[small,bf]{caption2}
+\usepackage{graphics}
+\usepackage{epsfig}
+\usepackage{amsopn}
+\usepackage{url}
+
+\newcommand{\bc}{\binom}
+\newcommand{\bx}{\boxed}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\Ra}{\mathcal{R}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\mbf}{\mathbf}
+\newcommand{\ds}{\displaystyle}
+
+% From stackexchange
+\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
+
+\DeclareMathOperator{\Ker}{Ker}
+
+\usepackage[parfill]{parskip}
+\usepackage[margin=1in]{geometry}
+
+\pagestyle{fancy}
+
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\T}{\text}
+
+\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
+
+\def\Ber{\text{Ber}}
+\def\ub{\underbrace}
+\def\UU{\mathcal{U}}
+\def\WW{\mathcal{W}}
+\def\XX{\mathcal{X}}
+\def\VV{\mathcal{V}}
+\def\Unif{\text{Unif}}
+\def\Xh{\hat{X}}
+\def\P{\text{P}}
+\def\PP{\mathbb{P}}
+\def\CC{\mathbb{C}}
+\def\KK{\mathbb{K}}
+\def\lb{\lambda}
+
+\title{MATH 113 - Matrix Theory}
+\author{Instructor: Michael Kemeny; Notes: Adithya Ganesh}
+
+\lhead{MATH 113}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Lecture 1}
+
+\subsection{Course logistics}
+
+\begin{itemize}
+  \item Website: \url{web.stanford.edu/~mkemeny/math113.html}
+  \item Grade breakdown
+    \begin{itemize}
+        \item 30\% homework
+        \item 30\% midterm
+        \item 40\% final
+    \end{itemize}
+  \item Office hours: Tues 2pm (382-E).
+  \item Text: Axler, {\it Linear Algebra Done Right}.
+  \end{itemize}
+
+  \subsection{Introduction}
+{\it Objective.} Solving linear equations in an abstract way.
+
+Linear algebra is a useful fundamnetal framework to have.  In some sense linear algebra is really ``all we can do.'' And in higher math classes, we can often reduce problems to linear algebra.  
+
+{\it Example.} In differential geometry, you will take a linear approximation of the object using a tangent plane.  And you can approximate your function using a linear mapping between vector spaces.  Calculus is a special case of this kind of setting.
+
+Think of this course as somewhere between philosophy and an applied engineering math class.  It is key to understand the proofs and think about theory deeply.  A good mental exercise: take a theorem that you think you understand - and try to reproduce the steps of the proof.  Also - look for patterns; notice when different theorems use similar arguments.
+
+\subsection{Fields}
+
+A field is a set $\FF$, on which it makes sense to add elements, subtract elements, multiply, and divide. Furthermore, these operations should satisfy the usual rules of arithmetic.
+
+In some sense, there are two operations which are more primary (addition / multiplication), and subtraction / division can be viewed as inverse operations. \\
+
+\begin{definition} 
+  A binary operation $f$ is a function $f: \FF \times \FF \to \FF$.  That is, for any two elements $x, y \in \FF$, we are given a rule to associate a third element $z = f(x, y)$ (note that order matters).
+\end{definition}
+
+{\it Examples of things we want to be fields or not}
+
+\begin{itemize}
+  \item $\mathbb{Q}$, the rational numbers.  Clearly we have binary operations $+$ and $\times$.  Further, $\mathbb{Q}$ has an additive and multiplicative identity (0 and 1 respectively).  We also have an inverse operation to addition.  Note: we almost have an inverse operation for multiplication (0 cannot be inverted).
+
+  \item $\mathbb{N} \cup \left\{ 0 \right\}$.  This is not a field, because we don't have additive inverses.
+
+  \item Even if we add additive inverses, $\mathbb{Z}$ is not a field (we don't have multiplicative inverses for nonzero elements).
+
+  \item Consider $\RR^2 := \left\{ (x, y) | x, y \in \RR \right\}$.  We can clearly define addition $((x, y), (x', y')) \to (x + x', y + y')$.  There is an additive identity $(0, 0)$, and an additive inverse $(-x, -y)$.  We can define multiplication is the same way: componentwise.  And there is a multiplicative identity $(1, 1)$.  But we have a problem: we cannot invert points $(x, 0)$ or $(0, y)$ where $x, y \neq 0$.
+\end{itemize}
+
+We will now formally define fields. \\
+
+\begin{definition}
+  A field $\FF$ is a set together with two binary operations $+: \FF \times \FF \to \FF$ and $\cdot: \FF \times \FF \to \FF$, satisfying he following axioms.
+
+  \begin{itemize}
+    \item There exists additive and multiplicative identities.  That is, $\exists \, 0, 1 \in \FF$ with $0 \neq 1$ such that 
+      \[
+      x + 0 = x \, \forall x \in \FF,
+    \]
+    \[
+      x \cdot 1 = x \, \forall x \in \FF.
+      \]
+
+    \item Existence of inverses.  For all $x \in \FF$, there exists $-x$ such that
+      \begin{align*}
+        x + (-x) = 0.
+      \end{align*}
+      And for all $x \neq 0 \in \FF$, there exists $x^{-1}$ such that
+      \begin{align*}
+        x \cdot x^{-1} = 1.
+      \end{align*}.
+
+    \item Commutativity of the operations.  We have 
+      \[
+      x + y = y+x \, \forall x, y \in \FF
+      \]
+      \[
+x \cdot y = y \cdot x \, \forall x, y \in \FF$.
+        \]
+      \item Associativity of the operations (this one is somewhat non-obvious). We have
+      \begin{align*}
+        x+(y+z) & = (x+y) + z \, \forall x, y, z \in \FF \\
+        x \cdot (y \cdot z) &= (x \cdot y) \cdot z \, \forall x, y, z \in \FF \\
+      \end{align*}
+
+    \item Distributivity of the operations (this can be viewed as a sort of compatibility between addition and multiplication).  In particular, 
+      \begin{align*}
+        x \cdot (y+z) = x \cdot y + x \cdot z.
+      \end{align*}
+
+  \end{itemize}
+\end{definition}
+
+{\it Example.} Let's go back to $\RR^2$.  With a different definition of multiplication on $\RR^2$, we can make it a field. We will leave addition as defined earlier (componentwise addition).
+
+Define $(a, b) \cdot (c, d) := (ac - bd, bc + ad)$.  Then $(1, 0)$ is a multiplicative identity, since
+\begin{align*}
+  (a, b) \cdot (1, 0) &= (a , b).
+\end{align*}
+
+Using this rule, it's straightforward to see that we have multipicative inverses.  In particular, observe that
+\begin{align*}
+  (a, b)^{-1} &= \frac{1}{a^2+b^2} (a, -b),
+\end{align*}
+for $(a, b) \neq (0, 0)$.
+
+{\it Claim.} There exists an element $x \in \RR^2$ with this operation with the property
+
+\begin{align*}
+  x \cdot x = -1.
+\end{align*}
+
+Note: $(0, 1)$ satisfies this, since
+\begin{align*}
+  (0, 1)\cdot (0, 1) &= (0^2 - 1^2, 0 + 0) \\
+  &= -(1, 0) = -1.
+\end{align*}
+
+Defining $i = (0, 1)$, we can get the cmplex numbers, where we write $x+iy$ for $(x, y)$.
+
+Next time: we will define vector spaces.  In words, a vector space $V$ over a field $\mathbb{K}$ will be a set for which we have two operations, vector addition (rule for adding elements of $V$) and scalar multiplication. (rule for multipliying elements of $V$ by elements in $K$).  Elements in $V$ are called vectors, elements in $\KK$ are called scalars.
+
+\section{Lecture 2}
+
+\subsection{What it means to read proofs}
+
+Any proof consists of a sequence of statements.  Need to read proofs sequentially - it is critical to understand each statement before you move to the next statement.  If you get stuck, think deeply about the statements.
+
+\subsection{Vector spaces}
+
+Last time, we defined fields as sets equipped with two operations: addition and multiplication.  The main fields we saw were $\QQ, \RR$ and $\mathbb{C}$.  We defined the field of complex numbers as giving $\RR^2$ a special multiplication operation.  In the homework you will encounter a field $\mathbb{F}_p$ with $p$ elements, where $p$ is a prime. \\
+
+  A vector space $V$ over a field $\KK$ is a set $V$ equipped with two operations, ``vector addition'' and ``scalar multiplication.''  We call elements $v \in V$ vectors and elements $\lambda \in \KK$ scalars.  Vector addition will be a rule for adding together two vectors.  Scalar multiplication will be a rule for multiplying a scalar by a vector.
+
+  {\it Motivating example.}  Consider the plane in $\RR^2$.  A vector in $\RR^2$ will be a vector space over $\RR$.  
+  
+  To add vectors, consider $\vec{v} = (a, b)$ and $\vec{w} = (a', b')$.  Then $\vec{v} + \vec{w} = (a + a', b + b')$.
+
+  For scalar multiplication, if $\lambda \in \RR$ and $\vec{v} = (a, b)$, we have $\lambda \vec{v} = (\lambda a, \lambda b)$.
+
+  Geometrically, in vector addition, we move the head of $\vec{w}$ to the tail of $\vec{v}$ to obtain the sum.  
+  
+  If $\lambda > 0$, then geometrically, multiplying by $\lambda$ has the effect of scaling $\vec{v}$ by a factor of $\lambda$.  If $\lambda < 0$, then $\lambda \vec{v} = - |\lambda| \vec{v}$, where we scale by $\lambda$, and the minus sign changes the direction.  Note, we will soon consider objects that cannot be geometrically analyzed, so one shouldn't be too attached to geometric intuition.
+
+  Importantly, this extends to any field $\KK$.  We can define
+  \begin{align*}
+    \KK^2 = \left\{ (a, b) | a, b \in \KK \right\},
+  \end{align*}
+  with the same addition and multiplication operations:
+  \begin{align*}
+    (a, b) + (a', b') &= (a + a', b + b') \\
+    \lambda (a, b) &= (\lambda a, \lambda b).
+  \end{align*}
+
+  Note that the above equations, the $+$ on the left side is a different operation than the $+$ on the right side.  The left $+$ is {\it vector addition}, while the right $+$ is addition over the field $\KK$.  More concretely, we can define $+_v$ as vector addition and $\cdot_v$ as scalar multiplication.  We would obtain
+  \begin{align*}
+    +_v: V \times V \to V \\
+    \cdot_v: \KK \times V \to V
+  \end{align*}
+
+  {\it Aside.} The difference between $\to$ and $\mapsto$: we can write $f(x) = \cos(x)$ as
+\begin{align*}
+  f: \RR \to \RR \\
+  x \mapsto \cos x
+\end{align*}
+
+This allows us to differentiate the function signature from the formula.
+
+We now proceed to the formal definition. \\
+
+\begin{definition}
+  Let $\KK$ be a field.  A vector space $V$ over $\KK$ is a set $V$ together with two operations.
+
+  {\it Vector addition.}
+  \begin{align*}
+    V \times V \to V \\
+    (\vec{v}, \vec{w}) \mapsto \vec{v} + \vec{w}
+  \end{align*}
+
+  {\it Scalar multiplication.}
+  \begin{align*}
+    \mathbb{K} \times V \to V \\
+    (\lambda, \vec{v}) \mapsto \lambda \vec{v}.
+  \end{align*}
+
+  Satisfying the following axioms:
+
+  \begin{itemize}
+    \item Commutativity of vector addition.  For all $\vec{v}, \vec{w} \in V$, we must have $\vec{v} + \vec{w} = \vec{w} + \vec{v}$.  (Note: formally, we have not defined operations of $V \times \KK$, so we don't have commutativity of scalar multiplication.)
+
+    \item Associativity of vector addition / scalar multiplication.  For all $\vec{u}, \vec{v}, \vec{w} \in V$, we have
+      \begin{align*}
+      (\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v}  + \vec{w}) \\
+      \end{align*}
+
+      In addition, if we have $\lambda, \mu \in \KK$, we have
+      \begin{align*}
+        (\lambda \mu) \vec{v} = \lb (\mu \vec{v})
+      \end{align*}
+
+      Note that these are different multiplication operators (multiplication in the field, and scalar multiplication in the vector space).
+    
+    \item The usual axioms for addition / multiplication.
+
+      \begin{itemize}
+        \item Existence of an additive identitty.
+      There exists 
+      \begin{align*}
+        0 \in V; \text{ such that } \vec{u} + 0 = \vec{u}; \, \forall u \in V
+      \end{align*}
+
+    \item Existence of an additive inverse.
+      \begin{align*}
+        \forall \vec{v} \in V, \, \exists - \vec{v} \in V; \text{ such that } \vec{v} + (- \vec{v}) = 0.
+      \end{align*}
+
+    \item Existence of a multiplicative identity.  There exists some element $1 \in \KK$ such that
+      \begin{align*}
+        1 \vec{v} = \vec{v}; \forall \vec{v} \in V.
+      \end{align*}
+
+    \item Distributivity.  We have
+
+      \begin{align*}
+        \lb (\vec{u} + \vec{v}) &= \lb \vec{u} + \lb \vec{v} \\
+        (\lb + \mu) \vec{v} &= \lb \vec{u} + \lb \vec{v}
+      \end{align*}
+
+      for all $\lb, \mu \in \KK, \vec{u}, \vec{v} \in V$.
+        \end{itemize}
+    \end{itemize}
+\end{definition}
+
+The bad news: we have six axioms to learn.  But the good news: we mostly care about 1 (maybe 2) examples.
+
+{\bf Main example.} (Finite dimensional vector space) Let $V = \KK^n$, the set of ordered $n$-tuples of elements $(x_1, \dots, x_n) | x_i \in \KK, 1 \leq i \leq n$.  (If $n \geq 4$, we do not try to visualize this).
+
+Then $\KK^n$ is a vector space over $\KK$ with addition defined as follows.
+\begin{align*}
+  (x_1, \dots, x_n) + (y_1, \dots, y_n) &= (x_1 + y_1, \dots, x_n + y_n)
+\end{align*}
+Similarly, we can define scalar multiplication as follows:
+\begin{align*}
+  \lb (x_1, \dots, x_n) = (\lb x_1, \dots, \lb x_n).
+\end{align*}
+
+{\it Exercise.}  Check that the axioms hold.
+
+{\bf More general example.} (Infinite dimensional vector space) Let $\KK$ be a field, and let $S$ be any set.  Let $V$ be the set of functions $f: S \to \KK$.  We can define addition and scalar multiplication.
+
+\begin{itemize}
+  \item (Addition) Let $f_1, f_2 \in V$, i.e. $f_1 : S \to \KK$, $f_2: S \to \KK$.  We can define  $(f_1 + f_2)(s) := f_1(s) + f_2(s)$.
+    \begin{align*}
+      f_1 + f_2 : S \to \KK \\
+      s \mapsto f_1(s) + f_2(s).
+    \end{align*}
+
+  \item (Scalar multiplication) For any $\lb \in \KK$, we can define $\lb f_1 : S \to \KK$ as
+    \begin{align*}
+      \lb f_1(s) = \underbrace{\lb f_1}_{\text{multiplication in $\KK$}}(s).
+    \end{align*}
+\end{itemize}
+
+{\bf Remark.} Importantly, note that the first example is a special case of the second example.  Take $S  = \left\{ 1, \dots, n \right\}$.  Then you can think of an $n$-tuple as a function
+\begin{align*}
+  f \left\{ 1, \dots, n \right\} \to \KK
+\end{align*}
+where we can think of an $n$-tuple as a function:
+\begin{align*}
+  (x_1, \dots, x_n) \in \KK^n \\
+  f(x_i) \mapsto x_i
+\end{align*}
+
+One advantage of this formulation is that we can think of an infinite sequence $(x_1, x_2, \dots)$ as a function $f : \NN \to \KK$.  So the set of sequences $\left\{ (x_1, \dots, ) | x_i \in \KK \right\}$ forms a vector space.  That is, $\left\{ f: \RR \to \KK \right\}$ is also a vector space.
+
+Concretely, consider $k = \RR$, and $n = 2$.  If we have the vector $(3, 5)$, we can consider this as a function $f$ with $f(1) = 3$ and $f(2) = 5$.
+
+
+\section{Lecture 4}
+
+Recall that $U \subset V$ is a vector subspace if
+\begin{itemize}
+  \item $0 \in U$
+  \item Closed under addition
+  \item Closed under scalar multiplication
+\end{itemize}
+
+\begin{example}
+  Let $V = k^2$, that is
+  \[
+    V = \left\{ (a, b) | a, b \in k \right\}
+  \]
+
+  Choose any $v = (a, b)$.  Then line 
+  \[
+    L_v = \span(v) = \left\{ \text{all scalar multiples of $v$} \right\}
+  \]
+  is a subspace.
+
+  It is easy to show that the additive identity exists, and that it satisfies closure under addition and scalar multiplication.
+\end{example} \\
+
+\begin{definition}
+  Let $V, W$ be $k$ vector spaces.  Let $T: U \to W$ be a linear map.  This means that
+
+  \begin{itemize}
+    \item $T(a + b) = T(a) + T(b)$ ``linearity''
+    \item $T(\lambda a) = \lambda T(a)$ ``homogeneity''
+  \end{itemize}
+
+  Then we define the kernel of $T$ (or nullspace) as the subset of $V$ such that
+  \[
+    \Ker T = \left\{ v \in V | T(v) = 0 \right\}.
+  \]
+\end{definition}
+
+\begin{lemma}  
+  Let $T: V \to W$ be a linear map.  Then we have $T(0) = 0$.
+\end{lemma}
+
+\begin{proof}
+  Use the fact that
+  \[
+    0 = 0 + 0
+  \]
+  So
+  \[
+    T(0) = T(0) + T(0)
+  \]
+  Subtracting, we get $T(0) = 0$.
+\end{proof} \\
+
+Note that if $T$ is a linear map, then $T$ is injective, i.e. if $v, w \in V$ such that $T(v) = T(w)$ then $v = w$, if and only if $\Ker T = \left\{ 0 \right\}$.
+
+So intuitively, the kernel is a kind of ``measure'' of how far $T$ is from being injective. \\
+
+\begin{prop}
+  $\Ker T \subset V$ is a subspace.
+\end{prop}
+
+\begin{proof} We will prove each axiom sequentially.
+
+  \begin{itemize}
+    \item Note that $0 \in \Ker T$ since $T(0) = 0$ from the lemma.
+    \item Now, need to check closure under addition.  By linearity, note that
+      \[
+        T(v+w) = T(v) + T(w) = 0 + 0 = 0.
+      \]
+    \item Now, need to check closure under scalar multiplication.  By homogeneity, note that
+      \[
+        T(\lambda v) = \lambda T(v) = 0.
+      \]
+  \end{itemize}
+\end{proof}
+
+\begin{example}
+  Consider the set
+  \[
+    U: \left\{ f: \RR \to \RR | f^{(n)} : \RR \to \RR \text{ exists and is continuous }\right\}
+  \]
+  \begin{itemize}
+    \item 
+  \end{itemize}
+\end{example}
+
+\section{Notes on 3.F: Duality}
+
+\begin{definition}
+  A linear functional on $V$ is a linear map from $V$ to $\mbf{F}$, i.e. an element of $\mathcal{L}(V, \mbf{F})$. \\
+\end{definition}
+
+\begin{definition}
+  The dual space of $V$, denoted $V'$ is the vector space of all linear functions on $V$.  In other words, $V' = \mathcal{L}(V, \mbf{F})$.
+\end{definition}
+
+Note that $\dim V' = \dim V$.  This follows from 3.61, which states that  $\dim \mathcal{L}(V, W) = \dim (V) \dim(W)$.
+
+\begin{definition}
+  If $v_1, \dots, v_n$ is a basis of $V$, then the dual basis of $v_1, \dots, v_n$ is the list $\phi_1, \dots, \phi_n$ of elements of $V'$ where each $\phi_j$ is the linear functional on $V$ such that
+
+  \[
+    \phi_j(v_k) =
+    \begin{cases}
+      1; \qquad \text{ if } k = j \\
+      0; \qquad \text{ if } k \neq j.
+    \end{cases}
+    \]
+\end{definition}
+
+%
+
+
+
+
+\section{Key Ideas}
+
+
+
+\end{document}

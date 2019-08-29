@@ -1,0 +1,137 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Reinforcement Learning for Autonomous Racing in Simulation \\
+CS229 Research Proposal}
+\author{Adithya Ganesh, Matthew Das Sarma, Nancy Xu}
+\begin{document}
+\maketitle
+
+\noindent {\bf Objective.} Apply reinforcement learning to train an agent that can autonomously race in TORCS (The Open Racing Car Simulator). TORCS is a modern simulation platform used for research in control systems and autonomous driving.  We will train learning algorithms to autonomously race based on variations of classical reinforcement learning techniques.  The model will be used to race in TORCS, with the ultimate goal to achieve minimal race time and maximal robustness across tracks.  \\
+
+\noindent {\bf Initial Goal.} 
+
+\begin{enumerate}
+  \item Use variations of classical RL methods to train a functional racing model
+    \begin{enumerate}
+      \item Metrics: completes circuit, constrained within track, baseline racing time, etc.
+      \item Compare deterministic and stochastic policies
+      \item Compare different reward functions (e.g. finite horizon vs. infinite horizon)
+    \end{enumerate}
+\end{enumerate}
+
+\noindent {\bf Stretch Goals / Ongoing Research.}
+
+\begin{enumerate}
+  \item {\it Deep learning.} Compare classical methods to modern deep learning approaches.
+    \begin{enumerate}
+      \item Fitted value iteration to solve an MDP
+      \item Deep $Q$-learning
+    \end{enumerate}
+  \item {\it Transfer learning.} How effect can a model trained in simulation be in the real world?
+    \begin{enumerate}
+      \item Experiment with real-world autonomous driving -- can we use a model trained in TORCS to control an RC car outfitted with cameras and ultrasonic sensors?
+    \end{enumerate}
+\end{enumerate}
+
+\section{Reinforcement Learning Framework}
+
+\subsection{Classical MDP Approach}
+% Sources - need to cite formally
+
+% https://www.jair.org/media/301/live-301-1562-jair.pdf
+
+% http://www.ias.tu-darmstadt.de/uploads/Publications/Kober_IJRR_2013.pdf
+
+In the traditional reinforcement learning model, an agent functions in its environment through perception and action.  At each iteration, the agent receives input, $i$ that describes the current state $s$, and then selects an action $a$.  The action modifies the state of the environment, and the state transition is communicated to the agent through a reward $R$.  The goal of reinforcement learning is to find a policy $\pi$ that chooses actions $a$ in in given states $s$ that maximize the cumulative expectation of $R$.
+
+Classical approaches are based on the assumption that the dynamics of our system can be modeled as a Markov decision process, which consists of the set of states $S$, actions $A$, rewards $R$, and transition probabilities $T$.  In particular, the Markov assumption requires that the next state $s'$ and the reward only depends on the previous state $s$ and action $a$.
+
+Importantly, $\pi$ can either be deterministic or stochastic.  There are also different models of the expected return $J$ (mention the difference between finite-horizon and infinite horizon).
+
+In the average-reward setting, we can frame the control problem as a constrained optimization problem (due to Bellman):
+
+\[
+  \max_{\pi} J(\pi) = \sum_{s, a} \mu^\pi (s) \pi (s, a) R(s, a),
+\]
+such that
+\[
+  \mu^\pi(s') = \sum_{s, a} \mu^\pi (s) \pi (s, a) T(s, a, s'); \quad \forall s' \in S,
+\]
+\[
+  1 = \sum_{s, a} \mu^{\pi} (s) \pi (s, a),
+\]
+\[
+  \pi(s, a) \geq 0, \forall s \in S, a \in A.
+\]
+
+\subsection{Deep Q-Learning}
+
+Recently, much of the research literature has focused on deep $Q$ learning, which tries to use a deep convolutional neural network to approximate the optimal action value function
+\[
+  Q^* (s, a) = \max_{\pi} \mathbb{E} [r_t + \gamma r_{t+1} + \gamma^2 r_{t+2} + \dots | s_t = s, a_t = a, \pi],
+\]
+which is the maximum sum of rewards $r_t$, discounted by $\gamma$ at each time step $t$, achievable by a behavior policy $\pi = P(a | s)$.
+
+\section{Overview of Control Problem}
+
+The agent perceives the environment via a number of simulated sensor measurements.
+
+Example sensor measurements (a total of 79 sensors exist):
+
+% Source: https://arxiv.org/pdf/1304.1672.pdf
+
+% Todo - make the format of this nicer
+
+\begin{tabularx}{\textwidth}{|c|c|X|}
+  \hline
+  {\bf Name} & {\bf Range (unit)} & {\bf Description} \\ \hline
+  \texttt{angle} & $[- \pi, + \pi]$ (rad) & Angle between vehicle heading and heading of track axis. \\ \hline
+  \texttt{distFromStart} & $[0, + \infty)$ (m) & Distance of the car from the starting line along the track path. \\ \hline
+  \texttt{track} & [0, 200] (m) & Vector of 19 range finder sensors that return the distance between the track edge and the vehicle within a range of 200 meters. \\ \hline
+  \texttt{speed}
+  4 & 5 & 6 \\ \hline
+  7 & 8 & 9 \\
+  \hline
+\end{tabularx}
+
+\begin{itemize}
+\item trackSensors - Vector of 19 range finder sensors that return the distance between the track edge and the vehicle within a range of 200 meters.
+\item Angle - Angle between vehicle and track heading.
+\item distFromStart - Distance of the car from the starting line along the track path. 
+\item focus - Vector of 5 range finger sensors that return the distance between the track edge and the car within a range of 200 meters.
+\item opponents - Vector of 36 opponent sensors: each sensor covers a span of 10 degrees within a range of 200 meters and returns the distance of the cloest opponent in the covered area.
+\item speed\{X, Y, Z\} - Speed of the vehicle along longitudinal, transverse, and Z axis of car.
+\item wheelSpeedVel - Vector of 4 sensors representing the rotation speed of wheels.
+\end{itemize}
+
+A vehicle controller must determine the value of five actuators - the steering wheel, the gas pedal, the brake pedal, and the gearbox. 
+
+\begin{itemize}
+\item Accel - Virtual gas pedal
+\item Brake - Virtual brake pedal
+\item Clutch - Virtual cluth pedal
+\item Gear value
+\item Steering
+\end{itemize}
+
+Importantly, the control algorithm must rely on local track and dynamics information only (without have a representation of the full track state).
+
+\section{References}
+
+\end{document}
