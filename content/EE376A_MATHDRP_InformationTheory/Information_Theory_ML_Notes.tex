@@ -1,104 +1,104 @@
-\documentclass[12pt]{extarticle}
+%\documentclass[12pt]{extarticle}
 
-\usepackage{extsizes}
+%\usepackage{extsizes}
 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{fancyhdr}
-\usepackage{todonotes}
-\usepackage{amsthm}
-\usepackage{amsopn}
-\usepackage{amsfonts}
-\usepackage{mathtools}
-\usepackage{libertine}
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{fancyhdr}
+%\usepackage{todonotes}
+%\usepackage{amsthm}
+%\usepackage{amsopn}
+%\usepackage{amsfonts}
+%\usepackage{mathtools}
+%\usepackage{libertine}
 
-\newtheorem*{theorem}{Theorem}
-\newtheorem*{lemma}{Lemma}
-\newtheorem*{definition}{Definition}
-\newtheorem*{exercise}{Exercise}
-\newtheorem*{remark}{Remark}
-\newtheorem*{claim}{Claim}
-\newtheorem*{example}{Example}
-\newtheorem*{prop}{Proposition}
-\newtheorem*{sol}{Solution}
+%\newtheorem*{theorem}{Theorem}
+%\newtheorem*{lemma}{Lemma}
+%\newtheorem*{definition}{Definition}
+%\newtheorem*{exercise}{Exercise}
+%\newtheorem*{remark}{Remark}
+%\newtheorem*{claim}{Claim}
+%\newtheorem*{example}{Example}
+%\newtheorem*{prop}{Proposition}
+%\newtheorem*{sol}{Solution}
 
-\usepackage{latexsym}
-\usepackage{bbm}
-\usepackage[small,bf]{caption2}
-\usepackage{graphics}
-\usepackage{epsfig}
-\usepackage{amsopn}
-\usepackage{url}
+%\usepackage{latexsym}
+%\usepackage{bbm}
+%\usepackage[small,bf]{caption2}
+%\usepackage{graphics}
+%\usepackage{epsfig}
+%\usepackage{amsopn}
+%\usepackage{url}
 
-\usepackage[parfill]{parskip}
-\usepackage[margin=1in]{geometry}
+%\usepackage[parfill]{parskip}
+%\usepackage[margin=1in]{geometry}
 
-\newcommand{\bc}{\binom}
-\newcommand{\bx}{\boxed}
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\QQ}{\mathbb{Q}}
-\newcommand{\II}{\mathbb{I}}
-\newcommand{\Ra}{\mathcal{R}}
-\newcommand{\EE}{\mathbb{E}}
-\newcommand{\HH}{\mathcal{H}}
-\newcommand{\NN}{\mathbb{N}}
-\newcommand{\FF}{\mathbb{F}}
-\newcommand{\ve}{\varepsilon}
-\newcommand{\eps}{\epsilon}
-\newcommand{\la}{\langle}
-\newcommand{\ra}{\rangle}
-\newcommand{\mbf}{\mathbf}
-\newcommand{\ds}{\displaystyle}
-\newcommand{\ol}{\overline}
+%\newcommand{\bc}{\binom}
+%\newcommand{\bx}{\boxed}
+%\newcommand{\RR}{\mathbb{R}}
+%\newcommand{\QQ}{\mathbb{Q}}
+%\newcommand{\II}{\mathbb{I}}
+%\newcommand{\Ra}{\mathcal{R}}
+%\newcommand{\EE}{\mathbb{E}}
+%\newcommand{\HH}{\mathcal{H}}
+%\newcommand{\NN}{\mathbb{N}}
+%\newcommand{\FF}{\mathbb{F}}
+%\newcommand{\ve}{\varepsilon}
+%\newcommand{\eps}{\epsilon}
+%\newcommand{\la}{\langle}
+%\newcommand{\ra}{\rangle}
+%\newcommand{\mbf}{\mathbf}
+%\newcommand{\ds}{\displaystyle}
+%\newcommand{\ol}{\overline}
 
-% From stackexchange
-\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
-\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
+%% From stackexchange
+%\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+%\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
 
-\DeclareMathOperator{\sign}{sign}
-\DeclareMathOperator{\Aut}{Aut}
-\DeclareMathOperator{\GL}{GL}
-\DeclareMathOperator{\Ker}{Ker}
-\DeclareMathOperator{\im}{im}
-\DeclareMathOperator{\Syl}{Syl}
-%\newcommand{\mat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
-\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+%\DeclareMathOperator{\sign}{sign}
+%\DeclareMathOperator{\Aut}{Aut}
+%\DeclareMathOperator{\GL}{GL}
+%\DeclareMathOperator{\Ker}{Ker}
+%\DeclareMathOperator{\im}{im}
+%\DeclareMathOperator{\Syl}{Syl}
+%%\newcommand{\mat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
+%\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 
 
-\usepackage[parfill]{parskips
-\usepackage[margin=1in]{geometry}
+%\usepackage[parfill]{parskips
+%\usepackage[margin=1in]{geometry}
 
-\pagestyle{fancy}
+%\pagestyle{fancy}
 
-\newcommand{\UU}{\mathcal{U}}
-\newcommand{\T}{\text}
+%\newcommand{\UU}{\mathcal{U}}
+%\newcommand{\T}{\text}
 
-\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
+%\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
 
-\def\Ber{\text{Ber}}
-\def\ub{\underbrace}
-\def\UU{\mathcal{U}}
-\def\WW{\mathcal{W}}
-\def\XX{\mathcal{X}}
-\def\VV{\mathcal{V}}
-\def\Unif{\text{Unif}}
-\def\Xh{\hat{X}}
-\def\P{\text{P}}
-\def\PP{\mathbb{P}}
-\def\CC{\mathbb{C}}
-\def\KK{\mathbb{K}}
-\def\ZZ{\mathbb{Z}}
-\def\lb{\lambda}
-\def\rot{\text{rot}}
+%\def\Ber{\text{Ber}}
+%\def\ub{\underbrace}
+%\def\UU{\mathcal{U}}
+%\def\WW{\mathcal{W}}
+%\def\XX{\mathcal{X}}
+%\def\VV{\mathcal{V}}
+%\def\Unif{\text{Unif}}
+%\def\Xh{\hat{X}}
+%\def\P{\text{P}}
+%\def\PP{\mathbb{P}}
+%\def\CC{\mathbb{C}}
+%\def\KK{\mathbb{K}}
+%\def\ZZ{\mathbb{Z}}
+%\def\lb{\lambda}
+%\def\rot{\text{rot}}
 
-\title{Information Theory and Statistical Learning}
-\author{Adithya Ganesh}
+%\title{Information Theory and Statistical Learning}
+%\author{Adithya Ganesh}
 
-\lhead{MATH DRP}
+%\lhead{MATH DRP}
 
-\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+%\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 
-\begin{document}
+%\begin{document}
 \maketitle
 
 \renewcommand{\abstractname}{Acknowledgments}
@@ -1525,4 +1525,4 @@ Note that in the expression above, $D(P || Q)$ is between $P$, the ``wrong'' sou
   \end{align*}
 \end{definition}
 
-\end{document}
+%\end{document}

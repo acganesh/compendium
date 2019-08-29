@@ -1,52 +1,66 @@
-% !TEX TS-program = xelatex
-% !TEX encoding = UTF-8 Unicode
+\documentclass[\OPTmodes]{book}
 
-%===========================================%
-%  Preamble of the LaTeX version of SICP.   %
-%  It will be read in by texi-to-latex.pl.  %
-%===========================================%
-
-\documentclass[11pt,oneside]{book}
+\usepackage[papersize={\OPTpaperesize},
+            top=\OPTtopmargin,
+            bottom=\OPTbottommargin,
+            inner=\OPTinnermargin,
+            outer=\OPToutermargin,
+            bindingoffset=\OPTbindingoffset,
+            centering,
+            % showframe,
+            ]{geometry}
 
 % New line height: 1.05 * 1.2 = 1.26
 \renewcommand{\baselinestretch}{1.05}
 
+% Uncomment for diagnostics!
+% \usepackage[cam,width=6in,height=9in]{crop}
+
 % Font settings
-\usepackage[no-math]{fontspec} %-----------------------%  This exact order
-\defaultfontfeatures{%                                 %  of declarations
-  Scale=MatchLowercase, % needed here ...              %  is important for
-}                                                      %  single quotes not
-\setmonofont{Inconsolata LGC}                          %  to turn out curly
-                                                       %  ("typographic")
-\defaultfontfeatures{%                                 %  in verbatim blocks
-  Scale=MatchLowercase, % ... and here again           %  of Scheme code.
-  Mapping=tex-text,                                    %  Now the quote is
-  SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},  %  upright and safely
-}                                                      %  copy-pasteable to
-\setmainfont{Linux Libertine O}                        %  the REPL without
-\setsansfont{Linux Biolinum O} %-----------------------%  giving errors.
+%--------------------------------------------------------------%  Note:
+\usepackage[no-math]{fontspec}                                 %  This exact order
+\usepackage{libertine}                                         %  of declarations
+\defaultfontfeatures{%                                         %  is important for
+  Scale=MatchLowercase, % needed here ...                      %  single quotes not
+}                                                              %  to turn out curly
+\setmonofont[BoldFont={Inconsolata LGC Bold}]{Inconsolata LGC} %  ("typographic")
+                                                               %  in verbatim blocks
+\defaultfontfeatures{%                                         %  of Haskell code.
+  Scale=MatchLowercase, % ... and here again                   %  Now the quote is
+  Mapping=tex-text,                                            %  upright and safely
+  SmallCapsFeatures={LetterSpace=2.5,WordSpace=1.05},          %  copy-pasteable to
+}                                                              %  the REPL without
+%--------------------------------------------------------------%  giving errors.
 
-\usepackage{polyglossia}
-\setdefaultlanguage[variant=american]{english}
-\setotherlanguages{greek}
+% To use Libertine letters and numbers,
+% but tx-style operators in math environment:
+\usepackage[libertine]{newtxmath}
+\usepackage{amsmath}
+% Needed to display additional math unicode symbols (like double-colon)
 
-% To be able to use '\-/' in place of '-' inside \code{}
-% so that long function names containing hyphens
-% can be broken up after the hyphen:
-\usepackage[shortcuts]{extdash}
+% https://github.com/wspr/unicode-math/issues/469
+\expandafter\let\csname not=\endcsname\relax
+\expandafter\let\csname not<\endcsname\relax
+\expandafter\let\csname not>\endcsname\relax
+\usepackage{unicode-math}
+\setmathfont{Libertinus Math}
+
+\usepackage[all]{nowidow}
+\usepackage{emptypage}
+\usepackage{noindentafter}
 
 % So that file names with multiple dots don't confuse
 % graphicx package when using \includegraphics command:
 \usepackage[multidot]{grffile}
 \usepackage{graphicx}
+\usepackage{caption, wrapfig, framed, subfigure}
+\usepackage[export]{adjustbox}
+\captionsetup{labelformat=empty,font=scriptsize}
+\usepackage{titlecaps}
 
 \usepackage[usenames,dvipsnames,x11names]{xcolor}
-\usepackage{amsmath}
-
-% To use Libertine letters and numbers,
-% but tx-style operators in math environment:
-\usepackage[libertine]{newtxmath}
-
+\usepackage{longtable}
+\usepackage{booktabs}
 % Workaround to fix mismatched left and right math delimiters. Taken from:
 % http://tex.stackexchange.com/questions/63410/parentheses-differ-xelatex-fontspec-newtxmath-libertine
 \DeclareSymbolFont{parenthesis}{T1}{fxl}{m}{n}
@@ -57,48 +71,58 @@
 \DeclareMathDelimiter{\lbrace}{\mathopen}{parenthesis}{"7B}{largesymbols}{"08}
 \DeclareMathDelimiter{\rbrace}{\mathclose}{parenthesis}{"7D}{largesymbols}{"09}
 
+% Use tikz-cd for commutative diagrams
+\usepackage{tikz-cd}
+\usepackage[framemethod=TikZ]{mdframed}
+
+\usepackage{ifthen}
 \usepackage{fancyvrb}
+\fvset{fontsize=\small}
+
+\usepackage{minted}
+\setminted[text]{fontsize=\small,breaklines}
+\usemintedstyle{github}
+
 \usepackage{imakeidx}
 \usepackage[totoc,font=footnotesize]{idxlayout}
 \usepackage{fancyhdr}
 \pagestyle{plain}
 \usepackage[final]{pdfpages} % inserts pages from a pdf file
 
-% Page geometry for 10-inch tablets:
-%\usepackage[papersize={148mm,197mm},
-            %top=21mm,
-            %textwidth=111mm,  % increase one or both of these by 1mm or so to
-            %textheight=148mm, % make the source compile with TeX Live 2013
-            %hcentering,       % if you get "Too many unprocessed floats" error
-%]{geometry}
-
-% ACG: change margins to be 1in.
-\usepackage{margin=1in]{geometry}
-
 \usepackage{titlesec}  % to change the appearance of section titles
 \usepackage{listings}  % for syntax highlighted code listings
-\usepackage{verbatim}  % for simple verbatim and comment environments
 \usepackage{enumerate} % allows customized labels in enumerations
-\usepackage{hyperref}  % makes cross references and URLs clickable
+\usepackage{enumitem}  % allows nested enumeration with numbers
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}  % makes cross references and URLs clickable
 \definecolor{LinkRed}{HTML}{80171F}
 \hypersetup{
-  pdfauthor={Harold Abelson, Gerald Jay Sussman, Julie Sussman},
-  pdftitle={Structure and Interpretation of Computer Programs, 2nd ed.},
-  pdfsubject={computer science, programming, abstraction},
+  pdfauthor={Adithya C. Ganesh},
+  pdftitle={Stanford Compendium},
+  pdfsubject={mathematics, computer science},
   colorlinks=true,
   linkcolor=LinkRed,
   urlcolor=LinkRed,
 }
+\usepackage{afterpage}
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
+
+\usepackage{subfiles}
+\makeatletter
+\let\org@subfile\subfile
+\renewcommand*{\subfile}[1]{%
+  \filename@parse{#1}
+  \expandafter
+  \graphicspath\expandafter{\expandafter{\filename@area}}
+  \org@subfile{#1}%
+}
+\makeatother
 
 % Document colors
-\definecolor{SchemeLight}   {HTML} {686868}
-\definecolor{SchemeSteel}   {HTML} {888888}
-\definecolor{SchemeDark}    {HTML} {262626}
-\definecolor{SchemeBlue}    {HTML} {4172A3}
-\definecolor{SchemeGreen}   {HTML} {487818}
-\definecolor{SchemeBrown}   {HTML} {A07040}
-\definecolor{SchemeRed}     {HTML} {AD4D3A}
-\definecolor{SchemeViolet}  {HTML} {7040A0}
+\definecolor{Dark}          {HTML} {262626}
 \definecolor{DropCapGray}   {HTML} {B8B8B8}
 \definecolor{ChapterGray}   {HTML} {C8C8C8}
 \definecolor{ChapterViolet} {HTML} {AEAECE}
@@ -112,121 +136,107 @@
 \setlength{\DefaultFindent}{1pt}
 \setlength{\DefaultNindent}{0em}
 
-\lstset{%
-  % Scheme syntax highlighter
-    columns=fixed,
-    extendedchars=true,
-    upquote=true,
-    showstringspaces=false,
-    sensitive=false,
-    mathescape=true,
-    escapechar=~,
-    alsodigit={>,<,/,-,=,!,?,*},
-    alsoletter=',
-    morestring=[b]",
-    morecomment=[l];,
-    % Keyword list taken form functional.py in Pygments package:
-    morekeywords={lambda, define, if, else, cond, and, or, case,%
-      let, let*, letrec, begin, do, delay, set!, =>, quote,%
-      quasiquote, unquote, unquote-splicing, define-syntax, let-syntax,%
-      letrec-syntax, syntax-rules},
-    % If keywords are quoted, they must not be highlighted:
-    emph={'lambda, 'define, 'if, 'else, 'cond, 'and, 'or, 'case,%
-      'let, 'let*, 'letrec, 'begin, 'do, 'delay, 'set!, '=>, 'quote,%
-      'quasiquote, 'unquote, 'unquote-splicing, 'define-syntax, 'let-syntax,%
-      'letrec-syntax, 'syntax-rules},
-    emphstyle=\color{SchemeDark},
-    % Paint error red:
-    emph={[2]error},emphstyle=[2]\color{SchemeRed},%
-    % Builtins taken from functional.py:
-    emph={[3]*, +, -, /, <, <=, =, >, >=, abs, acos, angle,
-        append, apply, asin, assoc, assq, assv, atan,
-        boolean?, caaaar, caaadr, caaar, caadar, caaddr, caadr,
-        caar, cadaar, cadadr, cadar, caddar, cadddr, caddr,
-        cadr, call-with-current-continuation, call-with-input-file,
-        call-with-output-file, call-with-values, call/cc, car,
-        cdaaar, cdaadr, cdaar, cdadar, cdaddr, cdadr, cdar,
-        cddaar, cddadr, cddar, cdddar, cddddr, cdddr, cddr,
-        cdr, ceiling, char->integer, char-alphabetic?, char-ci<=?,
-        char-ci<?, char-ci=?, char-ci>=?, char-ci>?, char-downcase,
-        char-lower-case?, char-numeric?, char-ready?, char-upcase,
-        char-upper-case?, char-whitespace?, char<=?, char<?, char=?,
-        char>=?, char>?, char?, close-input-port, close-output-port,
-        complex?, cons, cos, current-input-port, current-output-port,
-        denominator, display, dynamic-wind, eof-object?, eq?,
-        equal?, eqv?, eval, even?, exact->inexact, exact?, exp,
-        expt, floor, for-each, force, gcd, imag-part,
-        inexact->exact, inexact?, input-port?, integer->char,
-        integer?, interaction-environment, lcm, length, list,
-        list->string, list->vector, list-ref, list-tail, list?,
-        load, log, magnitude, make-polar, make-rectangular,
-        make-string, make-vector, map, max, member, memq, memv,
-        min, modulo, negative?, newline, not, null-environment,
-        null?, number->string, number?, numerator, odd?,
-        open-input-file, open-output-file, output-port?, pair?,
-        peek-char, port?, positive?, procedure?, quotient,
-        rational?, rationalize, read, read-char, real-part, real?,
-        remainder, reverse, round, scheme-report-environment,
-        set-car!, set-cdr!, sin, sqrt, string, string->list,
-        string->number, string->symbol, string-append, string-ci<=?,
-        string-ci<?, string-ci=?, string-ci>=?, string-ci>?,
-        string-copy, string-fill!, string-length, string-ref,
-        string-set!, string<=?, string<?, string=?, string>=?,
-        string>?, string?, substring, symbol->string, symbol?,
-        tan, transcript-off, transcript-on, truncate, values,
-        vector, vector->list, vector-fill!, vector-length,
-        vector-ref, vector-set!, vector?, with-input-from-file,
-        with-output-to-file, write, write-char, zero?},
-    emphstyle=[3]\color{SchemeViolet},%
-    %
-    basicstyle=\color{SchemeLight}\ttfamily,
-    keywordstyle=\color{SchemeBlue}\bfseries,
-    identifierstyle=\color{SchemeDark},
-    stringstyle=\color{SchemeGreen},
-    commentstyle=\color{SchemeLight}\itshape,
+% removes the "Part X" text from \part
+\renewcommand{\partname}{}
+\renewcommand{\thepart}{}
+
+\usepackage{xparse}
+\usepackage[abspath]{currfile}
+
+\newenvironment{snip}[2][]
+  {\VerbatimEnvironment
+  \mdfsetup{
+    linecolor=gray!20,
+    linewidth=2pt,
+    topline=false,
+    bottomline=false,
+    rightline=false
+  }
+  \begin{mdframed}\begin{minted}[#1]{#2}}
+ {\end{minted}\end{mdframed}
+ \vspace{-1ex}}
+
+ \newenvironment{snipv}
+ {\VerbatimEnvironment
+ \mdfsetup{
+   linecolor=gray!20,
+   linewidth=2pt,
+   topline=false,
+   bottomline=false,
+   rightline=false
+ }
+ \begin{mdframed}\begin{Verbatim}[commandchars=\\\{\}]}
+{\end{Verbatim}\end{mdframed}
+\vspace{-1ex}}
+
+\NewDocumentCommand\src{mO{}}{
+  \srcsnippet{\currfileabsdir/code/haskell/#1.hs}{blue}{haskell}{#2}
+  \ifdefined\OPTCustomLanguage{%
+    \unskip
+    \srcsnippet{\currfileabsdir/code/\OPTCustomLanguage/#1.\OPTCustomLanguageExt}{\OPTCustomLanguageColor}{\OPTCustomLanguage}{#2}
+  }
+  \fi
+  \NoIndentAfterThis
+}
+\NewDocumentCommand\srcsnippet{mmmm}{
+  \newif\ifbreak
+  \def\snippet{#1}
+  \mdfsetup{%
+    linecolor=#2!20,%
+    linewidth=2pt,
+    topline=false,
+    bottomline=false,
+    rightline=false,
+  }
+  \def\x{#4}
+  \ifthenelse{\equal{\x}{b}}{\breaktrue}{\breakfalse}
+  \begin{mdframed}
+    \ifbreak \inputminted[autogobble,breaklines]{#3}{\snippet}
+    \else \inputminted[autogobble]{#3}{\snippet}
+    \fi
+  \end{mdframed}
 }
 
-\newcommand{\acronym}[1]{\textsc{\fontspec[Numbers={OldStyle}]{Linux Libertine O}\MakeLowercase{#1}}}
-\newcommand{\uppersc}[1]{{\fontspec[Letters=UppercaseSmallCaps]{Linux Libertine O}#1}}
+\newcommand{\acronym}[1]{\textsc{\MakeLowercase{#1}}}
 \newcommand{\newterm}[1]{\index{#1}\emph{#1}}
-\newcommand{\var}[1]{\textsl{#1}}
-\newcommand{\code}[1]{\texttt{#1}}
-\newcommand{\link}[1]{\hyperref[#1]{#1}}
+\newcommand{\code}[1]{\Verb+{#1}+}
 \newcommand{\heading}[1]{{\sffamily\bfseries #1}}
-\newcommand{\dark}{\color{SchemeDark}}
 \newcommand{\mono}[1]{\hbox{\ttfamily\scriptsize #1}}
 \newcommand{\monoit}[1]{\hbox{\ttfamily\itshape\scriptsize #1}}
+\newcommand{\mathtext}[1]{\ensuremath{\pmb{#1}}}
+\newcommand{\urlref}[2]{\href{#1}{#2}\urlfootnote{#1}}
 
-\newenvironment{example}%
-  {\verbatim\small}%
-  {\endverbatim}
+% https://tex.stackexchange.com/questions/219445/line-break-in-texttt/219497
+\renewcommand{\code}[1]{%
+  \begingroup
+  \ttfamily
+  \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+  \begingroup\lccode`~=`[\lowercase{\endgroup\def~}{[\discretionary{}{}{}}%
+  \begingroup\lccode`~=`.\lowercase{\endgroup\def~}{.\discretionary{}{}{}}%
+  \catcode`/=\active\catcode`[=\active\catcode`.=\active
+  \scantokens{#1\noexpand}%
+  \endgroup
+}
 
-\newenvironment{smallexample}%
-  {\verbatim\footnotesize}%
-  {\endverbatim}
-
-\lstnewenvironment{scheme}[1][]
-{\lstset{basicstyle=\ttfamily\small\color{SchemeLight},#1}}
-{}
-
-\lstnewenvironment{smallscheme}[1][]
-{\lstset{basicstyle=\ttfamily\footnotesize\color{SchemeLight},#1}}
-{}
+\makeatletter
+\newcommand\urlfootnote@[1]{\footnote{\url@{#1}}}
+\DeclareRobustCommand{\urlfootnote}{\hyper@normalise\urlfootnote@}
+\makeatother
 
 \titleformat{\chapter}[display]
-  {\color{SchemeDark}\normalfont\sffamily\bfseries\LARGE}
+  {\color{Dark}\normalfont\sffamily\bfseries\LARGE}
   {\filright \color{ChapterViolet}\sffamily\mdseries
     \fontsize{6em}{0em}\selectfont
-    \oldstylenums{\thechapter}}
+    {\addfontfeature{Numbers=OldStyle}\thechapter}}
   {1em}
   {\filright}
 
 \titleformat{\section}
-{\color{SchemeDark}\normalfont\Large\sffamily\bfseries}
+{\color{Dark}\normalfont\Large\sffamily\bfseries}
 {\color{DropCapViolet}\thesection}{0.8em}{}
 
 \titleformat{\subsection}
-{\color{SchemeDark}\normalfont\large\sffamily\bfseries}
+{\color{Dark}\normalfont\large\sffamily\bfseries}
 {\color{DropCapViolet}\thesubsection}{0.8em}{}
 
 \titleformat{\subsubsection}
@@ -236,30 +246,20 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
+\sloppy
 \frenchspacing
 \makeindex
+
+% reduce space between items in a list
+\providecommand{\tightlist}{%
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 %====================%
 %  End of preamble.  %
 %====================%
 
-
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{fancyhdr}
-\usepackage{todonotes}
-\usepackage{amsthm}
-\usepackage{amsopn}
-\usepackage{amsfonts}
-\usepackage{mathtools}
-\usepackage{libertine}
-\usepackage{hyperref}
-\usepackage{graphicx}
-\usepackage{subfiles}
-\usepackage{morewrites}
-
-\usepackage{adi}
-
-\VerbatimFootnotes
+% Adi's hacks here:
+\usepackage[english,ngerman]{babel}
+\selectlanguage{English}
 
 \begin{document}

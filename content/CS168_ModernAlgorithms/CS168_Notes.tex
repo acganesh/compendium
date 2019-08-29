@@ -1,95 +1,95 @@
-\documentclass[12pt]{article}
+%\documentclass[12pt]{article}
 
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{fancyhdr}
-\usepackage{todonotes}
-\usepackage{amsthm}
-\usepackage{amsopn}
-\usepackage{amsfonts}
-\usepackage{mathtools}
-\usepackage{libertine}
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{fancyhdr}
+%\usepackage{todonotes}
+%\usepackage{amsthm}
+%\usepackage{amsopn}
+%\usepackage{amsfonts}
+%\usepackage{mathtools}
+%\usepackage{libertine}
 
-\usepackage[parfill]{parskip}
-\usepackage[margin=1in]{geometry}
+%\usepackage[parfill]{parskip}
+%\usepackage[margin=1in]{geometry}
 
-\newtheorem*{theorem}{Theorem}
-\newtheorem*{example}{Example}
-\newtheorem*{definition}{Definition}
-\newtheorem*{remark}{Remark}
-\newtheorem*{claim}{Claim}
-\newtheorem*{fact}{Fact}
+%\newtheorem*{theorem}{Theorem}
+%\newtheorem*{example}{Example}
+%\newtheorem*{definition}{Definition}
+%\newtheorem*{remark}{Remark}
+%\newtheorem*{claim}{Claim}
+%\newtheorem*{fact}{Fact}
 
-\usepackage{latexsym}
-\usepackage{bbm}
-\usepackage[small,bf]{caption2}
-\usepackage{graphics}
-\usepackage{epsfig}
-\usepackage{amsopn}
-\usepackage{url}
+%\usepackage{latexsym}
+%\usepackage{bbm}
+%\usepackage[small,bf]{caption2}
+%\usepackage{graphics}
+%\usepackage{epsfig}
+%\usepackage{amsopn}
+%\usepackage{url}
 
-\newcommand{\bc}{\binom}
-\newcommand{\bx}{\boxed}
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\II}{\mathbb{I}}
-\newcommand{\Ra}{\mathcal{R}}
-\newcommand{\EE}{\mathbb{E}}
-\newcommand{\HH}{\mathcal{H}}
-\newcommand{\NN}{\mathcal{N}}
-\newcommand{\FF}{\mathbb{F}}
-\newcommand{\ve}{\varepsilon}
-\newcommand{\eps}{\epsilon}
-\newcommand{\la}{\langle}
-\newcommand{\ra}{\rangle}
-\newcommand{\mbf}{\mathbf}
-\newcommand{\ds}{\displaystyle}
+%\newcommand{\bc}{\binom}
+%\newcommand{\bx}{\boxed}
+%\newcommand{\RR}{\mathbb{R}}
+%\newcommand{\II}{\mathbb{I}}
+%\newcommand{\Ra}{\mathcal{R}}
+%\newcommand{\EE}{\mathbb{E}}
+%\newcommand{\HH}{\mathcal{H}}
+%\newcommand{\NN}{\mathcal{N}}
+%\newcommand{\FF}{\mathbb{F}}
+%\newcommand{\ve}{\varepsilon}
+%\newcommand{\eps}{\epsilon}
+%\newcommand{\la}{\langle}
+%\newcommand{\ra}{\rangle}
+%\newcommand{\mbf}{\mathbf}
+%\newcommand{\ds}{\displaystyle}
 
-% From stackexchange
-\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
-\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
+%% From stackexchange
+%\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
+%\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
 
-\DeclareMathOperator{\sign}{sign}
-\DeclareMathOperator{\GL}{GL}
-\DeclareMathOperator{\Var}{Var}
+%\DeclareMathOperator{\sign}{sign}
+%\DeclareMathOperator{\GL}{GL}
+%\DeclareMathOperator{\Var}{Var}
 
-%\newcommand{\mat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
-\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
-
-
+%%\newcommand{\mat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
+%\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 
 
-\usepackage[parfill]{parskips
-\usepackage[margin=1in]{geometry}
 
-\pagestyle{fancy}
 
-\newcommand{\UU}{\mathcal{U}}
-\newcommand{\T}{\text}
+%\usepackage[parfill]{parskips
+%\usepackage[margin=1in]{geometry}
 
-\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
+%\pagestyle{fancy}
 
-\def\Ber{\text{Ber}}
-\def\ub{\underbrace}
-\def\UU{\mathcal{U}}
-\def\WW{\mathcal{W}}
-\def\XX{\mathcal{X}}
-\def\VV{\mathcal{V}}
-\def\Unif{\text{Unif}}
-\def\Xh{\hat{X}}
-\def\P{\text{P}}
-\def\PP{\mathbb{P}}
-\def\CC{\mathbb{C}}
-\def\KK{\mathbb{K}}
-\def\ZZ{\mathbb{Z}}
-\def\lb{\lambda}
-\def\rot{\text{rot}}
+%\newcommand{\UU}{\mathcal{U}}
+%\newcommand{\T}{\text}
 
-\title{CS168: Modern Algorithmic Toolbox}
-\author{Instructor: Greg Valiant; Notes: Adithya Ganesh}
+%\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
 
-\lhead{CS 168}
+%\def\Ber{\text{Ber}}
+%\def\ub{\underbrace}
+%\def\UU{\mathcal{U}}
+%\def\WW{\mathcal{W}}
+%\def\XX{\mathcal{X}}
+%\def\VV{\mathcal{V}}
+%\def\Unif{\text{Unif}}
+%\def\Xh{\hat{X}}
+%\def\P{\text{P}}
+%\def\PP{\mathbb{P}}
+%\def\CC{\mathbb{C}}
+%\def\KK{\mathbb{K}}
+%\def\ZZ{\mathbb{Z}}
+%\def\lb{\lambda}
+%\def\rot{\text{rot}}
 
-\begin{document}
+%\title{CS168: Modern Algorithmic Toolbox}
+%\author{Instructor: Greg Valiant; Notes: Adithya Ganesh}
+
+%\lhead{CS 168}
+
+%\begin{document}
 
 \maketitle
 \tableofcontents
@@ -725,4 +725,4 @@ Quick suggestions on where we might encounter tensors:
 \section{Key ideas}
 
 
-\end{document}
+%\end{document}
