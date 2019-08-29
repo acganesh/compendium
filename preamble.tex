@@ -255,11 +255,77 @@
 \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 %====================%
-%  End of preamble.  %
+%  End of CTFP preamble.  %
 %====================%
 
-% Adi's hacks here:
-\usepackage[english,ngerman]{babel}
-\selectlanguage{English}
+% Adi's additions here:
+\usepackage[english]{babel}
+
+\usepackage{todonotes}
+
+\newcommand{\T}{\texttt}
+% This is annoying - use consistent macro set
+
+% Statistical learning
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\mbf}{\mathbf}
+
+% CS236
+\newcommand{\bc}{\binom}
+\newcommand{\bx}{\boxed}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\DD}{\mathbb{D}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\II}{\mathbb{I}}
+\newcommand{\Ra}{\mathcal{R}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ol}{\overline}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\N}{\mathcal{N}}
+
+\def\Ber{\text{Ber}}
+\def\ub{\underbrace}
+\def\UU{\mathcal{U}}
+\def\WW{\mathcal{W}}
+\def\XX{\mathcal{X}}
+\def\VV{\mathcal{V}}
+\def\Unif{\text{Unif}}
+\def\Xh{\hat{X}}
+\def\P{\text{P}}
+\def\PP{\mathbb{P}}
+\def\CC{\mathbb{C}}
+\def\KK{\mathbb{K}}
+\def\ZZ{\mathbb{Z}}
+\def\lb{\lambda}
+\def\rot{\text{rot}}
+
+\DeclareMathOperator{\argmax}{argmax}
+
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Syl}{Syl}
+\DeclareMathOperator{\argmin}{argmin}
+%\newcommand{\mat}[4]{\begin{matrix} #1 & #2 \\ #3 & #4\end{matrix}}
+\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+% There's an error with ``\* already defined''
+\newtheorem*{definition}{Definition}
+
+\usepackage{morewrites}
 
 \begin{document}

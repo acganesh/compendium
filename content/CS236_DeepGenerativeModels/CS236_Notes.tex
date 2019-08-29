@@ -101,6 +101,7 @@ where $\z \sim q_{\phi}(\z | \x)$.
 \begin{enumerate}
   \item Prove that IWAE is a valid lower bound of the log-likelihood.
 
+    \todo{The parentheses here are broken}
     \begin{align*}
       \log p_{\theta}(\x) & \geq \E_{\z^{(1)}, \dots, \z^{(m)} \sim q_{\phi}(\z | \x)} \left( \log \frac{1}{m} \sum_{i=1}^{m} \frac{p_{\theta}(\x, \z^{(i)}}{q_{\phi}(\z^{(i)} | \x)} \right) \\
         & \geq \E_{z^{(1)} \sim q_{\phi}(\z | \x)} \log \frac{p_{\theta}(\x, \z^{(1)})}{q_{\phi}(\z^{(1)} |  \x)}
