@@ -1,94 +1,4 @@
-
 \documentclass[12pt]{article}
-
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{fancyhdr}
-\usepackage{todonotes}
-\usepackage{amsthm}
-\usepackage{amsopn}
-\usepackage{amsfonts}
-\usepackage{mathtools}
-\usepackage{libertine}
-
-\newtheorem*{theorem}{Theorem}
-\newtheorem*{lemma}{Lemma}
-\newtheorem*{definition}{Definition}
-\newtheorem*{remark}{Remark}
-\newtheorem*{claim}{Claim}
-\newtheorem*{example}{Example}
-\newtheorem*{prop}{Proposition}
-\newtheorem*{sol}{Solution}
-
-\usepackage{latexsym}
-\usepackage{bbm}
-\usepackage[small,bf]{caption2}
-\usepackage{graphics}
-\usepackage{epsfig}
-\usepackage{amsopn}
-\usepackage{url}
-
-\usepackage[parfill]{parskip}
-\usepackage[margin=1in]{geometry}
-
-\newcommand{\bc}{\binom}
-\newcommand{\bx}{\boxed}
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\QQ}{\mathbb{Q}}
-\newcommand{\II}{\mathbb{I}}
-\newcommand{\Ra}{\mathcal{R}}
-\newcommand{\EE}{\mathbb{E}}
-\newcommand{\HH}{\mathcal{H}}
-\newcommand{\NN}{\mathbb{N}}
-\newcommand{\FF}{\mathbb{F}}
-\newcommand{\ve}{\varepsilon}
-\newcommand{\eps}{\epsilon}
-\newcommand{\la}{\langle}
-\newcommand{\ra}{\rangle}
-\newcommand{\mbf}{\mathbf}
-\newcommand{\ds}{\displaystyle}
-\newcommand{\ol}{\overline}
-
-% From stackexchange
-\DeclarePairedDelimiterX\set[1]\lbrace\rbrace{\def\given{\;\delimsize\vert\;}#1}
-\DeclarePairedDelimiter\abs{\left \lvert}{\right \rvert}%
-
-\DeclareMathOperator{\sign}{sign}
-\DeclareMathOperator{\Aut}{Aut}
-\DeclareMathOperator{\GL}{GL}
-\DeclareMathOperator{\Ker}{Ker}
-\DeclareMathOperator{\im}{im}
-\DeclareMathOperator{\Syl}{Syl}
-%\newcommand{\mat}[4]{\begin{pmatrix} #1 & #2 \\ #3 & #4\end{pmatrix}}
-\newcommand*{\mat}[1]{\begin{pmatrix}#1\end{pmatrix}}
-
-
-\usepackage[parfill]{parskips
-\usepackage[margin=1in]{geometry}
-
-\pagestyle{fancy}
-
-\newcommand{\UU}{\mathcal{U}}
-\newcommand{\T}{\text}
-
-\newcommand{\eq}[1]{\begin{align*}#1\end{align*}}
-
-\def\Ber{\text{Ber}}
-\def\ub{\underbrace}
-\def\UU{\mathcal{U}}
-\def\WW{\mathcal{W}}
-\def\XX{\mathcal{X}}
-\def\VV{\mathcal{V}}
-\def\Unif{\text{Unif}}
-\def\Xh{\hat{X}}
-\def\P{\text{P}}
-\def\PP{\mathbb{P}}
-\def\CC{\mathbb{C}}
-\def\KK{\mathbb{K}}
-\def\ZZ{\mathbb{Z}}
-\def\lb{\lambda}
-\def\rot{\text{rot}}
 
 \title{CS161 - Algorithms}
 \author{Instructor: Mary Wooters; Notes: Adithya Ganesh}
@@ -99,14 +9,37 @@
 
 \begin{document}
 
-\section{Lecture 1}
-\section{Lecture 2}
+\section{Divide-and-conquer}
 
-\begin{enumerate}
-  \item Big $O$: upper bound.  Let $T(n), g(n)$ be functions of positive integers.  Formally, $T(n) = O(g(n))$ iff $\exists c, n_0 > 0$ such that $\forall n \geq n_0$, $0 \leq T(n) \leq c \cdot g(n)$.
-  \item $\Omega(\dots)$ means a lower bound.  We say $T(n)$ is $\Omega(g(n))$ if $T(n)$ grows at least as fast as $g(n)$ as $n \to \infty$.  Formally, $T(n) = \Omega (g(n))$ iff $\exists c, n_0 > 0$ such that $\forall n \geq n_0$, we have $0 \leq c \cdot g(n) \leq T(n)$.
-  \item We say $T(n) = \Theta (g(n))$ if both of the above are true.
-\end{enumerate}
+We can solve a problem recursively as follows:
+
+\begin{itemize}
+  \item Divide the problem into a number of subproblems.
+  \item Conquer the subproblems by solving them recursively.
+  \item Combine the solutions to the subproblems.
+\end{itemize}
+
+A classic example is the maximum-subarray problem.  Given a list of prices over an $N$-day period, you have the option to buy once and sell once.  What is the optimal strategy?
+
+Brute force: just search over the $\binom{n}{2}$ possible pairs.
+
+Alternatively, just break down the maximum sub-array problem into three cases:
+\begin{itemize}
+  \item Left subarray case,
+  \item Right subarray case,
+  \item Cross subarray case.
+\end{itemize}
+
+\section{Dynamic programming}
+
+Recall that divide-and-conquer algorithms partition the problem into disjoint subproblems, solve the subproblems recursively, and then combine their solutions to solve the original problem.
+
+In constant, dynamic programming applies when the subproblems overlap.  A DP algorithm solves each subsubproblem juts once and saves it answer in a table.  Most often, DP applies to optimization problems.
+
+{\bf Example.} Given a rod of length $n$ inches and a tbable of prices $p_i$ for $i = 1, \dots, n$, determine the maximize revenue $r_n$ obtained by cutting the rod and selling the pieces.
+
+The idea is to use the fact that $r_n = \max_{1 \leq i \leq n} (p_i + r_{n-i})$.  We can calculate this either bottom-up or top-down.  Bottom-up algorithms sometimes have better constant factors.
+
+\section{Max flow algorithms}
 
 \end{document}
-
