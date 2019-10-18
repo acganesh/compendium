@@ -8,7 +8,7 @@ These contain some typos, since I mostly took these notes live in lecture.  All 
 
 - `adi.sty`.  I wrote a small LaTeX style file that includes common macros / typesetting configuration that I use often.
 - [`latexmk`](https://ctan.org/pkg/latexmk?lang=en): A perl script that provides auto-compilation on save for LaTeX documents.
-- [`vim`](https://www.vim.org/): The best editor.  I use macros / registers to Input repeated snippets of LaTeX code: e.g. `\sum_{n=1}^{\infty}` or `\int_{0}^{\infty} f(t) e^{-st} dt`.
+- [`vim`](https://www.vim.org/): The best editor.  I use macros / registers to input repeated snippets of LaTeX code: e.g. `\sum_{n=1}^{\infty}` or `\int_{0}^{\infty} f(t) e^{-st} dt`.
 - [`vim-latex`](http://vim-latex.sourceforge.net/): Vim package with smart braces, "jump" functionality for environments, and 1-2 character macros for most symbols (e.g. `<Leader>a` outputs `\alpha` in the source file).
 - [`zathura`](https://github.com/pwmt/zathura): Lightweight document viewer with `vim`-like keybindings.
 - [`inkscape-figures`](https://github.com/gillescastel/inkscape-figures): This is more recent, but I've found that this package makes it very easy to produce vector graphics using Inkscape (as opposed to [`pgf` / `TikZ`](https://ctan.org/pkg/pgf?lang=en)).
