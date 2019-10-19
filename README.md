@@ -6,7 +6,7 @@ These contain some typos, since I mostly took these notes live in lecture.  All 
 
 # Workflow
 
-- Arch.  Yea it's the best distro.
+- Arch.  Glorious distro.
 - `adi.sty`.  I wrote a small LaTeX style file that includes common macros / typesetting configuration that I use often.
 - [`latexmk`](https://ctan.org/pkg/latexmk?lang=en): A perl script that provides auto-compilation on save for LaTeX documents.
 - [`vim`](https://www.vim.org/): The best editor.  I use macros / registers to input repeated snippets of LaTeX code: e.g. `\sum_{n=1}^{\infty}` or `\int_{0}^{\infty} f(t) e^{-st} dt`.
